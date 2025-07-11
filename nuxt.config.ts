@@ -3,6 +3,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@pinia/nuxt',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
   ],
+  runtimeConfig: {
+    BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
+    public: {
+      BACKEND_BASE_URL: process.env.BACKEND_BASE_URL,
+    }
+  }
 })
