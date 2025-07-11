@@ -1,3 +1,6 @@
+import type { AsyncData } from '#app'
+import { FetchError } from 'ofetch'
+
 export const getBackendUrl = (path: string) => {
   const config = useRuntimeConfig()
 
@@ -9,3 +12,14 @@ export const getBackendUrl = (path: string) => {
 }
 
 export const getCookieHeader = () => import.meta.server ? useRequestHeaders(['cookie']) : {}
+
+export const processResponse = async <ResponseType>(asyncData: AsyncData<ResponseType | null, FetchError<any> | null>): Promise<ResponseType> => {
+  const { data, error } = await asyncData
+
+  if(error.value !== null || data.value === null) {
+    console.error(error.value)
+    throw error.value
+  }
+
+  return data.value
+}

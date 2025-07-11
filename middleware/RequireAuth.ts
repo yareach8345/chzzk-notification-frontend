@@ -1,21 +1,15 @@
-import { authCheck, openLoginPage } from '@/api/AuthRequests'
-import { useUserStore } from '~/store/UserStore'
+import { checkAuth, openLoginPage } from '@/api/AuthRequests'
+import { processResponse } from '~/util/ApiUtil'
 
 export default defineNuxtRouteMiddleware( async () => {
-  const { data, error } = await authCheck();
+  try {
+    const data = await processResponse(checkAuth());
 
-  if(error.value !== null || data.value === null) {
-    console.error(error.value)
-    return abortNavigation()
-  }
-
-  if(data.value.isAuthenticated === false) {
-    openLoginPage()
-  } else {
-    const userStore = useUserStore()
-
-    if(userStore.user === undefined) {
-      userStore.setUser(data.value.user)
+    if(data.isAuthenticated === false) {
+      openLoginPage()
     }
+  } catch (error) {
+    console.error(error)
+    abortNavigation()
   }
 })

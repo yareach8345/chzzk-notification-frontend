@@ -1,4 +1,6 @@
-import type { UserDto } from '~/dto/auth/UserDto'
+import type { UserDto } from '@/dto/auth/UserDto'
+import { getLoginInfo } from '@/api/AuthRequests'
+import { processResponse } from '@/util/ApiUtil'
 
 export const useUserStore = defineStore('user-store', () => {
   const user: Ref<UserDto | undefined> = ref(undefined)
@@ -11,9 +13,16 @@ export const useUserStore = defineStore('user-store', () => {
     user.value = undefined
   }
 
+  const getUser = async () => {
+    if(user.value === undefined) {
+      user.value = await processResponse(getLoginInfo())
+    }
+    return readonly(user)
+  }
+
   return {
     setUser,
     clearUser,
-    user: computed(() => user.value),
+    getUser
   }
 })
