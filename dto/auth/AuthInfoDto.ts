@@ -1,4 +1,4 @@
-export interface UserDto {
+export interface AuthInfoDto {
   displayName: string
   email: string
 }

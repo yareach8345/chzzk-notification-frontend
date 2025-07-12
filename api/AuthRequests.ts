@@ -1,5 +1,5 @@
 import type { AuthCheckDto } from '@/dto/auth/AuthCheckDto'
-import type { UserDto } from '@/dto/auth/UserDto'
+import type { AuthInfoDto } from '~/dto/auth/AuthInfoDto'
 import { getBackendUrl, getCookieHeader } from '@/util/ApiUtil'
 
 export const checkAuth = () => {
@@ -13,11 +13,11 @@ export const checkAuth = () => {
   })
 }
 
-export const getLoginInfo = () => {
+export const getAuthInfo = () => {
   const cookieHeader = getCookieHeader()
   const url = getBackendUrl('/auth/login-info')
 
-  return useFetch<UserDto>(url, {
+  return useFetch<AuthInfoDto>(url, {
     method: 'GET',
     credentials: 'include',
     headers: { ...cookieHeader }

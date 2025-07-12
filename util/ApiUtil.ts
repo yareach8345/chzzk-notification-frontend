@@ -13,7 +13,7 @@ export const getBackendUrl = (path: string) => {
 
 export const getCookieHeader = () => import.meta.server ? useRequestHeaders(['cookie']) : {}
 
-export const processResponse = async <ResponseType>(asyncData: AsyncData<ResponseType | null, FetchError<any> | null>): Promise<ResponseType> => {
+export const processAsyncData = async <ResponseType>(asyncData: AsyncData<ResponseType | null, FetchError<any> | null>): Promise<ResponseType> => {
   const { data, error } = await asyncData
 
   if(error.value !== null || data.value === null) {
