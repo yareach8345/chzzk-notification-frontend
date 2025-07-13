@@ -3,25 +3,25 @@ import { getChannels as loadChannelsFromApi } from '~/api/ChannelRequest'
 import { processAsyncData } from '~/util/ApiUtil'
 
 export const useChannelStore = defineStore('channel-store', () => {
-  const channels = ref<ChannelInfoDto[]>([])
+  const _channels = ref<ChannelInfoDto[]>([])
 
-  const readonlyChannels = computed(() => channels.value)
+  const channelMap = computed(() => new Map(_channels.value.map(channel => ([channel.channelId, channel]))))
 
-  const isChannelsLoaded = ref(false)
+  const _isChannelsLoaded = ref(false)
 
   const loadChannels = async () => {
-    channels.value = await processAsyncData(loadChannelsFromApi())
-    isChannelsLoaded.value = true
+    _channels.value = await processAsyncData(loadChannelsFromApi())
+    _isChannelsLoaded.value = true
   }
 
-  const getChannels = async () => {
-    if(isChannelsLoaded.value !== true) {
-      await loadChannels()
-    }
-    return readonlyChannels
+  const findChannelById = (channelId: string) => {
+    return channelMap.value.get(channelId)
   }
 
   return {
-    getChannels
+    channels: computed(() => _channels.value),
+    isChannelsLoaded: computed(() => _isChannelsLoaded.value),
+    findChannelById,
+    loadChannels,
   }
 })
