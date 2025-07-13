@@ -22,7 +22,9 @@ export default defineNuxtRouteMiddleware( async () => {
       userStore.setAuthInfo(user)
     }
   } catch (error) {
-    alert(`로그인 실패 : ${error}`)
+    if(import.meta.client) {
+      alert(`로그인 실패 : ${error}`)
+    }
     console.error(error)
     abortNavigation()
   }
