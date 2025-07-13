@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useChannelStore } from '~/store/ChannelStore'
+
 definePageMeta({
   middleware: ['require-auth']
 })
@@ -6,6 +8,10 @@ definePageMeta({
 useHead({
   title: '채널'
 })
+
+const channelStore = useChannelStore()
+const channels = await channelStore.getChannels()
+console.log(channels)
 </script>
 
 <template>
