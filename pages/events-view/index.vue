@@ -2,11 +2,15 @@
 definePageMeta({
   middleware: ['require-auth']
 })
+
+useHead({
+  title: '실시간 이벤트'
+})
 </script>
 
 <template>
   <h2 class="text-2xl">
-    디바이스 정보 페이지
+    실시간 이벤트 뷰어
   </h2>
 </template>
 

@@ -2,11 +2,15 @@
 definePageMeta({
   middleware: ['require-auth']
 })
+
+useHead({
+  title: '장치'
+})
 </script>
 
 <template>
   <h2 class="text-2xl">
-    채널 페이지
+    디바이스 정보 페이지
   </h2>
 </template>
 

@@ -5,6 +5,10 @@ import { openLoginPage } from '~/api/AuthRequests'
 definePageMeta({
   middleware: ['login-page-guard'],
 })
+
+useHead({
+  title: '로그인'
+})
 </script>
 
 <template>

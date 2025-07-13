@@ -2,11 +2,15 @@
 definePageMeta({
   middleware: ['require-auth']
 })
+
+useHead({
+  title: '채널'
+})
 </script>
 
 <template>
   <h2 class="text-2xl">
-    실시간 이벤트 뷰어
+    채널 페이지
   </h2>
 </template>
 

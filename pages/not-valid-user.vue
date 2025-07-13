@@ -5,6 +5,10 @@ import { logout } from '~/api/AuthRequests'
 definePageMeta({
   middleware: ['not-valid-user-page-guard'],
 })
+
+useHead({
+  title: '허가되지 않은 계정'
+})
 </script>
 
 <template>

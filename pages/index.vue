@@ -5,6 +5,9 @@ definePageMeta({
   middleware: ['require-auth']
 })
 
+useHead({
+  title: '메인 페이지'
+})
 const { authInfo } = useAuthInfoStore()
 </script>
 
