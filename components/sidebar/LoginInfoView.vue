@@ -9,7 +9,7 @@ const userIcon = computed(() => authInfo.value?.picture ?? '/image/default-user-
 
 <template>
   <div>
-    <div class="text-center text-xs">로그인 정보</div>
+    <div class="text-center text-xs mb-1">로그인 정보</div>
     <div class="flex gap-1 items-center">
       <img
           class="h-12 rounded-full"
