@@ -24,6 +24,7 @@ const userIcon = computed(() => authInfo.value?.picture ?? '/image/default-user-
         <neon-button
             class="border-none"
             @click="logout"
+            title="로그아웃"
         >
           <svg-logout/>
         </neon-button>
@@ -33,6 +34,7 @@ const userIcon = computed(() => authInfo.value?.picture ?? '/image/default-user-
         <neon-button
             class="border-none"
             @click="openLoginPage"
+            title="로그인"
         >
           <svg-login/>
         </neon-button>
