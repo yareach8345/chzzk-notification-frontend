@@ -1,4 +1,4 @@
-import { checkAuth, getAuthInfo, openLoginPage } from '@/api/AuthRequests'
+import { checkAuth, getAuthInfo } from '@/api/AuthRequests'
 import { processAsyncData } from '~/util/ApiUtil'
 import { useAuthInfoStore } from '~/store/AuthInfoStore'
 
@@ -7,7 +7,11 @@ export default defineNuxtRouteMiddleware( async () => {
     const data = await processAsyncData(checkAuth());
 
     if(data.isAuthenticated === false) {
-      openLoginPage()
+      return navigateTo({ name: 'login' })
+    }
+
+    if(data.isValidUser === false) {
+      return navigateTo({ name: 'not-valid-user' })
     }
 
     const userStore = useAuthInfoStore()
@@ -18,6 +22,7 @@ export default defineNuxtRouteMiddleware( async () => {
       userStore.setAuthInfo(user)
     }
   } catch (error) {
+    alert(`로그인 실패 : ${error}`)
     console.error(error)
     abortNavigation()
   }
