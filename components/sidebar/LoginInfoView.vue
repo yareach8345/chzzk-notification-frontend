@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { useAuthInfoStore } from '~/store/AuthInfoStore'
-import { logout, openLoginPage } from '@/api/AuthRequests'
+import { openLoginPage } from '@/api/AuthRequests'
+import { navigateToHome } from '~/util/RoutingUtil'
 
-const { authInfo, isAuthenticated } = storeToRefs(useAuthInfoStore())
+const authInfoStore = useAuthInfoStore()
+const { authInfo, isAuthenticated } = storeToRefs(authInfoStore)
 
 const userIcon = computed(() => authInfo.value?.picture ?? '/image/default-user-icon.jpg')
+
+const logout = async () => {
+  await authInfoStore.logout()
+  await navigateToHome()
+}
 </script>
 
 <template>

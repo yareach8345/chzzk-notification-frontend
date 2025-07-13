@@ -1,4 +1,4 @@
-import { checkAuth, getAuthInfo } from '@/api/AuthRequests'
+import { checkAuth } from '@/api/AuthRequests'
 import { processAsyncData } from '~/util/ApiUtil'
 import { useAuthInfoStore } from '~/store/AuthInfoStore'
 
@@ -17,9 +17,7 @@ export default defineNuxtRouteMiddleware( async () => {
     const userStore = useAuthInfoStore()
 
     if(!userStore.isAuthenticated) {
-      const user = await processAsyncData(getAuthInfo())
-
-      userStore.setAuthInfo(user)
+      await userStore.loadAuthInfo()
     }
   } catch (error) {
     if(import.meta.client) {

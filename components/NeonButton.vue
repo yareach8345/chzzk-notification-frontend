@@ -3,9 +3,7 @@ interface Props {
   disabled?: boolean
 }
 
-const { disabled } = withDefaults(defineProps<Props>(), {
-  disabled: false
-})
+const { disabled = false } = defineProps<Props>()
 </script>
 
 <template>

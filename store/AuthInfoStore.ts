@@ -1,21 +1,24 @@
 import type { AuthInfoDto } from '~/dto/auth/AuthInfoDto'
+import { processAsyncData } from '~/util/ApiUtil'
+import { getAuthInfo, requestLogout } from '~/api/AuthRequests'
 
 export const useAuthInfoStore = defineStore('user-store', () => {
   const authInfo: Ref<AuthInfoDto | undefined> = ref(undefined)
 
-  const setAuthInfo = (data: AuthInfoDto | undefined) => {
-    authInfo.value = data
+  const loadAuthInfo = async () => {
+    authInfo.value = await processAsyncData(getAuthInfo())
   }
 
-  const clearAuthInfo = () => {
+  const logout = async () => {
+    await requestLogout()
     authInfo.value = undefined
   }
 
   const isAuthenticated = computed(() => authInfo.value !== undefined)
 
   return {
-    setAuthInfo,
-    clearAuthInfo,
+    loadAuthInfo,
+    logout,
     isAuthenticated,
     authInfo: computed(() => authInfo.value)
   }

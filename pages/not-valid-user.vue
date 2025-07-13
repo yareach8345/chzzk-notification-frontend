@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NeonBox from '~/components/NeonBox.vue'
-import { logout } from '~/api/AuthRequests'
+import { useAuthInfoStore } from '~/store/AuthInfoStore'
+import { navigateToHome } from '~/util/RoutingUtil'
 
 definePageMeta({
   middleware: ['not-valid-user-page-guard'],
@@ -9,6 +10,13 @@ definePageMeta({
 useHead({
   title: '허가되지 않은 계정'
 })
+
+const authInfoStore = useAuthInfoStore()
+
+const logout = async () => {
+  await authInfoStore.logout()
+  await navigateToHome()
+}
 </script>
 
 <template>
