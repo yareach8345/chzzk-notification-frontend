@@ -19,6 +19,7 @@ useHead({
 <template>
   <section>
     <box-gray>
+      <channel-profile :channel="channel"/>
       {{channelId}}
     </box-gray>
   </section>

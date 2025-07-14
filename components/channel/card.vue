@@ -36,11 +36,9 @@ const currentUserMessage = computed(() =>
       class="border-2 rounded-md p-2 flex items-center gap-2"
       :class="cardBorderClass"
   >
-    <img
-        class="rounded-full w-16 border p-1"
-        :class="imgBorderClass"
-        :src="imgSrc"
-        :alt="channelImgAlt"
+    <channel-profile
+        class="w-16"
+        :channel="channel"
     />
     <div class="flex-1 w-40 lg:min-w-52 truncate">
       <p class="text-xl">{{channel.detail.displayName}}</p>
