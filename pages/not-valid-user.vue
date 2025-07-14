@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Neon from '~/components/box/neon.vue'
 import { useAuthInfoStore } from '~/store/AuthInfoStore'
 import { navigateToHome } from '~/util/RoutingUtil'
 
@@ -20,7 +19,7 @@ const logout = async () => {
 </script>
 
 <template>
-  <neon class="flex flex-col items-center">
+  <box-neon class="flex flex-col items-center">
     <h2 class="text-xl">
       허가되지 않은 이메일입니다.
     </h2>
@@ -37,7 +36,7 @@ const logout = async () => {
         로그아웃 하기
       </div>
     </button-neon>
-  </neon>
+  </box-neon>
 </template>
 
 <style scoped>
