@@ -42,16 +42,22 @@ const currentUserMessage = computed(() =>
         :src="imgSrc"
         :alt="channelImgAlt"
     />
-    <div class="flex-1 min-w-52">
+    <div class="flex-1 max-w-40 lg:min-w-52 truncate">
       <p class="text-xl">{{channel.detail.displayName}}</p>
-      <p class="text-md font-light" v-if="channel.liveState.isOpen">{{channel.liveState.category}}</p>
+      <p
+          class="text-md font-light max-md:overflow-hidden"
+          :title="channel.liveState.category"
+          v-if="channel.liveState.isOpen"
+      >
+        {{channel.liveState.category}}
+      </p>
     </div>
     <div>
       <p class="flex" :class="streamColor">
         <svg-stream/>
         <span>stream {{channel.liveState.isOpen ? "on!" : "off"}}</span>
       </p>
-      <p class="text-md font-light">{{currentUserMessage}}</p>
+      <p class="font-light">{{currentUserMessage}}</p>
     </div>
   </article>
 </template>
