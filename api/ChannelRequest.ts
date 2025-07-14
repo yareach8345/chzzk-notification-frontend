@@ -6,7 +6,7 @@ export const getChannel = (channelId: string) => {
   const cookieHeader = getCookieHeader()
   const url = getBackendUrl(`/channels/${channelId}`)
 
-  return useFetch<ChannelInfoDto[]>(url, {
+  return useFetch<ChannelInfoDto>(url, {
     method: 'GET',
     credentials: 'include',
     headers: { ...cookieHeader }

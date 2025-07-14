@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NeonBox from '~/components/NeonBox.vue'
+import Neon from '~/components/box/neon.vue'
 import { openLoginPage } from '~/api/AuthRequests'
 
 definePageMeta({
@@ -12,7 +12,7 @@ useHead({
 </script>
 
 <template>
-    <neon-box class="flex flex-col items-center">
+    <neon class="flex flex-col items-center">
       <h2 class="text-xl">
         Login이 필요합니다.
       </h2>
@@ -36,7 +36,7 @@ useHead({
         본 사이트는 개인적인 목적으로 만들어졌습니다.<br>
         개발자 개인이 지정한 이메일이 아니면 로그인 되지 않습니다.
       </div>
-    </neon-box>
+    </neon>
 </template>
 
 <style scoped>
