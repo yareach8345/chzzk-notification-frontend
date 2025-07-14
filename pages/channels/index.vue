@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useChannelStore } from '~/store/ChannelStore'
+import { calcStartAndEndIndexWithPage, getPagingInfoFromQuery } from '~/util/PagingUtil'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -11,6 +12,15 @@ useHead({
 
 const channelStore = useChannelStore()
 const { channels } = storeToRefs(channelStore)
+
+const pagingInfo = reactive(getPagingInfoFromQuery(10))
+
+const channelsInThisPage = computed(() => {
+  const indexes = calcStartAndEndIndexWithPage(pagingInfo)
+  return channels.value.slice(indexes.start, indexes.end)
+})
+
+console.log(channelsInThisPage.value)
 </script>
 
 <template>
@@ -22,7 +32,7 @@ const { channels } = storeToRefs(channelStore)
       <channel-card
           class="flex-none"
           :channel="channel"
-          v-for="channel in channels"
+          v-for="channel in channelsInThisPage"
       />
     </div>
   </section>
