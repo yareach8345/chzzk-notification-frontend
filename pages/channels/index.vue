@@ -2,7 +2,7 @@
 import { useChannelStore } from '~/store/ChannelStore'
 
 definePageMeta({
-  middleware: ['require-auth']
+  middleware: ['require-auth', 'require-channel-info']
 })
 
 useHead({
@@ -10,14 +10,22 @@ useHead({
 })
 
 const channelStore = useChannelStore()
-const channels = await channelStore.getChannels()
-console.log(channels)
+const { channels } = storeToRefs(channelStore)
 </script>
 
 <template>
   <h2 class="text-2xl">
-    채널 페이지
+    채널 목록
   </h2>
+  <section class="border-4 border-chzzk-border rounded-xl p-3">
+    <div class="grid grid-cols-2 auto-cols-fr gap-2">
+      <channel-card
+          class="flex-none"
+          :channel="channel"
+          v-for="channel in channels"
+      />
+    </div>
+  </section>
 </template>
 
 <style scoped>

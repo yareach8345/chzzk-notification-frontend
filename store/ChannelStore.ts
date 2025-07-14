@@ -1,16 +1,16 @@
-import type { ChannelInfoDto } from '~/dto/channel/ChannelInfoDto'
-import { getChannels as loadChannelsFromApi } from '~/api/ChannelRequest'
 import { processAsyncData } from '~/util/ApiUtil'
+import { getMinimalChannels } from '~/api/ChannelRequest'
+import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
 
 export const useChannelStore = defineStore('channel-store', () => {
-  const _channels = ref<ChannelInfoDto[]>([])
+  const _channels = ref<MinimalChannelInfoDto[]>([])
 
   const channelMap = computed(() => new Map(_channels.value.map(channel => ([channel.channelId, channel]))))
 
   const _isChannelsLoaded = ref(false)
 
   const loadChannels = async () => {
-    _channels.value = await processAsyncData(loadChannelsFromApi())
+    _channels.value = await processAsyncData(getMinimalChannels())
     _isChannelsLoaded.value = true
   }
 
