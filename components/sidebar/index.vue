@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="h-full p-2 border-r border-chzzk-border">
+  <div class="h-full p-2 border-r border-chzzk-border bg-chzzk-black">
     <sidebar-login-info-view/>
     <hr class="my-3"/>
     <sidebar-page-nav-item
