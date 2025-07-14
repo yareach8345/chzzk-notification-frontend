@@ -20,10 +20,9 @@ const cardBorderClass = computed(() => ({
 const imgBorderClass = computed(() => ({
   'border-chzzk-neon-green': channel.liveState.isOpen,
   'border-chzzk-stream-off': !channel.liveState.isOpen,
-  'border-opacity-50': !channel.liveState.isOpen
 }))
 
-const streamColor = computed(() => channel.liveState.isOpen ? 'text-red-400' : 'border-stream-off')
+const streamColor = computed(() => channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off')
 
 const currentUserMessage = computed(() =>
     channel.liveState.isOpen
