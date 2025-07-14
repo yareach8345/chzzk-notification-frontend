@@ -22,14 +22,14 @@ const onClick = () => {
 </script>
 
 <template>
-  <neon-button
-      class="flex gap-3 border-none rounded-none w-full"
+  <button-without-border
+      class="flex gap-3 w-full"
       @click="onClick"
       :disabled="disabled"
   >
     <slot name="icon"/>
     <slot/>
-  </neon-button>
+  </button-without-border>
 </template>
 
 <style scoped>

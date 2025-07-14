@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useChannelStore } from '~/store/ChannelStore'
 import { calcStartAndEndIndexWithPage, getPagingInfoFromQuery } from '~/util/PagingUtil'
+import type { PagingInfo } from '~/types/PagingInfo'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -20,20 +21,65 @@ const channelsInThisPage = computed(() => {
   return channels.value.slice(indexes.start, indexes.end)
 })
 
-console.log(channelsInThisPage.value)
+const numberOfPages = computed(() => Math.ceil(channels.value.length / pagingInfo.pageSize))
+
+const moveToPage = async (page: number) => {
+  const route = useRoute()
+
+  await navigateTo({
+    name: 'channels',
+    query: {
+      ...route.query,
+      page,
+    }
+  })
+
+  pagingInfo.page = page
+}
+
+const moveToNextPage = async () => {
+  if(pagingInfo.page === numberOfPages.value) {
+    return
+  }
+
+  await moveToPage(pagingInfo.page + 1)
+}
+
+const moveToPrePage = async () => {
+  if(pagingInfo.page <= 1) {
+    return
+  }
+
+  await moveToPage(pagingInfo.page - 1)
+}
 </script>
 
 <template>
-  <h2 class="text-2xl">
-    채널 목록
-  </h2>
-  <section class="border-4 border-chzzk-border rounded-xl p-3">
+  <section class="border-4 border-chzzk-border rounded-xl p-3 relative flex flex-col gap-4">
+    <h2 class="text-2xl text-center">
+      채널 목록
+    </h2>
     <div class="grid md:grid-cols-2 auto-cols-fr gap-2">
       <channel-card
           class="flex-none"
           :channel="channel"
           v-for="channel in channelsInThisPage"
       />
+    </div>
+    <div class="flex justify-center items-center auto-cols-fr text-lg">
+      <button-without-border
+          title="이전 페이지로"
+          @click="moveToPrePage"
+      >
+        &lt;
+      </button-without-border>
+      <span>{{pagingInfo.page}} / {{numberOfPages}}</span>
+      <button-without-border
+          title="다음 페이지로"
+          @click="moveToNextPage"
+      >
+        &gt;
+      </button-without-border>
     </div>
   </section>
 </template>

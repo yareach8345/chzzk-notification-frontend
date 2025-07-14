@@ -16,7 +16,7 @@ useHead({
       <h2 class="text-xl">
         Login이 필요합니다.
       </h2>
-      <neon-button
+      <button-neon
           class="m-4 flex items-center"
           @click="openLoginPage"
           title="구글 로그인 페이지 열기"
@@ -31,7 +31,7 @@ useHead({
         <div class="text-lg top-[4px]">
           구글로 로그인 하기
         </div>
-      </neon-button>
+      </button-neon>
       <div>
         본 사이트는 개인적인 목적으로 만들어졌습니다.<br>
         개발자 개인이 지정한 이메일이 아니면 로그인 되지 않습니다.

@@ -42,7 +42,7 @@ const currentUserMessage = computed(() =>
         :src="imgSrc"
         :alt="channelImgAlt"
     />
-    <div class="flex-1 max-w-40 lg:min-w-52 truncate">
+    <div class="flex-1 w-40 lg:min-w-52 truncate">
       <p class="text-xl">{{channel.detail.displayName}}</p>
       <p
           class="text-md font-light max-md:overflow-hidden"

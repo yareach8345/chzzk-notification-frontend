@@ -28,23 +28,23 @@ const logout = async () => {
           <div class="font-bold">{{authInfo?.displayName}}</div>
           <div class="font-thin">{{authInfo?.email}}</div>
         </div>
-        <neon-button
+        <button-neon
             class="border-none"
             @click="logout"
             title="로그아웃"
         >
           <svg-logout/>
-        </neon-button>
+        </button-neon>
       </template>
       <template v-else>
         <div>로그인이 필요합니다.</div>
-        <neon-button
+        <button-neon
             class="border-none"
             @click="openLoginPage"
             title="로그인"
         >
           <svg-login/>
-        </neon-button>
+        </button-neon>
       </template>
     </div>
   </div>

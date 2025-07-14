@@ -20,13 +20,13 @@ const openGithubBackendRepository = () => {
   <div class="bg-chzzk-black text-white min-h-svh flex flex-col p-2 sm:p-4">
     <header class="flex w-full sm:justify-center items-center">
       <div class="sm:absolute sm:left-0">
-        <neon-button
+        <button-neon
             class="flex border-none"
             @click="isSidebarToggle"
             :title="sidebarOpenButtonTitle"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-justify-icon lucide-align-justify"><path d="M3 12h18"/><path d="M3 18h18"/><path d="M3 6h18"/></svg>
-        </neon-button>
+        </button-neon>
       </div>
       <div class="flex justify-center items-center max-sm:flex-1">
         <img src="/image/chzzk_icon.png" alt="치지직 로고" class="h-14"/>
@@ -48,22 +48,22 @@ const openGithubBackendRepository = () => {
     <footer class="flex justify-center items-center flex-col">
       <div> made by - yareach </div>
       <div class="flex justify-center">
-        <neon-button
+        <button-neon
             class="flex m-4"
             @click="openGithubBackendRepository"
             title="깃헙 백엔드 레포지토리로 이동"
         >
           <svg-github/>
           <span>Backend Repository</span>
-        </neon-button>
-        <neon-button
+        </button-neon>
+        <button-neon
             class="flex m-4"
             @click="openGithubFrontendRepository"
             title="깃헙 프론트 레포지토리로 이동"
         >
           <svg-github/>
           <span>Frontend Repository</span>
-        </neon-button>
+        </button-neon>
       </div>
     </footer>
   </div>

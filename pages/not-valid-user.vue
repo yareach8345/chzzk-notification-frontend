@@ -28,7 +28,7 @@ const logout = async () => {
       본 사이트는 개인적인 목적으로 만들어졌습니다.<br>
       개발자 개인이 지정한 이메일이 아니면 로그인 되지 않습니다.
     </div>
-    <neon-button
+    <button-neon
         class="mt-4 flex"
         @click="logout"
     >
@@ -36,7 +36,7 @@ const logout = async () => {
       <div>
         로그아웃 하기
       </div>
-    </neon-button>
+    </button-neon>
   </neon-box>
 </template>
 
