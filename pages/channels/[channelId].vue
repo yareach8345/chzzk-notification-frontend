@@ -20,14 +20,15 @@ useHead({
 const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
 
 const backgroundColorStyle = getBackgroundColorStyle(channel)
+console.log(backgroundColorStyle)
 
 const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
 </script>
 
 <template>
   <section>
-    <div class="text-3xl">{{channel.detail.displayName}}</div>
     <box-gray>
+      <div class="text-3xl text-center font-blackHan">{{channel.detail.displayName}}</div>
       <section>
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-3">
@@ -80,12 +81,12 @@ const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
                 <th class="font-normal text-left">color</th>
                 <td class="px-2">:</td>
                 <td>
+                  <div
+                      class="inline-block mr-1 w-3 h-3 border border-white"
+                      :style="backgroundColorStyle"
+                  ></div>
                   <template v-if="!!channel.detail.color">{{channel.detail.color}}</template>
                   <template v-else>
-                    <div
-                        class="inline-block mr-1 w-3 h-3 border border-white"
-                        :style="backgroundColorStyle"
-                    ></div>
                     <span class="opacity-70">{{defaultChannelColor}}(기본값)</span>
                   </template>
                 </td>
