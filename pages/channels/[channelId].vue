@@ -20,6 +20,8 @@ useHead({
 const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
 
 const backgroundColorStyle = getBackgroundColorStyle(channel)
+
+const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
 </script>
 
 <template>
@@ -41,13 +43,14 @@ const backgroundColorStyle = getBackgroundColorStyle(channel)
           />
         </div>
         <div class="flex">
-          <button-without-border
+          <button-link
               class="flex items-center gap-2"
               @click="() => openChzzkChannelPage(channel.channelId)"
+              :title="chzzkButtonTitle"
           >
             <img src="/image/chzzk_icon.png" alt="치지직 아이콘" class="w-6"/>
             Chzzk 열기
-          </button-without-border>
+          </button-link>
         </div>
       </section>
       <hr class="mb-4"/>
