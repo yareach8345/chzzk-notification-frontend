@@ -1,11 +1,17 @@
 <script setup lang="ts">
-const sidebarOpen = ref(false);
+import { closeSidebarKey } from '~/constants/sidebar'
+
+const isSidebarOpen = ref(false)
 
 const isSidebarToggle = () => {
-  sidebarOpen.value = !sidebarOpen.value;
+  isSidebarOpen.value = !isSidebarOpen.value
 }
 
-const sidebarOpenButtonTitle = computed(() => `사이드바 ${sidebarOpen.value ? '닫기' : '열기'}`)
+provide(closeSidebarKey, () => {
+  isSidebarOpen.value = false
+})
+
+const sidebarOpenButtonTitle = computed(() => `사이드바 ${isSidebarOpen.value ? '닫기' : '열기'}`)
 
 const openGithubFrontendRepository = () => {
   window.open('https://github.com/yareach8345/chzzk-notification-frontend', '_blank')
@@ -39,8 +45,8 @@ const openGithubBackendRepository = () => {
       <sidebar
           class="absolute top-0 -left-4 transition-transform duration-300 ease-in-out"
           :class="{
-            '-translate-x-full': !sidebarOpen,
-            'translate-x-0': sidebarOpen
+            '-translate-x-full': !isSidebarOpen,
+            'translate-x-0': isSidebarOpen
           }"
       />
       <slot></slot>

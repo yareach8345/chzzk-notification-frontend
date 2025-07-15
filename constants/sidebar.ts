@@ -1,0 +1,1 @@
+export const closeSidebarKey: InjectionKey<() => void> = Symbol('closeSidebar');
