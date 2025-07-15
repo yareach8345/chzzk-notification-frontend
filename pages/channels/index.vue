@@ -15,12 +15,21 @@ const { channels } = storeToRefs(channelStore)
 
 const pagingInfo = reactive(getPagingInfoFromQuery(10))
 
-const channelsInThisPage = computed(() => {
-  const indexes = calcStartAndEndIndexWithPage(pagingInfo)
-  return channels.value.slice(indexes.start, indexes.end)
+const showOnlyLivingChannels = ref(false)
+
+const filteredChannels = computed(() => {
+  return showOnlyLivingChannels.value
+      ? channels.value.filter(channel => channel.liveState.isOpen)
+      : channels.value
 })
 
-const numberOfPages = computed(() => Math.ceil(channels.value.length / pagingInfo.pageSize))
+const channelsInThisPage = computed(() => {
+  const indexes = calcStartAndEndIndexWithPage(pagingInfo)
+
+  return filteredChannels.value.slice(indexes.start, indexes.end)
+})
+
+const numberOfPages = computed(() => Math.ceil(filteredChannels.value.length / pagingInfo.pageSize))
 
 const moveToPage = async (page: number) => {
   const route = useRoute()
@@ -63,6 +72,15 @@ const moveToChannelDetailPage = async (channelId: string) => {
       <h2 class="text-4xl text-center font-blackHan">
         채널 목록
       </h2>
+      <div>
+        <label>
+          방송중인 채널만 보기
+          <input
+              type="checkbox"
+              v-model="showOnlyLivingChannels"
+          />
+        </label>
+      </div>
       <div class="grid md:grid-cols-2 auto-cols-fr gap-2">
         <channel-card
             class="flex-none"
