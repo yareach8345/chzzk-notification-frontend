@@ -73,7 +73,7 @@ const navigateToChannelListPage = () => {
           <table>
             <tbody>
               <tr>
-                <th class="font-normal text-left">priority</th>
+                <th class="text-left">priority</th>
                 <td class="px-2">:</td>
                 <td>
                   <template v-if="!!channel.detail.priority">{{channel.detail.priority}}</template>
@@ -81,7 +81,7 @@ const navigateToChannelListPage = () => {
                 </td>
               </tr>
               <tr>
-                <th class="font-normal text-left">color</th>
+                <th class="text-left">color</th>
                 <td class="px-2">:</td>
                 <td>
                   <div
@@ -102,22 +102,32 @@ const navigateToChannelListPage = () => {
       <section>
         <h4 class="text-lg">라이브 정보</h4>
         <div
-            class="flex gap-3"
+            class="flex gap-3 my-1"
             :class="streamColor"
         >
           <svg-stream/>
           <p>Live {{channel.liveState.isOpen ? 'on!' : 'off...'}}</p>
         </div>
         <div v-if="channel.liveState.isOpen">
-          <p>
-            {{channel.liveState.liveTitle}}
-          </p>
-          <p>
-            {{channel.liveState.category}}
-          </p>
-          <p>
-            {{channel.liveState.concurrentUserCount}}
-          </p>
+          <table>
+            <tbody>
+              <tr>
+                <th class="text-left">Live Title</th>
+                <td class="px-2">:</td>
+                <td>{{channel.liveState.liveTitle}}</td>
+              </tr>
+              <tr>
+                <th class="text-left">Category</th>
+                <td class="px-2">:</td>
+                <td>{{channel.liveState.category}}</td>
+              </tr>
+              <tr>
+                <th class="text-left">Viewre</th>
+                <td class="px-2">:</td>
+                <td>{{channel.liveState.concurrentUserCount}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </box-gray>
