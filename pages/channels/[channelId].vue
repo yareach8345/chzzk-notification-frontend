@@ -20,9 +20,12 @@ useHead({
 const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
 
 const backgroundColorStyle = getBackgroundColorStyle(channel)
-console.log(backgroundColorStyle)
 
 const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
+
+const navigateToChannelListPage = () => {
+  navigateTo({ name: 'channels' })
+}
 </script>
 
 <template>
@@ -118,6 +121,15 @@ const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
         </div>
       </section>
     </box-gray>
+    <div class="w-full my-2 flex justify-start">
+      <button-neon
+          class="border-2"
+          title="채널목록으로"
+          @click="navigateToChannelListPage"
+      >
+        <svg-back/>
+      </button-neon>
+    </div>
   </section>
 </template>
 
