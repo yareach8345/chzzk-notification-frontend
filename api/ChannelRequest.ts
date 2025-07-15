@@ -23,3 +23,8 @@ export const getMinimalChannels = () => {
     headers: { ...cookieHeader }
   })
 }
+
+export const openChzzkChannelPage = (channelId: string) => {
+  const url = `https://chzzk.naver.com/${channelId}`
+  window.open(url)
+}

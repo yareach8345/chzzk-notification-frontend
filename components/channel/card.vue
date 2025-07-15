@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
-import { getChannelImageUrl } from '~/util/ApiUtil'
 
 interface Props {
   channel: MinimalChannelInfoDto
@@ -8,17 +7,8 @@ interface Props {
 
 const { channel } = defineProps<Props>()
 
-const imgSrc = computed(() => getChannelImageUrl(channel.channelId))
-
-const channelImgAlt = computed(() => `${channel.detail.displayName} 채널의 이미지`)
-
 const cardBorderClass = computed(() => ({
   'border-chzzk-stream-on': channel.liveState.isOpen,
-  'border-chzzk-stream-off': !channel.liveState.isOpen,
-}))
-
-const imgBorderClass = computed(() => ({
-  'border-chzzk-neon-green': channel.liveState.isOpen,
   'border-chzzk-stream-off': !channel.liveState.isOpen,
 }))
 
@@ -50,13 +40,7 @@ const currentUserMessage = computed(() =>
         {{channel.liveState.category}}
       </p>
     </div>
-    <div>
-      <p class="flex" :class="streamColor">
-        <svg-stream/>
-        <span>stream {{channel.liveState.isOpen ? "on!" : "off"}}</span>
-      </p>
-      <p class="font-light">{{currentUserMessage}}</p>
-    </div>
+    <channel-state class="flex-shrink-0" :channel="channel"/>
   </article>
 </template>
 
