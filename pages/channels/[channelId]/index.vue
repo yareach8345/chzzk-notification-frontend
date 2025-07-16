@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getChannel, openChzzkChannelPage } from '~/api/ChannelRequest'
+import { getChannel, openChzzkChannelLivePage, openChzzkChannelPage } from '~/api/ChannelRequest'
 import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle } from '~/util/ChannelUtil'
@@ -25,6 +25,13 @@ const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
 
 const navigateToChannelListPage = () => {
   navigateTo({ name: 'channels' })
+}
+
+const navigateToEditPage = () => {
+  navigateTo({
+    name: `channels-channelId-edit`,
+    params: { channelId }
+  })
 }
 </script>
 
@@ -102,11 +109,24 @@ const navigateToChannelListPage = () => {
       <section>
         <h4 class="text-lg">라이브 정보</h4>
         <div
-            class="flex gap-3 my-1"
-            :class="streamColor"
+            class="flex gap-3 my-1 items-center"
         >
-          <svg-stream/>
-          <p>Live {{channel.liveState.isOpen ? 'on!' : 'off...'}}</p>
+          <div
+              class="flex gap-3 my-1 items-center"
+              :class="streamColor"
+          >
+            <svg-stream/>
+            <p>Live {{channel.liveState.isOpen ? 'on!' : 'off...'}}</p>
+          </div>
+          <button-link
+              v-if="channel.liveState.isOpen"
+              class="flex items-center gap-2"
+              @click="() => openChzzkChannelLivePage(channel.channelId)"
+              :title="chzzkButtonTitle"
+          >
+            <img src="/image/chzzk_icon.png" alt="치지직 아이콘" class="w-6"/>
+            라이브 열기
+          </button-link>
         </div>
         <div v-if="channel.liveState.isOpen">
           <table>
@@ -131,14 +151,21 @@ const navigateToChannelListPage = () => {
         </div>
       </section>
     </box-gray>
-    <div class="w-full my-2 flex justify-start">
-      <button-neon
-          class="border-2"
+    <div class="w-full my-2 flex justify-start gap-2">
+      <button-without-border
+          class="bg-opacity-0 hover:text-chzzk-neon-green"
           title="채널목록으로"
           @click="navigateToChannelListPage"
       >
         <svg-back/>
-      </button-neon>
+      </button-without-border>
+      <button-without-border
+          class="bg-opacity-0 hover:text-chzzk-neon-green"
+          title="채널 정보 수정"
+          @click="navigateToEditPage"
+      >
+        <svg-pencil/>
+      </button-without-border>
     </div>
   </section>
 </template>
