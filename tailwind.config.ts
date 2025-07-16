@@ -4,6 +4,7 @@ export default {
       colors: {
         'chzzk-neon-green': '#00FFA3',
         'neon-red': '#FF005C',
+        'neon-blue': '#3FFFE5',
         'chzzk-border': '#707070',
         'chzzk-stream-off': '#505050',
         'chzzk-stream-on': '#e0e0e0'

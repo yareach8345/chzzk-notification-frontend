@@ -38,24 +38,38 @@ const navigateToEditPage = async () => {
   })
 }
 
-const onDeleteButtonClick = async () => {
-  // todo - confirm은 동기적이므로 별도의 모달 구현하기
-  const confirmResult = confirm('정말로 채널을 삭제하시겠습니까?')
-  if(!confirmResult) {
-    return
-  }
+const isDeleteConfirmModalOpen = ref(false)
 
+const isDeleteResultAlertOpen = ref(false)
 
+const onDeleteButtonClick = () => {
+  isDeleteConfirmModalOpen.value = true
+}
+
+const processDeletingChannel = async () => {
   await deleteChannel(channelId)
-  // todo - alert은 동기적이므로 별도의 모달 구현하기
-  alert('채널이 성공적으로 삭제 되었습니다.')
   await channelStore.loadChannels()
-  await navigateToChannelListPage()
+  isDeleteResultAlertOpen.value = true
 }
 </script>
 
 <template>
   <section>
+    <modal-confirm
+        :is-open="isDeleteConfirmModalOpen"
+        :on-confirm="processDeletingChannel"
+    >
+      <h3 class="text-xl">채널을 삭제 하시겠습니까?</h3>
+      <p>삭제한 이후에는 되돌리기가 불가능합니다.</p>
+    </modal-confirm>
+    <modal-alert
+        :is-open="isDeleteResultAlertOpen"
+        :on-button-click="navigateToChannelListPage"
+    >
+      <h3 class="text-xl">채널을 삭제 완료</h3>
+      <p>삭제가 완료되었습니다.</p>
+      <p>채널 목록으로 이동합니다.</p>
+    </modal-alert>
     <box-gray>
       <div class="text-3xl text-center font-blackHan">{{channel.detail.displayName}}</div>
       <section>

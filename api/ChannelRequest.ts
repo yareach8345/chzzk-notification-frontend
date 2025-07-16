@@ -28,7 +28,7 @@ export const deleteChannel = (channelId: string) => {
   const cookieHeader = getCookieHeader()
   const url = getBackendUrl(`/channels/${channelId}`)
 
-  return useFetch(url, {
+  return $fetch(url, {
     method: 'DELETE',
     credentials: 'include',
     headers: { ...cookieHeader }
