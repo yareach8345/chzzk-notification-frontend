@@ -95,6 +95,7 @@ const navigateToRegisterPage = () => {
             :channel="channel"
             @click="async () => await moveToChannelDetailPage(channel.channelId)"
             v-for="channel in channelsInThisPage"
+            :key="channel.channelId"
         />
       </div>
       <div class="flex justify-center items-center auto-cols-fr text-lg">
