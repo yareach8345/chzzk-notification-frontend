@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useChannelStore } from '~/store/ChannelStore'
 import { calcStartAndEndIndexWithPage, getPagingInfoFromQuery } from '~/util/PagingUtil'
+import { navigateToHome } from '~/util/RoutingUtil'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -62,7 +63,14 @@ const moveToPrePage = async () => {
 }
 
 const moveToChannelDetailPage = async (channelId: string) => {
-  await navigateTo(`channels/${channelId}`)
+  await navigateTo({
+    name: `channels-channelId`,
+    params: { channelId }
+  })
+}
+
+const navigateToRegisterPage = () => {
+  navigateTo({ name: 'channels-register' })
 }
 </script>
 
@@ -105,6 +113,22 @@ const moveToChannelDetailPage = async (channelId: string) => {
         </button-without-border>
       </div>
     </box-gray>
+    <div>
+      <button-without-border
+          class="hover:text-chzzk-neon-green"
+          title="홈 페이지로 돌아가기"
+          @click="navigateToHome"
+      >
+        <svg-back/>
+      </button-without-border>
+      <button-without-border
+          class="hover:text-chzzk-neon-green"
+          title="채널 등록하기"
+          @click="navigateToRegisterPage"
+      >
+        <svg-square-plus/>
+      </button-without-border>
+    </div>
   </section>
 </template>
 

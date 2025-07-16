@@ -153,14 +153,14 @@ const navigateToEditPage = () => {
     </box-gray>
     <div class="w-full my-2 flex justify-start gap-2">
       <button-without-border
-          class="bg-opacity-0 hover:text-chzzk-neon-green"
+          class="hover:text-chzzk-neon-green"
           title="채널목록으로"
           @click="navigateToChannelListPage"
       >
         <svg-back/>
       </button-without-border>
       <button-without-border
-          class="bg-opacity-0 hover:text-chzzk-neon-green"
+          class="hover:text-chzzk-neon-green"
           title="채널 정보 수정"
           @click="navigateToEditPage"
       >
