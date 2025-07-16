@@ -39,7 +39,11 @@ export const openChzzkChannelPage = (channelId: string) => {
   const url = `https://chzzk.naver.com/${channelId}`
   window.open(url)
 }
+
 export const openChzzkChannelLivePage = (channelId: string) => {
   const url = `https://chzzk.naver.com/live/${channelId}`
   window.open(url)
+}
+
+export const searchChannel = (keyword: string) => {
 }
