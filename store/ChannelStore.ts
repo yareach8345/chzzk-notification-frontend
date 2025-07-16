@@ -13,9 +13,7 @@ export const useChannelStore = defineStore('channel-store', () => {
     _isChannelsLoaded.value = true
   }
 
-  const findChannelById = (channelId: string) => {
-    return channelMap.value.get(channelId)
-  }
+  const findChannelById = (channelId: string) => computed(() => channelMap.value.get(channelId))
 
   return {
     channels: computed(() => _channels.value),

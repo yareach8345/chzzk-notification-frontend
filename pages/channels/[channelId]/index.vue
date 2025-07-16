@@ -15,17 +15,22 @@ const channelStore = useChannelStore()
 
 const channelId = Array.isArray(route.params.channelId) ? route.params.channelId[0] : route.params.channelId
 
-const channel = await processAsyncData(getChannel(channelId))
+const channelFromBackend = await processAsyncData(getChannel(channelId))
+
+const channel = computed(() => ({
+  ...channelFromBackend,
+  ...channelStore.findChannelById(channelId).value
+}))
 
 useHead({
-  title: `${channel.detail.displayName} 채널 상세정보`
+  title: `${channel.value.detail.displayName} 채널 상세정보`
 })
 
-const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
+const streamColor = channel.value.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
 
-const backgroundColorStyle = getBackgroundColorStyle(channel)
+const backgroundColorStyle = getBackgroundColorStyle(channel.value)
 
-const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
+const chzzkButtonTitle = `${channel.value.detail.displayName} 채널로 이동`
 
 const navigateToChannelListPage = async () => {
   navigateTo({ name: 'channels' })
