@@ -1,4 +1,3 @@
-import { processAsyncData } from '~/util/ApiUtil'
 import { getMinimalChannels } from '~/api/ChannelRequest'
 import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
 
@@ -10,7 +9,7 @@ export const useChannelStore = defineStore('channel-store', () => {
   const _isChannelsLoaded = ref(false)
 
   const loadChannels = async () => {
-    _channels.value = await processAsyncData(getMinimalChannels())
+    _channels.value = await getMinimalChannels()
     _isChannelsLoaded.value = true
   }
 

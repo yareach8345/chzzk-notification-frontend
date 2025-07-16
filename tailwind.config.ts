@@ -3,6 +3,7 @@ export default {
     extend: {
       colors: {
         'chzzk-neon-green': '#00FFA3',
+        'neon-red': '#FF005C',
         'chzzk-border': '#707070',
         'chzzk-stream-off': '#505050',
         'chzzk-stream-on': '#e0e0e0'

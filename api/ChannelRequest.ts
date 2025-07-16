@@ -17,8 +17,19 @@ export const getMinimalChannels = () => {
   const cookieHeader = getCookieHeader()
   const url = getBackendUrl('/channels/minimal')
 
-  return useFetch<MinimalChannelInfoDto[]>(url, {
+  return $fetch<MinimalChannelInfoDto[]>(url, {
     method: 'GET',
+    credentials: 'include',
+    headers: { ...cookieHeader }
+  })
+}
+
+export const deleteChannel = (channelId: string) => {
+  const cookieHeader = getCookieHeader()
+  const url = getBackendUrl(`/channels/${channelId}`)
+
+  return useFetch(url, {
+    method: 'DELETE',
     credentials: 'include',
     headers: { ...cookieHeader }
   })

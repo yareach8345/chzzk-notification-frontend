@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { getChannel, openChzzkChannelLivePage, openChzzkChannelPage } from '~/api/ChannelRequest'
+import { deleteChannel, getChannel, openChzzkChannelLivePage, openChzzkChannelPage } from '~/api/ChannelRequest'
 import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle } from '~/util/ChannelUtil'
+import { useChannelStore } from '~/store/ChannelStore'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
 })
 
 const route = useRoute()
+
+const channelStore = useChannelStore()
+
 const channelId = Array.isArray(route.params.channelId) ? route.params.channelId[0] : route.params.channelId
 
 const channel = await processAsyncData(getChannel(channelId))
@@ -23,15 +27,30 @@ const backgroundColorStyle = getBackgroundColorStyle(channel)
 
 const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
 
-const navigateToChannelListPage = () => {
+const navigateToChannelListPage = async () => {
   navigateTo({ name: 'channels' })
 }
 
-const navigateToEditPage = () => {
+const navigateToEditPage = async () => {
   navigateTo({
     name: `channels-channelId-edit`,
     params: { channelId }
   })
+}
+
+const onDeleteButtonClick = async () => {
+  // todo - confirm은 동기적이므로 별도의 모달 구현하기
+  const confirmResult = confirm('정말로 채널을 삭제하시겠습니까?')
+  if(!confirmResult) {
+    return
+  }
+
+
+  await deleteChannel(channelId)
+  // todo - alert은 동기적이므로 별도의 모달 구현하기
+  alert('채널이 성공적으로 삭제 되었습니다.')
+  await channelStore.loadChannels()
+  await navigateToChannelListPage()
 }
 </script>
 
@@ -165,6 +184,13 @@ const navigateToEditPage = () => {
           @click="navigateToEditPage"
       >
         <svg-pencil/>
+      </button-without-border>
+      <button-without-border
+          class="hover:text-neon-red"
+          title="채널 삭제"
+          @click="onDeleteButtonClick"
+      >
+        <svg-delete/>
       </button-without-border>
     </div>
   </section>
