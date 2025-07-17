@@ -56,14 +56,14 @@ const processDeletingChannel = async () => {
 <template>
   <section>
     <modal-confirm
-        :is-open="isDeleteConfirmModalOpen"
+        v-model:is-open="isDeleteConfirmModalOpen"
         :on-confirm="processDeletingChannel"
     >
       <h3 class="text-xl">채널을 삭제 하시겠습니까?</h3>
       <p>삭제한 이후에는 되돌리기가 불가능합니다.</p>
     </modal-confirm>
     <modal-alert
-        :is-open="isDeleteResultAlertOpen"
+        v-model:is-open="isDeleteResultAlertOpen"
         :on-button-click="navigateToChannelListPage"
     >
       <h3 class="text-xl">채널을 삭제 완료</h3>
