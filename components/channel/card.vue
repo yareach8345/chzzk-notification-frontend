@@ -1,11 +1,22 @@
 <script setup lang="ts">
-import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
+import type {
+  LiveCloseDto,
+  LiveOpenDto,
+  MinimalChannelDetail,
+} from '~/dto/channel/MinimalChannelInfoDto'
 
-interface Props {
-  channel: MinimalChannelInfoDto
+type ChannelDto = {
+  channelId: string
+  liveState: Pick<LiveOpenDto, 'isOpen' | 'category' | 'concurrentUserCount'> | Pick<LiveCloseDto, 'isOpen'>
+  detail: Pick<MinimalChannelDetail, 'displayName' | 'color'>
 }
 
-const { channel } = defineProps<Props>()
+interface Props {
+  channel: ChannelDto
+  channelImageUrl?: string
+}
+
+const { channel, channelImageUrl } = defineProps<Props>()
 
 const cardBorderClass = computed(() => ({
   'border-chzzk-stream-on': channel.liveState.isOpen,
@@ -21,6 +32,7 @@ const cardBorderClass = computed(() => ({
     <channel-profile
         class="w-16"
         :channel="channel"
+        :channelImageUrl="channelImageUrl"
     />
     <div class="flex-1 w-40 lg:min-w-52 truncate">
       <p class="text-xl">{{channel.detail.displayName}}</p>

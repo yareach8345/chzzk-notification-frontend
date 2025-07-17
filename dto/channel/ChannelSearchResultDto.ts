@@ -1,7 +1,11 @@
-export interface ChannelSearchResultDto {
+export type ChannelSearchResultDto = {
   channelId: string
-  displayName: string
-  channelDescription: string
-  imageUrl?: string
-  isLiveOpen: boolean
+  detail: {
+    displayName: string,
+    channelDescription: string,
+    channelImageUrl: string
+  }
+  liveState: {
+    isOpen: boolean,
+  }
 }

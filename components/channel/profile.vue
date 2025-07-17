@@ -8,16 +8,17 @@ interface Props {
     detail: {
       displayName: string,
       color?: string
+      channelImageUrl?: string
     },
     liveState: {
       isOpen: boolean
     }
-  }
+  },
 }
 
 const { channel } = defineProps<Props>()
 
-const imgSrc = computed(() => getChannelImageUrl(channel.channelId))
+const imgSrc = computed(() => channel.detail.channelImageUrl ?? getChannelImageUrl(channel.channelId))
 
 const borderColorStyle = getBorderColorStyle(channel)
 

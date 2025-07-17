@@ -3,7 +3,6 @@ import { getBackendUrl } from '~/util/ApiUtil'
 
 export default defineEventHandler(async (event) => {
   const path = event.path
-  console.log(path)
   if(!path.startsWith('/api')) {
     return
   }

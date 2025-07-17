@@ -1,19 +1,23 @@
 <script setup lang="ts">
 interface Props {
   disabled?: boolean
+  submit?: boolean
 }
 
-const { disabled = false } = defineProps<Props>()
+const { disabled = false, submit = false } = defineProps<Props>()
 
 const classes = computed(() => ({
   'hover:border-white': !disabled,
   'hover:bg-selected': !disabled,
   'opacity-50': disabled
 }))
+
+const buttonType = computed(() => submit ? 'submit' : 'button')
 </script>
 
 <template>
   <button
+      :type="buttonType"
       :class="classes"
       class="border-4 border-chzzk-border rounded-lg transition-colors duration-500 ease-in-out p-2"
   >

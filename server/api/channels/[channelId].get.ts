@@ -1,4 +1,5 @@
 import { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'
+import { chzzkChannelToSearchResult } from '~/util/ChzzkUtil'
 
 export default defineEventHandler(async (event): Promise<ChannelSearchResultDto> => {
   const channelId = event.context.params?.channelId
@@ -20,11 +21,5 @@ export default defineEventHandler(async (event): Promise<ChannelSearchResultDto>
     })
   }
 
-  return {
-    channelId: channel.channelId,
-    displayName: channel.channelName,
-    channelDescription: channel.channelDescription,
-    imageUrl: channel.channelImageUrl,
-    isLiveOpen: channel.openLive
-  }
+  return chzzkChannelToSearchResult(channel)
 })
