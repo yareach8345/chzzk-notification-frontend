@@ -1,58 +1,66 @@
 <script setup lang="ts">
-interface Props {
-  onConfirm?: () => void | Promise<void>
-  onCancel?: () => void | Promise<void>
-}
+import type { Modal } from '~/types/Modal'
 
-const { onConfirm, onCancel } = defineProps<Props>()
+const modalRef = ref<Modal<void> | undefined>(undefined)
 
-const isOpen = defineModel<boolean>('isOpen', { required: true })
+let closer: ((result: boolean) => void) | undefined = undefined
 
-const closeModal = () => {
-  isOpen.value = false
+const closeModal = (result: boolean) => {
+  if(closer !== undefined) {
+    closer(result)
+    closer = undefined
+  }
+  modalRef.value?.close()
 }
 
 const processingCancel = async () => {
-  if(!!onCancel) {
-    onCancel()
-  }
-
-  closeModal()
+  closeModal(false)
 }
 
 const processingConfirm = async () => {
-  if(!!onConfirm) {
-    await onConfirm()
+  closeModal(true)
+}
+
+const openConfirm = () => {
+  if(modalRef.value === undefined) {
+    throw createError({
+      message: '알 수 없는 에러 발생 Modal base를 불러올 수 없습니다'
+    })
   }
 
-  closeModal()
+  modalRef.value.open()
+
+  return new Promise<boolean>((res) => {
+    closer = (result: boolean) => {
+      res(result)
+    }
+  })
 }
+
+defineExpose<Modal<boolean>>({
+  close: processingCancel,
+  open: openConfirm,
+})
 </script>
 
 <template>
-  <div
-      v-if="isOpen"
-      class="absolute left-0 top-0 w-full h-full z-30 bg-chzzk-black bg-opacity-50 flex items-center justify-center"
-      @click.prevent="processingCancel"
-  >
-    <div class="border-4 rounded-lg p-4 bg-chzzk-black flex flex-col gap-2">
-      <slot/>
-      <div class="flex gap-4 justify-center">
-        <button
-            class="border-4 border-white hover:border-neon-blue hover:text-neon-blue rounded-lg transition-colors duration-500 ease-in-out p-2"
-            title="확인"
-            @click="processingConfirm"
-        >
-          확인
-        </button>
-        <button
-            class="border-4 border-white hover:border-neon-red hover:text-neon-red rounded-lg transition-colors duration-500 ease-in-out p-2"
-            title="취소"
-            @click="processingCancel"
-        >
-          취소
-        </button>
-      </div>
+  <modal-base ref="modalRef">
+    <slot/>
+    <div class="flex gap-4 justify-center">
+      <button
+          class="border-4 border-white hover:border-neon-blue hover:text-neon-blue rounded-lg transition-colors duration-500 ease-in-out p-2"
+          title="확인"
+          @click="processingConfirm"
+      >
+        확인
+      </button>
+      <button
+          class="border-4 border-white hover:border-neon-red hover:text-neon-red rounded-lg transition-colors duration-500 ease-in-out p-2"
+          title="취소"
+          @click="processingCancel"
+      >
+        취소
+      </button>
     </div>
-  </div>
+  </modal-base>
 </template>

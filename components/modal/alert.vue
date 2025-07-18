@@ -1,37 +1,55 @@
 <script setup lang="ts">
-interface Props {
-  onButtonClick?: () => void | Promise<void>;
-}
+import type { Modal } from '~/types/Modal'
 
-const { onButtonClick } = defineProps<Props>();
+const modalRef: Ref<Modal<void> | undefined> = ref(undefined)
 
-const isOpen = defineModel<boolean>('isOpen', { required: true })
+let closer: (() => void) | undefined = undefined
 
-const closeModal = async () => {
-  if(onButtonClick) {
-    await onButtonClick()
+const closeAlert = async () => {
+  if(modalRef.value === undefined) {
+    return
   }
 
-  isOpen.value = false
+  modalRef.value.close()
+
+  if(closer !== undefined) {
+    closer()
+    closer = undefined
+  }
 }
+
+const openAlert = () => {
+  if(modalRef.value === undefined) {
+    throw createError({
+      message: '알 수 없는 에러 발생 Modal base를 불러올 수 없습니다'
+    })
+  }
+
+  modalRef.value.open()
+
+  return new Promise<void>((res) => {
+    closer = () => {
+      res()
+    }
+  })
+}
+
+defineExpose<Modal<void>>({
+  open: openAlert,
+  close: closeAlert
+})
 </script>
 
 <template>
-  <div
-      v-if="isOpen"
-      class="absolute left-0 top-0 w-full h-full z-30 bg-chzzk-black bg-opacity-50 flex items-center justify-center"
-      @click.prevent="closeModal"
-  >
-    <div class="border-4 rounded-lg p-4 bg-chzzk-black flex flex-col gap-2">
-      <slot/>
-      <div class="flex gap-4 justify-center">
-        <button-neon
-            title="확인"
-            @click="closeModal"
-        >
-          확인
-        </button-neon>
-      </div>
+  <modal-base ref="modalRef">
+    <slot/>
+    <div class="flex gap-4 justify-center">
+      <button-neon
+          title="확인"
+          @click="closeAlert"
+      >
+        확인
+      </button-neon>
     </div>
-  </div>
+  </modal-base>
 </template>

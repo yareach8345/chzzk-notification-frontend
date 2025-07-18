@@ -4,6 +4,7 @@ import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle } from '~/util/ChannelUtil'
 import { useChannelStore } from '~/store/ChannelStore'
+import type { Modal } from '~/types/Modal'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -38,34 +39,34 @@ const navigateToEditPage = async () => {
   })
 }
 
-const isDeleteConfirmModalOpen = ref(false)
+// 모달
+const confirmRef: Ref<Modal<boolean> | null> = ref(null)
 
-const isDeleteResultAlertOpen = ref(false)
+const alertRef: Ref<Modal<void> | null> = ref(null)
 
-const onDeleteButtonClick = () => {
-  isDeleteConfirmModalOpen.value = true
-}
+const processDeleting = async () => {
+  const confirmResult = await confirmRef.value?.open()
 
-const processDeletingChannel = async () => {
+  if(confirmResult !== true) {
+    return
+  }
+
   await deleteChannel(channelId)
   await channelStore.loadChannels()
-  isDeleteResultAlertOpen.value = true
+
+  await alertRef.value?.open()
+
+  await navigateToChannelListPage()
 }
 </script>
 
 <template>
   <section>
-    <modal-confirm
-        v-model:is-open="isDeleteConfirmModalOpen"
-        :on-confirm="processDeletingChannel"
-    >
+    <modal-confirm ref="confirmRef">
       <h3 class="text-xl">채널을 삭제 하시겠습니까?</h3>
       <p>삭제한 이후에는 되돌리기가 불가능합니다.</p>
     </modal-confirm>
-    <modal-alert
-        v-model:is-open="isDeleteResultAlertOpen"
-        :on-button-click="navigateToChannelListPage"
-    >
+    <modal-alert ref="alertRef">
       <h3 class="text-xl">채널을 삭제 완료</h3>
       <p>삭제가 완료되었습니다.</p>
       <p>채널 목록으로 이동합니다.</p>
@@ -202,7 +203,7 @@ const processDeletingChannel = async () => {
       <button-without-border
           class="hover:text-neon-red"
           title="채널 삭제"
-          @click="onDeleteButtonClick"
+          @click="processDeleting"
       >
         <svg-delete/>
       </button-without-border>
