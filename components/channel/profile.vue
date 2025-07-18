@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getChannelImageUrl } from '~/util/ApiUtil'
 import { getBorderColorStyle } from '~/util/ChannelUtil'
+import { defaultChannelImage, liveOffColor } from '~/constants/ChannelInfo'
 
 interface Props {
   channel: {
@@ -8,20 +9,26 @@ interface Props {
     detail: {
       displayName: string,
       color?: string
+      channelImageUrl?: string
     },
     liveState: {
       isOpen: boolean
     }
-  }
+  } | null,
 }
 
 const { channel } = defineProps<Props>()
 
-const imgSrc = computed(() => getChannelImageUrl(channel.channelId))
+const imgSrc = computed(() => {
+  if(channel == null) {
+    return defaultChannelImage
+  }
+  return channel.detail.channelImageUrl ?? getChannelImageUrl(channel.channelId)
+})
 
-const borderColorStyle = getBorderColorStyle(channel)
+const borderColorStyle = { borderColor: channel !== null ? getBorderColorStyle(channel) : liveOffColor }
 
-const channelImgAlt = computed(() => `${channel.detail.displayName} 채널의 이미지`)
+const channelImgAlt = computed(() => `${channel?.detail.displayName ?? ""} 채널 이미지`.trim())
 </script>
 
 <template>

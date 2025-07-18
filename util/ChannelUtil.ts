@@ -6,9 +6,7 @@ export const getBackgroundColorStyle = (channel: { detail: Pick<ChannelDetailDto
 })
 
 export const getBorderColorStyle = (channel: { detail: Pick<ChannelDetailDto, 'color'>, liveState: Pick<LiveStateDto, 'isOpen'> }) => {
-  const borderColor = channel.liveState.isOpen
+  return channel.liveState.isOpen
     ? channel.detail.color ?? defaultChannelColor
     : liveOffColor
-
-  return { borderColor }
 }
