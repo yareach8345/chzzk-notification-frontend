@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { closeSidebarKey } from '~/constants/sidebar'
+import type { Spinner } from '~/types/components/Spinner'
+import { spinnerController } from '~/composables/spinner-controller'
 
 const isSidebarOpen = ref(false)
 
@@ -20,10 +22,23 @@ const openGithubFrontendRepository = () => {
 const openGithubBackendRepository = () => {
   window.open('https://github.com/yareach8345/chzzk-notification-backend', '_blank')
 }
+
+//spinner 설정
+const spinnerRef: Ref<Spinner | null>  = ref(null)
+
+onMounted(() => {
+  if(spinnerRef.value === null) {
+    console.error('spinnerRef의 값이 null 입니다. 스피너를 등록 할 수 없습니다.')
+    return
+  }
+
+  spinnerController.register(spinnerRef.value)
+})
 </script>
 
 <template>
-  <div class="bg-chzzk-black text-white min-h-svh flex flex-col p-2 sm:p-4">
+  <div class="relative bg-chzzk-black text-white min-h-svh flex flex-col p-2 sm:p-4">
+    <spinner ref="spinnerRef"/>
     <header class="flex w-full sm:justify-center items-center">
       <div class="sm:absolute sm:left-0">
         <button-neon

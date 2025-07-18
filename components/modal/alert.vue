@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Modal } from '~/types/Modal'
+import type { Modal } from '~/types/components/Modal'
 
 const modalRef: Ref<Modal<void> | undefined> = ref(undefined)
 

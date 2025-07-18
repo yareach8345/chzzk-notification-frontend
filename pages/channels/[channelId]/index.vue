@@ -4,7 +4,7 @@ import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle } from '~/util/ChannelUtil'
 import { useChannelStore } from '~/store/ChannelStore'
-import type { Modal } from '~/types/Modal'
+import type { Modal } from '~/types/components/Modal'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -51,10 +51,12 @@ const processDeleting = async () => {
     return
   }
 
+  spinnerController.open('채널 삭제 작업중입니다')
   await deleteChannel(channelId)
   await channelStore.loadChannels()
 
   await alertRef.value?.open()
+  spinnerController.close()
 
   await navigateToChannelListPage()
 }
