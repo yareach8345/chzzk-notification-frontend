@@ -8,6 +8,8 @@ definePageMeta({
 import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'
 import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
+import { spinnerController } from '~/composables/spinner-controller'
+import type { Modal } from '~/types/components/Modal'
 
 const channelStore = useChannelStore()
 
@@ -45,7 +47,48 @@ const onChannelSearchButtonClick = async () => {
   isChannelSearchModalOpen.value = true
 }
 
+const alertRef = ref<Modal<void> | null>(null)
+
+// input 태그 컨트롤
+const priorityInputHelpMessage: Ref<string | null> = ref(null)
+
+const errorStyleClass = computed(() => ({
+  'text-neon-red': priorityInputHelpMessage.value !== null,
+}))
+
+const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !== null ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4')
+
+const priorityInputValid = () => {
+  const priority = channelPriority.value ? parseInt(channelPriority.value) : undefined
+
+  if(priority === undefined || isNaN(priority)) {
+    console.error(`우선순위 입력이 잘못 되었습니다. 우선순위로는 숫자만 입력되어야 합니다. ${channelPriority.value}`)
+    priorityInputHelpMessage.value = '우선순위로는 숫자만 입력되어야 합니다.'
+    return
+  }
+
+  if(priority < 0 || priority > 255) {
+    console.error(`우선순위 입력이 잘못 되었습니다. 입력 가능한 범위는 0에서 255까지 입니다. ${channelPriority.value}`)
+    priorityInputHelpMessage.value = '우선순위로 입력 가능한 범위는 0에서 255까지 입니다.'
+    return
+  }
+
+  priorityInputHelpMessage.value = null
+
+  return priority
+}
+
 const onAddButtonClick = async () => {
+  spinnerController.open('채널 등록중')
+  const isSucceed = await processRegistering()
+  spinnerController.close()
+
+  if(isSucceed) {
+    navigateTo({ name: 'channels' })
+  }
+}
+
+const processRegistering = async () => {
   if(selectedChannel.value === null) {
     console.error('채널이 선택되지 않았습니다.')
     throw createError({
@@ -53,13 +96,10 @@ const onAddButtonClick = async () => {
     })
   }
 
-  const priority = channelPriority.value ? parseInt(channelPriority.value) : undefined
-
-  if(priority !== undefined && isNaN(priority)) {
-    console.error(`우선순위 입력이 잘못 되었습니다. ${channelPriority.value}`)
-    throw createError({
-      message: `우선순위 입력이 잘못 되었습니다. ${channelPriority.value}`
-    })
+  const priority = priorityInputValid()
+  console.log(priority)
+  if(priority === undefined || isNaN(priority)) {
+    return false
   }
 
   await registerChannel({
@@ -69,9 +109,14 @@ const onAddButtonClick = async () => {
     priority: priority
   })
 
-  alert('채널 등록이 완료 되었습니다.')
+  await channelStore.loadChannels()
 
-  navigateTo({ name: 'channels' })
+  if(alertRef.value !== null) {
+    console.warn('alertRef의 레퍼런스가 null 입니다. alert 모달을 열 수 없습니다.')
+  }
+  await alertRef.value?.open()
+
+  return true
 }
 </script>
 
@@ -81,6 +126,11 @@ const onAddButtonClick = async () => {
       :on-channel-selected="onChannelSearchSuccess"
   />
   <section class="min-w-[70%]">
+    <modal-alert ref="alertRef">
+      <h3 class="text-xl">채널을 등록 완료</h3>
+      <p>채널 등록이 완료되었습니다.</p>
+      <p>채널 목록으로 이동합니다.</p>
+    </modal-alert>
     <box-gray class="p-3 relative flex flex-col gap-4 items-center">
       <h2 class="text-4xl text-center font-blackHan">
         채널 등록
@@ -148,13 +198,15 @@ const onAddButtonClick = async () => {
               class="w-24"
           >
           <p>{{channelColor}}</p>
-          <p class="text-right font-bold">우선순위</p>
-          <input-number
-              v-model="channelPriority"
-              :min="0"
-              :max="255"
-              class="w-24 invalid:text-neon-red"
-          ></input-number>
+          <p class="text-right font-bold" :class="errorStyleClass">우선순위</p>
+          <div>
+            <input-number
+                v-model="channelPriority"
+                :min="0"
+                :max="255"
+                class="w-24"
+            ></input-number>
+          </div>
           <p v-if="isChannelPriorityDefault" class="text-chzzk-stream-off">(기본값)</p>
           <p v-else>{{channelPriority}}</p>
           <button-neon
@@ -165,6 +217,13 @@ const onAddButtonClick = async () => {
           </button-neon>
         </div>
       </form>
+      <p
+          v-show="priorityInputHelpMessage !== undefined"
+          class="text-neon-red transition-all duration-300 ease-in-out overflow-hidden"
+          :class="errorMessageStyleClass"
+      >
+        {{priorityInputHelpMessage}}
+      </p>
     </box-gray>
   </section>
 </template>
