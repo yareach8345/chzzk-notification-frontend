@@ -49,7 +49,6 @@ const onChannelSearchButtonClick = async () => {
   isChannelSearchModalOpen.value = true
 }
 
-
 // input 태그 컨트롤
 const priorityInputHelpMessage: Ref<string | null> = ref(null)
 
@@ -60,10 +59,14 @@ const errorStyleClass = computed(() => ({
 const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !== null ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4')
 
 const priorityInputValid = () => {
+  if(channelPriority.value === undefined || channelPriority.value === '') {
+    return
+  }
+
   const priority = channelPriority.value ? parseInt(channelPriority.value) : undefined
 
   if(priority === undefined || isNaN(priority)) {
-    console.error(`우선순위 입력이 잘못 되었습니다. 우선순위로는 숫자만 입력되어야 합니다. ${channelPriority.value}`)
+    console.error(`우선순위 입력이 잘못 되었습니다. 우선순위는 숫자로만 입력되어야 합니다. ${channelPriority.value}`)
     priorityInputHelpMessage.value = '우선순위로는 숫자만 입력되어야 합니다.'
     return
   }
@@ -98,8 +101,7 @@ const processRegistering = async () => {
   }
 
   const priority = priorityInputValid()
-  console.log(priority)
-  if(priority === undefined || isNaN(priority)) {
+  if(priority !== undefined && isNaN(priority)) {
     return false
   }
 
