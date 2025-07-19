@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { closeSidebarKey } from '~/constants/sidebar'
 import type { Spinner } from '~/types/components/Spinner'
-import { spinnerController } from '~/composables/spinner-controller'
+import type { Modal } from '~/types/components/Modal'
 
 const isSidebarOpen = ref(false)
 
@@ -23,22 +23,39 @@ const openGithubBackendRepository = () => {
   window.open('https://github.com/yareach8345/chzzk-notification-backend', '_blank')
 }
 
-//spinner 설정
+//spinner, modal 설정
 const spinnerRef: Ref<Spinner | null>  = ref(null)
+
+const alertRef: Ref<Modal<void> | null> = ref(null)
+
+const confirmRef: Ref<Modal<boolean> | null> = ref(null)
 
 onMounted(() => {
   if(spinnerRef.value === null) {
-    console.error('spinnerRef의 값이 null 입니다. 스피너를 등록 할 수 없습니다.')
-    return
+    throw createError({ message: 'spinnerRef의 값이 null 입니다. 스피너를 등록 할 수 없습니다.' })
   }
 
   spinnerController.register(spinnerRef.value)
+
+  if(alertRef.value === null) {
+    throw createError({ message: 'alertRef의 값이 null 입니다. 스피너를 등록 할 수 없습니다.' })
+  }
+
+  alertController.register(alertRef.value)
+
+  if(confirmRef.value === null) {
+    throw createError({ message: 'confirmRef의 값이 null 입니다. 스피너를 등록 할 수 없습니다.' })
+  }
+
+  confirmController.register(confirmRef.value)
 })
 </script>
 
 <template>
   <div class="relative bg-chzzk-black text-white min-h-svh flex flex-col p-2 sm:p-4">
     <spinner ref="spinnerRef"/>
+    <modal-alert ref="alertRef"/>
+    <modal-confirm ref="confirmRef"/>
     <header class="flex w-full sm:justify-center items-center">
       <div class="sm:absolute sm:left-0">
         <button-neon

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Modal } from '~/types/components/Modal'
+import type { ModalMessage } from '~/types/ModalMessage'
 
 const modalRef: Ref<Modal<void> | undefined> = ref(undefined)
 
@@ -18,14 +19,14 @@ const closeAlert = async () => {
   }
 }
 
-const openAlert = () => {
+const openAlert = (message: ModalMessage) => {
   if(modalRef.value === undefined) {
     throw createError({
       message: '알 수 없는 에러 발생 Modal base를 불러올 수 없습니다'
     })
   }
 
-  modalRef.value.open()
+  modalRef.value.open(message)
 
   return new Promise<void>((res) => {
     closer = () => {
@@ -42,7 +43,6 @@ defineExpose<Modal<void>>({
 
 <template>
   <modal-base ref="modalRef">
-    <slot/>
     <div class="flex gap-4 justify-center">
       <button-neon
           title="확인"

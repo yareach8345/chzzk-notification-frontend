@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Modal } from '~/types/components/Modal'
+import type { ModalMessage } from '~/types/ModalMessage'
 
 const modalRef = ref<Modal<void> | undefined>(undefined)
 
@@ -21,14 +22,14 @@ const processingConfirm = async () => {
   closeModal(true)
 }
 
-const openConfirm = () => {
+const openConfirm = (message: ModalMessage) => {
   if(modalRef.value === undefined) {
     throw createError({
       message: '알 수 없는 에러 발생 Modal base를 불러올 수 없습니다'
     })
   }
 
-  modalRef.value.open()
+  modalRef.value.open(message)
 
   return new Promise<boolean>((res) => {
     closer = (result: boolean) => {
@@ -45,7 +46,6 @@ defineExpose<Modal<boolean>>({
 
 <template>
   <modal-base ref="modalRef">
-    <slot/>
     <div class="flex gap-4 justify-center">
       <button
           class="border-4 border-white hover:border-neon-blue hover:text-neon-blue rounded-lg transition-colors duration-500 ease-in-out p-2"

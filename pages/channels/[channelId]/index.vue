@@ -4,7 +4,6 @@ import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle } from '~/util/ChannelUtil'
 import { useChannelStore } from '~/store/ChannelStore'
-import type { Modal } from '~/types/components/Modal'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -16,22 +15,17 @@ const channelStore = useChannelStore()
 
 const channelId = Array.isArray(route.params.channelId) ? route.params.channelId[0] : route.params.channelId
 
-const channelFromBackend = await processAsyncData(getChannel(channelId))
-
-const channel = computed(() => ({
-  ...channelFromBackend,
-  ...channelStore.findChannelById(channelId).value
-}))
+const channel = await processAsyncData(getChannel(channelId))
 
 useHead({
-  title: `${channel.value.detail.displayName} 채널 상세정보`
+  title: `${channel.detail.displayName} 채널 상세정보`
 })
 
-const streamColor = channel.value.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
+const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
 
-const backgroundColorStyle = getBackgroundColorStyle(channel.value)
+const backgroundColorStyle = getBackgroundColorStyle(channel)
 
-const chzzkButtonTitle = `${channel.value.detail.displayName} 채널로 이동`
+const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
 
 const navigateToChannelListPage = async () => {
   navigateTo({ name: 'channels' })
@@ -45,12 +39,11 @@ const navigateToEditPage = async () => {
 }
 
 // 모달
-const confirmRef: Ref<Modal<boolean> | null> = ref(null)
-
-const alertRef: Ref<Modal<void> | null> = ref(null)
-
 const processDeleting = async () => {
-  const confirmResult = await confirmRef.value?.open()
+  const confirmResult = await confirmController.open({
+    title: "채널을 삭제 하시겠습니까?",
+    content: "삭제한 이후에는 되돌리기가 불가능합니다."
+  })
 
   if(confirmResult !== true) {
     return
@@ -60,8 +53,15 @@ const processDeleting = async () => {
   await deleteChannel(channelId)
   await channelStore.loadChannels()
 
-  await alertRef.value?.open()
+  const alertPromise = alertController.open({
+    title: '채널을 삭제 완료',
+    content: [
+        '삭제가 완료되었습니다.',
+        '채널 목록으로 이동합니다.'
+    ]
+  })
   spinnerController.close()
+  await alertPromise
 
   await navigateToChannelListPage()
 }
@@ -69,15 +69,6 @@ const processDeleting = async () => {
 
 <template>
   <section>
-    <modal-confirm ref="confirmRef">
-      <h3 class="text-xl">채널을 삭제 하시겠습니까?</h3>
-      <p>삭제한 이후에는 되돌리기가 불가능합니다.</p>
-    </modal-confirm>
-    <modal-alert ref="alertRef">
-      <h3 class="text-xl">채널을 삭제 완료</h3>
-      <p>삭제가 완료되었습니다.</p>
-      <p>채널 목록으로 이동합니다.</p>
-    </modal-alert>
     <box-gray>
       <div class="text-3xl text-center font-blackHan">{{channel.detail.displayName}}</div>
       <section>

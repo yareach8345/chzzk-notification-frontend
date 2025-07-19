@@ -8,8 +8,6 @@ definePageMeta({
 import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'
 import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
-import { spinnerController } from '~/composables/spinner-controller'
-import type { Modal } from '~/types/components/Modal'
 
 const channelStore = useChannelStore()
 
@@ -34,9 +32,13 @@ const searchName = computed(() => {
 
 const isChannelSearchModalOpen = ref(false)
 
-const onChannelSearchSuccess = (result: ChannelSearchResultDto) => {
+const onChannelSearchSuccess = async (result: ChannelSearchResultDto) => {
   if(channelStore.channels.filter(c => c.channelId === result.channelId).length !== 0) {
-    alert("채널이 이미 등록되어 잇어요")
+    await alertController.open({
+      title: '이미 등록된 채널입니다.',
+      content: '아직 등록되지 않은 채널만 등록할 수 있습니다.'
+
+    })
     return
   }
 
@@ -47,7 +49,6 @@ const onChannelSearchButtonClick = async () => {
   isChannelSearchModalOpen.value = true
 }
 
-const alertRef = ref<Modal<void> | null>(null)
 
 // input 태그 컨트롤
 const priorityInputHelpMessage: Ref<string | null> = ref(null)
@@ -111,11 +112,13 @@ const processRegistering = async () => {
 
   await channelStore.loadChannels()
 
-  if(alertRef.value !== null) {
-    console.warn('alertRef의 레퍼런스가 null 입니다. alert 모달을 열 수 없습니다.')
-  }
-  await alertRef.value?.open()
-
+  await alertController.open({
+    title: '채널이 등록 완료!',
+    content: [
+        '채널 등록이 완료되었습니다.',
+        '채널 목록으로 이동합니다.'
+    ]
+  })
   return true
 }
 </script>
@@ -126,11 +129,6 @@ const processRegistering = async () => {
       :on-channel-selected="onChannelSearchSuccess"
   />
   <section class="min-w-[70%]">
-    <modal-alert ref="alertRef">
-      <h3 class="text-xl">채널을 등록 완료</h3>
-      <p>채널 등록이 완료되었습니다.</p>
-      <p>채널 목록으로 이동합니다.</p>
-    </modal-alert>
     <box-gray class="p-3 relative flex flex-col gap-4 items-center">
       <h2 class="text-4xl text-center font-blackHan">
         채널 등록
