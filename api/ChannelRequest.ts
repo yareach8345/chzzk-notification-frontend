@@ -2,6 +2,7 @@ import { getBackendUrl, getCookieHeader } from '@/util/ApiUtil'
 import type { ChannelInfoDto } from '~/dto/channel/ChannelInfoDto'
 import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
 import type { RegisterChannelDto } from '~/dto/channel/RegisterChannelDto'
+import type { EditChannelDto } from '~/dto/channel/UpdateChannelDto'
 
 export const getChannel = (channelId: string) => {
   const cookieHeader = getCookieHeader()
@@ -43,6 +44,18 @@ export const registerChannel = (registerChannelDto: RegisterChannelDto) => {
   return $fetch(url, {
     method: 'POST',
     body: registerChannelDto,
+    credentials: 'include',
+    headers: { ...cookieHeader }
+  })
+}
+
+export const updateChannel = (channelId: string, editChannelDto: EditChannelDto) => {
+  const cookieHeader = getCookieHeader()
+  const url = getBackendUrl(`/channels/${channelId}`)
+
+  return $fetch(url, {
+    method: 'PATCH',
+    body: editChannelDto,
     credentials: 'include',
     headers: { ...cookieHeader }
   })

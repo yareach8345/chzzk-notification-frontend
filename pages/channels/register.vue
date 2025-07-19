@@ -123,7 +123,7 @@ const processRegistering = async () => {
   await channelStore.loadChannels()
 
   await alertController.open({
-    title: '채널이 등록 완료!',
+    title: '채널 등록 완료!',
     content: [
         '채널 등록이 완료되었습니다.',
         '채널 목록으로 이동합니다.'

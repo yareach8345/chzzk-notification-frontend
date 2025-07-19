@@ -13,7 +13,7 @@ interface Props {
     liveState: {
       isOpen: boolean
     }
-  } | null,
+  } | undefined,
 }
 
 const { channel } = defineProps<Props>()
@@ -25,7 +25,7 @@ const imgSrc = computed(() => {
   return getChannelImageUrl(channel.channelId)
 })
 
-const borderColorStyle = { borderColor: channel !== null ? getBorderColorStyle(channel) : liveOffColor }
+const borderColorStyle = { borderColor: channel !== undefined ? getBorderColorStyle(channel) : liveOffColor }
 
 const channelImgAlt = computed(() => `${channel?.detail.displayName ?? ""} 채널 이미지`.trim())
 </script>
