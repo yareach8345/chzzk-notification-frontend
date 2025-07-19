@@ -8,6 +8,7 @@ definePageMeta({
 import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'
 import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
+import { platforms } from '~/constants/platforms'
 
 const channelStore = useChannelStore()
 
@@ -50,6 +51,13 @@ const onChannelSearchButtonClick = async () => {
 }
 
 // input 태그 컨트롤
+const selectedPlatform = ref(platforms[0])
+
+const onPlatformSelectChange = () => {
+  console.log(selectedPlatform.value)
+  selectedChannel.value = null
+}
+
 const priorityInputHelpMessage: Ref<string | null> = ref(null)
 
 const errorStyleClass = computed(() => ({
@@ -135,11 +143,19 @@ const processRegistering = async () => {
       <h2 class="text-4xl text-center font-blackHan">
         채널 등록
       </h2>
+<!--      <div class="relative">-->
+<!--        <div class="absolute top-0 left-0 w-full h-full bg-opacity-50 bg-black z-20 text-center">-->
+<!--          준비중인 기능입니다. 현재는 치지직만 선택 가능합니다.-->
+<!--        </div>-->
+<!--        <p>플랫폼</p>-->
+<!--        <input-platform-selector-->
+<!--            v-model="selectedPlatform"-->
+<!--            @onChange="onPlatformSelectChange"-->
+<!--        />-->
+<!--      </div>-->
       <div>
         <div>
-          <p>
-            채널 ID
-          </p>
+          <p>채널 ID</p>
           <div class="flex items-stretch gap-2">
             <input-text
                 class="border-chzzk-border text-chzzk-border truncate"

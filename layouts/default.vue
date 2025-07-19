@@ -67,7 +67,7 @@ onMounted(() => {
         </button-neon>
       </div>
       <div class="flex justify-center items-center max-sm:flex-1">
-        <img src="/image/chzzk_icon.png" alt="치지직 로고" class="h-14"/>
+        <img src="/images/icons/platform/chzzk.png" alt="치지직 로고" class="h-14"/>
         <h1 class="font-blackHan leading-none relative top-[2px] text-center text-4xl text-chzzk-neon-green">
           Chzzk Notification
         </h1>

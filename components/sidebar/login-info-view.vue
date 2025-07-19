@@ -6,7 +6,7 @@ import { navigateToHome } from '~/util/RoutingUtil'
 const authInfoStore = useAuthInfoStore()
 const { authInfo, isAuthenticated } = storeToRefs(authInfoStore)
 
-const userIcon = computed(() => authInfo.value?.picture ?? '/image/default-user-icon.jpg')
+const userIcon = computed(() => authInfo.value?.picture ?? '/images/default-user.jpg')
 
 const logout = async () => {
   await authInfoStore.logout()

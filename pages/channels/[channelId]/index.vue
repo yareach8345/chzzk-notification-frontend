@@ -91,7 +91,7 @@ const processDeleting = async () => {
               @click="() => openChzzkChannelPage(channel.channelId)"
               :title="chzzkButtonTitle"
           >
-            <img src="/image/chzzk_icon.png" alt="치지직 아이콘" class="w-6"/>
+            <img src="/images/icons/platform/chzzk.png" alt="치지직 아이콘" class="w-6"/>
             Chzzk 열기
           </button-link>
         </div>
@@ -156,7 +156,7 @@ const processDeleting = async () => {
               @click="() => openChzzkChannelLivePage(channel.channelId)"
               :title="chzzkButtonTitle"
           >
-            <img src="/image/chzzk_icon.png" alt="치지직 아이콘" class="w-6"/>
+            <img src="/images/icons/platform/chzzk.png" alt="치지직 아이콘" class="w-6"/>
             라이브 열기
           </button-link>
         </div>
