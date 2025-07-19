@@ -9,7 +9,6 @@ interface Props {
     detail: {
       displayName: string,
       color?: string
-      channelImageUrl?: string
     },
     liveState: {
       isOpen: boolean
@@ -23,7 +22,7 @@ const imgSrc = computed(() => {
   if(channel == null) {
     return defaultChannelImage
   }
-  return channel.detail.channelImageUrl ?? getChannelImageUrl(channel.channelId)
+  return getChannelImageUrl(channel.channelId)
 })
 
 const borderColorStyle = { borderColor: channel !== null ? getBorderColorStyle(channel) : liveOffColor }
