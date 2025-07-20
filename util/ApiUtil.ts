@@ -1,5 +1,6 @@
 import type { AsyncData } from '#app'
 import { FetchError } from 'ofetch'
+import type { ChannelId } from '~/types/ChannelId'
 
 export const getBackendUrl = (path: string) => {
   const config = useRuntimeConfig()
@@ -11,8 +12,8 @@ export const getBackendUrl = (path: string) => {
   return `${config.public.BACKEND_BASE_URL}${path}`
 }
 
-export const getChannelImageUrl = (channelId: string) => {
-  return getBackendUrl(`/image/size/500/${channelId}.png`)
+export const getChannelImageUrl = (channelId: ChannelId) => {
+  return getBackendUrl(`/image/${channelId.platform}/size/500/${channelId.id}.png`)
 }
 
 export const getCookieHeader = () => import.meta.server ? useRequestHeaders(['cookie']) : {}

@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { getChannelIdFromRoute } from '~/util/ChannelUtil'
+
 definePageMeta({
   middleware: ['require-auth']
 })
 
-import { registerChannel, updateChannel } from '~/api/ChannelRequest'
+import { updateChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
-
-const route = useRoute()
 
 const channelStore = useChannelStore()
 
-const channelId = Array.isArray(route.params.channelId) ? route.params.channelId[0] : route.params.channelId
+const route = useRoute()
+
+const channelId = getChannelIdFromRoute(route)
 const channel = channelStore.findChannelById(channelId)
 
 if(channel.value === undefined) {

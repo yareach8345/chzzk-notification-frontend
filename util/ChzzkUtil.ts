@@ -3,7 +3,10 @@ import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDt
 import { defaultChannelImage } from '~/constants/ChannelInfo'
 
 export const chzzkChannelToSearchResult = (channel: Channel): ChannelSearchResultDto => ({
-  channelId: channel.channelId,
+  channelId: {
+    platform: 'chzzk',
+    id: channel.channelId
+  },
   detail: {
     displayName: channel.channelName,
     channelDescription: channel.channelDescription,

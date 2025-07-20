@@ -2,6 +2,8 @@
 import { useChannelStore } from '~/store/ChannelStore'
 import { calcStartAndEndIndexWithPage, getPagingInfoFromQuery } from '~/util/PagingUtil'
 import { navigateToHome } from '~/util/RoutingUtil'
+import type { ChannelId } from '~/types/ChannelId'
+import { channelIdToString } from '~/util/ChannelUtil'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -62,10 +64,13 @@ const moveToPrePage = async () => {
   await moveToPage(pagingInfo.page - 1)
 }
 
-const moveToChannelDetailPage = async (channelId: string) => {
+const moveToChannelDetailPage = async (channelId: ChannelId) => {
   await navigateTo({
-    name: `channels-channelId`,
-    params: { channelId }
+    name: `channels-platform-channelId`,
+    params: {
+      platform: channelId.platform,
+      channelId: channelId.id
+    }
   })
 }
 
@@ -95,7 +100,7 @@ const navigateToRegisterPage = () => {
             :channel="channel"
             @click="async () => await moveToChannelDetailPage(channel.channelId)"
             v-for="channel in channelsInThisPage"
-            :key="channel.channelId"
+            :key="channelIdToString(channel.channelId)"
         />
       </div>
       <div class="flex justify-center items-center auto-cols-fr text-lg">

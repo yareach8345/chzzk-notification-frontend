@@ -1,5 +1,7 @@
+import type { ChannelId } from '~/types/ChannelId'
+
 export type ChannelSearchResultDto = {
-  channelId: string
+  channelId: ChannelId,
   detail: {
     displayName: string,
     channelDescription: string,

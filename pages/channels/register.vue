@@ -9,6 +9,7 @@ import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDt
 import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
 import { platforms } from '~/constants/platforms'
+import { isEqualChannelId } from '~/util/ChannelUtil'
 
 const channelStore = useChannelStore()
 
@@ -28,13 +29,13 @@ const searchName = computed(() => {
   if(selectedChannel.value === null) {
     return ''
   }
-  return `${selectedChannel.value.detail.displayName}(${selectedChannel.value.channelId})`
+  return `${selectedChannel.value.detail.displayName}(${selectedChannel.value.channelId.platform})`
 })
 
 const isChannelSearchModalOpen = ref(false)
 
 const onChannelSearchSuccess = async (result: ChannelSearchResultDto) => {
-  if(channelStore.channels.filter(c => c.channelId === result.channelId).length !== 0) {
+  if(channelStore.channels.filter(c => isEqualChannelId(c.channelId, result.channelId)).length !== 0) {
     await alertController.open({
       title: '이미 등록된 채널입니다.',
       content: '아직 등록되지 않은 채널만 등록할 수 있습니다.'
@@ -114,9 +115,11 @@ const processRegistering = async () => {
   }
 
   await registerChannel({
-    channelId: selectedChannel.value.channelId,
+    channelId: {
+      platform: selectedPlatform.value,
+      id: selectedChannel.value.channelId.id
+    },
     color: channelColor.value,
-    platform: 'chzzk',
     priority: priority
   })
 
@@ -143,16 +146,16 @@ const processRegistering = async () => {
       <h2 class="text-4xl text-center font-blackHan">
         채널 등록
       </h2>
-<!--      <div class="relative">-->
-<!--        <div class="absolute top-0 left-0 w-full h-full bg-opacity-50 bg-black z-20 text-center">-->
-<!--          준비중인 기능입니다. 현재는 치지직만 선택 가능합니다.-->
-<!--        </div>-->
-<!--        <p>플랫폼</p>-->
-<!--        <input-platform-selector-->
-<!--            v-model="selectedPlatform"-->
-<!--            @onChange="onPlatformSelectChange"-->
-<!--        />-->
-<!--      </div>-->
+      <div class="relative">
+        <div class="absolute top-0 left-0 w-full h-full bg-opacity-50 bg-black z-20 text-center">
+          준비중인 기능입니다. 현재는 치지직만 선택 가능합니다.
+        </div>
+        <p>플랫폼</p>
+        <input-platform-selector
+            v-model="selectedPlatform"
+            @onChange="onPlatformSelectChange"
+        />
+      </div>
       <div>
         <div>
           <p>채널 ID</p>
@@ -177,7 +180,7 @@ const processRegistering = async () => {
       <div class="flex gap-2">
         <channel-profile
             class="w-20 h-20 object-cover"
-            :channel="selectedChannel"
+            :channel="selectedChannel ?? undefined"
         />
         <div class="flex flex-col justify-center">
           <template v-if="selectedChannel !== null">

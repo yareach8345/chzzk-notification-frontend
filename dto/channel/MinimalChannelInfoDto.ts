@@ -1,3 +1,5 @@
+import type { ChannelId } from '~/types/ChannelId'
+
 export interface LiveOpenDto {
   isOpen: true
   liveTitle: string
@@ -19,7 +21,7 @@ export interface MinimalChannelDetail {
 }
 
 export interface MinimalChannelInfoDto {
-  channelId: string
+  channelId: ChannelId
   detail: MinimalChannelDetail
   liveState: MinimalLiveStateDto
 }

@@ -3,10 +3,11 @@ import type { ChannelInfoDto } from '~/dto/channel/ChannelInfoDto'
 import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
 import type { RegisterChannelDto } from '~/dto/channel/RegisterChannelDto'
 import type { EditChannelDto } from '~/dto/channel/UpdateChannelDto'
+import type { ChannelId } from '~/types/ChannelId'
 
-export const getChannel = (channelId: string) => {
+export const getChannel = (channelId: ChannelId) => {
   const cookieHeader = getCookieHeader()
-  const url = getBackendUrl(`/channels/${channelId}`)
+  const url = getBackendUrl(`/channels/${channelId.platform}/${channelId.id}`)
 
   return useFetch<ChannelInfoDto>(url, {
     method: 'GET',
@@ -26,9 +27,10 @@ export const getMinimalChannels = () => {
   })
 }
 
-export const deleteChannel = (channelId: string) => {
+export const deleteChannel = (channelId: ChannelId) => {
+  console.log(channelId)
   const cookieHeader = getCookieHeader()
-  const url = getBackendUrl(`/channels/${channelId}`)
+  const url = getBackendUrl(`/channels/${channelId.platform}/${channelId.id}`)
 
   return $fetch(url, {
     method: 'DELETE',
@@ -49,9 +51,9 @@ export const registerChannel = (registerChannelDto: RegisterChannelDto) => {
   })
 }
 
-export const updateChannel = (channelId: string, editChannelDto: EditChannelDto) => {
+export const updateChannel = (channelId: ChannelId, editChannelDto: EditChannelDto) => {
   const cookieHeader = getCookieHeader()
-  const url = getBackendUrl(`/channels/${channelId}`)
+  const url = getBackendUrl(`/channels/${channelId.platform}/${channelId.id}`)
 
   return $fetch(url, {
     method: 'PATCH',
@@ -61,12 +63,12 @@ export const updateChannel = (channelId: string, editChannelDto: EditChannelDto)
   })
 }
 
-export const openChzzkChannelPage = (channelId: string) => {
-  const url = `https://chzzk.naver.com/${channelId}`
+export const openChzzkChannelPage = (chzzkChannelId: string) => {
+  const url = `https://chzzk.naver.com/${chzzkChannelId}`
   window.open(url)
 }
 
-export const openChzzkChannelLivePage = (channelId: string) => {
-  const url = `https://chzzk.naver.com/live/${channelId}`
+export const openChzzkChannelLivePage = (chzzkChannelId: string) => {
+  const url = `https://chzzk.naver.com/live/${chzzkChannelId}`
   window.open(url)
 }

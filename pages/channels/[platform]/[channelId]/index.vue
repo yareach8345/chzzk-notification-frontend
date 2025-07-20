@@ -2,18 +2,18 @@
 import { deleteChannel, getChannel, openChzzkChannelLivePage, openChzzkChannelPage } from '~/api/ChannelRequest'
 import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
-import { getBackgroundColorStyle } from '~/util/ChannelUtil'
+import { getBackgroundColorStyle, getChannelIdFromRoute } from '~/util/ChannelUtil'
 import { useChannelStore } from '~/store/ChannelStore'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
 })
 
-const route = useRoute()
-
 const channelStore = useChannelStore()
 
-const channelId = Array.isArray(route.params.channelId) ? route.params.channelId[0] : route.params.channelId
+const route = useRoute()
+
+const channelId = getChannelIdFromRoute(route)
 
 const channel = await processAsyncData(getChannel(channelId))
 
@@ -33,8 +33,11 @@ const navigateToChannelListPage = async () => {
 
 const navigateToEditPage = async () => {
   navigateTo({
-    name: `channels-channelId-edit`,
-    params: { channelId }
+    name: `channels-platform-channelId-edit`,
+    params: {
+      platform: channelId.platform,
+      channelId: channelId.id
+    }
   })
 }
 

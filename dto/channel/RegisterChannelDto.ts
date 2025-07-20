@@ -1,6 +1,7 @@
+import type { ChannelId } from '~/types/ChannelId'
+
 export interface RegisterChannelDto {
-  channelId: string,
-  platform: string,
+  channelId: ChannelId,
   priority?: number,
   color?: string
 }

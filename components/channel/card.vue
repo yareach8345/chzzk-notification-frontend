@@ -4,9 +4,10 @@ import type {
   LiveOpenDto,
   MinimalChannelDetail,
 } from '~/dto/channel/MinimalChannelInfoDto'
+import type { ChannelId } from '~/types/ChannelId'
 
 type ChannelDto = {
-  channelId: string
+  channelId: ChannelId
   liveState: Pick<LiveOpenDto, 'isOpen' | 'category' | 'concurrentUserCount'> | Pick<LiveCloseDto, 'isOpen'>
   detail: Pick<MinimalChannelDetail, 'displayName' | 'color'>
 }
