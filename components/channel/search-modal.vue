@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'
-import { searchChannel } from '~/api/Chzzk'
+import { searchChzzkChannel } from '~/api/Chzzk'
+import { channelIdToString } from '~/util/ChannelUtil'
+import { searchYoutubeChannel } from '~/api/Youtube'
 
 interface Props {
-  onChannelSelected: (channelId: ChannelSearchResultDto) => void | Promise<void>;
+  onChannelSelected: (channelId: ChannelSearchResultDto) => void | Promise<void>
+  platform: string
 }
 
-const { onChannelSelected } = defineProps<Props>();
+const { onChannelSelected, platform } = defineProps<Props>();
 
 const isOpen = defineModel<boolean>('isOpen', { required: true })
 
@@ -26,12 +29,22 @@ const onSearchButtonClick = async () => {
 }
 
 const processChannelSearch = async () => {
-  searchResults.value = await searchChannel(name.value)
+  switch(platform) {
+    case 'chzzk':
+      searchResults.value = await searchChzzkChannel(name.value)
+      break
+    case 'youtube':
+      searchResults.value = await searchYoutubeChannel(name.value)
+      break
+    default:
+      console.error(`Unknown platform: ${platform}`)
+  }
 }
 
 const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
+  console.log(channel)
   onChannelSelected(channel)
-  closeModal()
+  await closeModal()
 }
 </script>
 
@@ -63,12 +76,13 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
           <article
               class="p-2 grid grid-cols-[1fr_auto] gap-2"
               v-for="channel in searchResults"
-              :key="channel.channelId"
+              :key="channelIdToString(channel.channelId)"
           >
             <div class="flex gap-2">
               <channel-profile
                   class="w-20 h-20 object-cover"
                   :channel="channel"
+                  :channel-image-url="channel.detail.channelImageUrl"
               />
               <div class="flex flex-col justify-center">
                 <h4 class="text-xl">{{channel.detail.displayName}}</h4>

@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@googleapis/youtube": "^27.0.1",
     "@nuxtjs-alt/axios": "^1.1.0",
     "@pinia/nuxt": "^0.11.1",
     "chzzk": "^1.10.4",

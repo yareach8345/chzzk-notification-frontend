@@ -1,9 +1,9 @@
 import { getCookieHeader } from '~/util/ApiUtil'
 
-export const searchChzzkChannel = (keyword: string) => {
+export const searchYoutubeChannel = (keyword: string) => {
   const cookieHeader = getCookieHeader()
 
-  return $fetch('/api/chzzk/channels/search', {
+  return $fetch('/api/youtube/channels/search', {
     credentials: 'include',
     headers: { ...cookieHeader },
     query: { name: keyword }

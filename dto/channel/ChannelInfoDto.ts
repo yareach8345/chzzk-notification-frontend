@@ -7,6 +7,7 @@ export interface LiveOpenDto {
   concurrentUserCount: number,
   tags: string[],
   category: string,
+  liveId?: string
 }
 
 export interface LiveCloseDto {

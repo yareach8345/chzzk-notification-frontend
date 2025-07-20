@@ -29,7 +29,7 @@ const searchName = computed(() => {
   if(selectedChannel.value === null) {
     return ''
   }
-  return `${selectedChannel.value.detail.displayName}(${selectedChannel.value.channelId.platform})`
+  return `${selectedChannel.value.detail.displayName}(${selectedChannel.value.channelId.id})`
 })
 
 const isChannelSearchModalOpen = ref(false)
@@ -140,6 +140,7 @@ const processRegistering = async () => {
   <channel-search-modal
       v-model:is-open="isChannelSearchModalOpen"
       :on-channel-selected="onChannelSearchSuccess"
+      :platform="selectedPlatform"
   />
   <section class="min-w-[70%]">
     <box-gray class="p-3 relative flex flex-col gap-4 items-center">
@@ -147,9 +148,6 @@ const processRegistering = async () => {
         채널 등록
       </h2>
       <div class="relative">
-        <div class="absolute top-0 left-0 w-full h-full bg-opacity-50 bg-black z-20 text-center">
-          준비중인 기능입니다. 현재는 치지직만 선택 가능합니다.
-        </div>
         <p>플랫폼</p>
         <input-platform-selector
             v-model="selectedPlatform"
@@ -181,12 +179,13 @@ const processRegistering = async () => {
         <channel-profile
             class="w-20 h-20 object-cover"
             :channel="selectedChannel ?? undefined"
+            :channel-image-url="selectedChannel?.detail.channelImageUrl"
         />
         <div class="flex flex-col justify-center">
           <template v-if="selectedChannel !== null">
             <h4 class="text-xl">{{selectedChannel.detail.displayName}}</h4>
             <p class="text-ellipsis">{{selectedChannel.detail.channelDescription}}</p>
-            <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{selectedChannel.channelId}}</p>
+            <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{selectedChannel.channelId.id}}</p>
           </template>
           <template v-else>
             <h4 class="text-xl">먼저 채널을 검색 해주세요.</h4>

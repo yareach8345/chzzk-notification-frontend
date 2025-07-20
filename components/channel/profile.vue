@@ -11,15 +11,19 @@ interface Props {
     detail: Pick<ChannelDetailDto, 'displayName' | 'color'>
     liveState: Pick<LiveStateDto, 'isOpen'>
   } | undefined,
+  channelImageUrl?: string
 }
 
-const { channel } = defineProps<Props>()
+const { channel, channelImageUrl } = defineProps<Props>()
 
 const imgSrc = computed(() => {
-  if(channel == null) {
-    return defaultChannelImage
+  if(!!channelImageUrl) {
+    return channelImageUrl
   }
-  return getChannelImageUrl(channel.channelId)
+  if(!!channel) {
+    return getChannelImageUrl(channel.channelId)
+  }
+  return defaultChannelImage
 })
 
 const borderColorStyle = { borderColor: channel !== undefined ? getBorderColorStyle(channel) : liveOffColor }

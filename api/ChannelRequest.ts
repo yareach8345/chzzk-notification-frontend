@@ -63,12 +63,34 @@ export const updateChannel = (channelId: ChannelId, editChannelDto: EditChannelD
   })
 }
 
-export const openChzzkChannelPage = (chzzkChannelId: string) => {
-  const url = `https://chzzk.naver.com/${chzzkChannelId}`
-  window.open(url)
+export const openChannelPage = (channelId: ChannelId) => {
+  switch (channelId.platform) {
+    case 'chzzk':
+      window.open(`https://chzzk.naver.com/${channelId.id}`)
+      break
+    case 'youtube':
+      window.open(`https://youtube.com/channel/${channelId.id}`)
+      break
+    default:
+      throw createError({
+        status: 400,
+        message: '지원하지 않는 플렛폼입니다.'
+      })
+  }
 }
 
-export const openChzzkChannelLivePage = (chzzkChannelId: string) => {
-  const url = `https://chzzk.naver.com/live/${chzzkChannelId}`
-  window.open(url)
+export const openChannelLivePage = (channelId: ChannelId, liveId?: string) => {
+  switch (channelId.platform) {
+    case 'chzzk':
+      window.open(`https://chzzk.naver.com/live/${channelId.id}`)
+      break
+    case 'youtube':
+      window.open(`https://www.youtube.com/watch?v=${liveId}`)
+      break
+    default:
+      throw createError({
+        status: 400,
+        message: '지원하지 않는 플렛폼입니다.'
+      })
+  }
 }

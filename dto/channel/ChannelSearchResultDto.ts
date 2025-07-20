@@ -5,9 +5,10 @@ export type ChannelSearchResultDto = {
   detail: {
     displayName: string,
     channelDescription: string,
-    channelImageUrl: string
+    channelImageUrl?: string
   }
   liveState: {
     isOpen: boolean,
+    liveId?: string
   }
 }

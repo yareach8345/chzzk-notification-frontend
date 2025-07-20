@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { deleteChannel, getChannel, openChzzkChannelLivePage, openChzzkChannelPage } from '~/api/ChannelRequest'
+import { deleteChannel, getChannel, openChannelLivePage, openChannelPage } from '~/api/ChannelRequest'
 import { processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle, getChannelIdFromRoute } from '~/util/ChannelUtil'
 import { useChannelStore } from '~/store/ChannelStore'
+import type { ChannelInfoDto } from '~/dto/channel/ChannelInfoDto'
 
 definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
@@ -20,6 +21,13 @@ const channel = await processAsyncData(getChannel(channelId))
 useHead({
   title: `${channel.detail.displayName} 채널 상세정보`
 })
+
+const onClickOpenChannelLiveOpen = (channel: ChannelInfoDto) => {
+  if(channel.liveState.isOpen) {
+    return openChannelLivePage(channelId, channel.liveState.liveId)
+  }
+  openChannelLivePage(channelId)
+}
 
 const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
 
@@ -80,7 +88,7 @@ const processDeleting = async () => {
             <channel-profile :channel="channel" class="w-16"/>
             <div class="flex-0 truncate">
               <h2 class="text-2xl">{{channel.detail.displayName}}</h2>
-              <p class="text-sm opacity-80">{{channel.channelId}}</p>
+              <p class="text-sm opacity-80">{{channel.channelId.id}}</p>
             </div>
           </div>
           <channel-state
@@ -91,7 +99,7 @@ const processDeleting = async () => {
         <div class="flex">
           <button-link
               class="flex items-center gap-2"
-              @click="() => openChzzkChannelPage(channel.channelId)"
+              @click="() => openChannelPage(channel.channelId)"
               :title="chzzkButtonTitle"
           >
             <img src="/images/icons/platform/chzzk.png" alt="치지직 아이콘" class="w-6"/>
@@ -154,9 +162,9 @@ const processDeleting = async () => {
             <p>Live {{channel.liveState.isOpen ? 'on!' : 'off...'}}</p>
           </div>
           <button-link
-              v-if="channel.liveState.isOpen"
+              v-if="channel.liveState.state === 'open'"
               class="flex items-center gap-2"
-              @click="() => openChzzkChannelLivePage(channel.channelId)"
+              @click="() => onClickOpenChannelLiveOpen(channel)"
               :title="chzzkButtonTitle"
           >
             <img src="/images/icons/platform/chzzk.png" alt="치지직 아이콘" class="w-6"/>

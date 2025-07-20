@@ -13,7 +13,7 @@ export const getBackendUrl = (path: string) => {
 }
 
 export const getChannelImageUrl = (channelId: ChannelId) => {
-  return getBackendUrl(`/image/${channelId.platform}/size/500/${channelId.id}.png`)
+  return getBackendUrl(`/image/size/500/${channelId.platform}-${channelId.id}.png`)
 }
 
 export const getCookieHeader = () => import.meta.server ? useRequestHeaders(['cookie']) : {}
