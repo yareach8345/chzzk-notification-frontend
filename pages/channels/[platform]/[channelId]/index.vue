@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { deleteChannel, getChannel, openChannelLivePage, openChannelPage } from '~/api/ChannelRequest'
-import { processAsyncData } from '~/util/ApiUtil'
+import { getPlatformImageInfo, processAsyncData } from '~/util/ApiUtil'
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 import { getBackgroundColorStyle, getChannelIdFromRoute } from '~/util/ChannelUtil'
 import { useChannelStore } from '~/store/ChannelStore'
@@ -76,6 +76,8 @@ const processDeleting = async () => {
 
   await navigateToChannelListPage()
 }
+
+const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.platform))
 </script>
 
 <template>
@@ -87,7 +89,10 @@ const processDeleting = async () => {
           <div class="flex items-center gap-3">
             <channel-profile :channel="channel" class="w-16"/>
             <div class="flex-0 truncate">
-              <h2 class="text-2xl">{{channel.detail.displayName}}</h2>
+              <div class="flex items-center gap-1">
+                <img class="w-7" :src="platformImgInfo?.src" :alt="platformImgInfo?.alt" />
+                <h4 class="text-2xl">{{channel.detail.displayName}}</h4>
+              </div>
               <p class="text-sm opacity-80">{{channel.channelId.id}}</p>
             </div>
           </div>

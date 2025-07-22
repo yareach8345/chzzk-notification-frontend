@@ -28,3 +28,20 @@ export const processAsyncData = async <ResponseType>(asyncData: AsyncData<Respon
 
   return data.value
 }
+
+export const getPlatformImageInfo = (platform: string) => {
+  switch (platform) {
+    case 'chzzk':
+      return {
+        alt: 'chzzk 아이콘',
+        src: '/images/icons/platform/chzzk.png'
+      }
+    case 'youtube':
+      return {
+        alt: 'youtube 아이콘',
+        src: '/images/icons/platform/youtube.png'
+      }
+    default:
+      return undefined
+  }
+}

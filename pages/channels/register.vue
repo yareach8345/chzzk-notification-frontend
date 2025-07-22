@@ -10,6 +10,7 @@ import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
 import { platforms } from '~/constants/platforms'
 import { isEqualChannelId } from '~/util/ChannelUtil'
+import { getPlatformImageInfo } from '~/util/ApiUtil'
 
 const channelStore = useChannelStore()
 
@@ -134,6 +135,8 @@ const processRegistering = async () => {
   })
   return true
 }
+
+const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.value))
 </script>
 
 <template>
@@ -183,7 +186,10 @@ const processRegistering = async () => {
         />
         <div class="flex flex-col justify-center">
           <template v-if="selectedChannel !== null">
-            <h4 class="text-xl">{{selectedChannel.detail.displayName}}</h4>
+            <div class="flex items-center gap-1">
+              <img class="w-7" :src="platformImgInfo?.src" :alt="platformImgInfo?.alt" />
+              <h4 class="text-xl">{{selectedChannel.detail.displayName}}</h4>
+            </div>
             <p class="text-ellipsis">{{selectedChannel.detail.channelDescription}}</p>
             <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{selectedChannel.channelId.id}}</p>
           </template>

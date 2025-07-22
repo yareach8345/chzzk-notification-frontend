@@ -7,6 +7,7 @@ definePageMeta({
 
 import { updateChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
+import { getPlatformImageInfo } from '~/util/ApiUtil'
 
 const channelStore = useChannelStore()
 
@@ -98,6 +99,11 @@ const processEditing = async () => {
   })
   return true
 }
+
+const platformImgInfo = computed(() => channel.value
+      ? getPlatformImageInfo(channel.value.channelId.platform)
+      : undefined
+)
 </script>
 
 <template>
@@ -112,8 +118,11 @@ const processEditing = async () => {
             :channel="channel"
         />
         <div class="flex flex-col justify-center">
-            <h4 class="text-xl">{{channel?.detail.displayName}}</h4>
-            <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{channel?.channelId}}</p>
+            <div class="flex items-center gap-1">
+              <img class="w-6" :src="platformImgInfo?.src" :alt="platformImgInfo?.alt" />
+              <h4 class="text-xl">{{channel?.detail.displayName}}</h4>
+            </div>
+            <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{channel?.channelId.id}}</p>
         </div>
       </div>
       <form class="relative" @submit.prevent="onEditButtonClick">

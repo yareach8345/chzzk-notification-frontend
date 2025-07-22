@@ -5,6 +5,7 @@ import type {
   MinimalChannelDetail,
 } from '~/dto/channel/MinimalChannelInfoDto'
 import type { ChannelId } from '~/types/ChannelId'
+import { getPlatformImageInfo } from '~/util/ApiUtil'
 
 type ChannelDto = {
   channelId: ChannelId
@@ -23,6 +24,8 @@ const cardBorderClass = computed(() => ({
   'border-chzzk-stream-on': channel.liveState.isOpen,
   'border-chzzk-stream-off': !channel.liveState.isOpen,
 }))
+
+const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.platform))
 </script>
 
 <template>
@@ -36,7 +39,10 @@ const cardBorderClass = computed(() => ({
         :channelImageUrl="channelImageUrl"
     />
     <div class="flex-1 w-40 lg:min-w-52 truncate">
-      <p class="text-xl">{{channel.detail.displayName}}</p>
+      <div class="flex items-center gap-1">
+        <img class="w-6" :src="platformImgInfo?.src" :alt="platformImgInfo?.alt" />
+        <p class="text-xl">{{channel.detail.displayName}}</p>
+      </div>
       <p
           class="text-md font-light max-md:overflow-hidden"
           :title="channel.liveState.category"
