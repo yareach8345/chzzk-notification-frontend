@@ -1,6 +1,6 @@
 import { getMinimalChannels } from '~/api/ChannelRequest'
 import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
-import { channelIdToString } from '~/util/ChannelUtil'
+import { channelIdToString, sortChannels } from '~/util/ChannelUtil'
 import type { ChannelId } from '~/types/ChannelId'
 
 export const useChannelStore = defineStore('channel-store', () => {
@@ -18,7 +18,7 @@ export const useChannelStore = defineStore('channel-store', () => {
   const findChannelById = (channelId: ChannelId) => computed(() => channelMap.value.get(channelIdToString(channelId)))
 
   return {
-    channels: computed(() => _channels.value),
+    channels: computed(() => sortChannels(_channels.value)),
     isChannelsLoaded: computed(() => _isChannelsLoaded.value),
     findChannelById,
     loadChannels,
