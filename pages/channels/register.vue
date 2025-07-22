@@ -147,13 +147,13 @@ const processRegistering = async () => {
       <h2 class="text-4xl text-center font-blackHan">
         채널 등록
       </h2>
-      <div class="relative">
-        <p>플랫폼</p>
-        <input-platform-selector
-            v-model="selectedPlatform"
-            @onChange="onPlatformSelectChange"
-        />
-      </div>
+<!--      <div class="relative">-->
+<!--        <p>플랫폼</p>-->
+<!--        <input-platform-selector-->
+<!--            v-model="selectedPlatform"-->
+<!--            @onChange="onPlatformSelectChange"-->
+<!--        />-->
+<!--      </div>-->
       <div>
         <div>
           <p>채널 ID</p>

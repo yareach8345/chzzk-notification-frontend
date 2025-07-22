@@ -87,7 +87,7 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
               <div class="flex flex-col justify-center">
                 <h4 class="text-xl">{{channel.detail.displayName}}</h4>
                 <p class="text-ellipsis">{{channel.detail.channelDescription}}</p>
-                <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{channel.channelId}}</p>
+                <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{channel.channelId.id}}</p>
               </div>
             </div>
             <div class="flex flex-col justify-center">
