@@ -6,6 +6,7 @@ export default {
         'primary': 'var(--color-primary)',
         'error': 'var(--color-error)',
         'success': 'var(--color-success)',
+        'warning': 'var(--color-warning)',
         'on': 'var(--color-on)',
         'yes': 'var(--color-yes)',
         'stream-off': 'var(--color-stream-off)',
@@ -13,7 +14,8 @@ export default {
       },
       backgroundColor: {
         'default': 'var(--color-default-bg)',
-        'selected': 'var(--color-selected-bg)'
+        'selected': 'var(--color-selected-bg)',
+        'warning': 'var(--color-warning-bg)',
       },
       borderColor: {
         'default': 'var(--color-default-border)',

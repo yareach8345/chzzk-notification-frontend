@@ -23,27 +23,38 @@ const translateStyle = computed(() => ({'translate-x-[100%]' : selectedValueInde
 const getPlatformIconPath = (platformName: string) => `/images/icons/platform/${platformName}.png`
 
 const getImageAlt = (platformName: string) => `${platformName} 아이콘`
+
+const specialOptionTextStyle = (platformName: string) => ({
+  'text-warning': platformName === 'youtube'
+})
+
+const specialOptionBackgroundStyle = (platformName: string) => ({
+  'bg-warning': platformName === 'youtube'
+})
 </script>
 
 <template>
-  <div class="relative flex overflow-hidden border border-default rounded-lg w-72 py-1">
-    <div
-        class="absolute h-full w-[50%] top-0 bg-stream-off"
-        :class="translateStyle"
-    />
-    <div
-        class="flex-1 flex justify-center items-center gap-2 z-10"
-        v-for="(platform, index) in platforms"
-        @click="() => onClickItem(index)"
-    >
-      <img
-          class="h-6"
-          :src="getPlatformIconPath(platform)"
-          :alt="getImageAlt(platform)"
+  <div class="flex flex-col items-center">
+    <div class="relative flex overflow-hidden border border-selected rounded-lg w-72 py-1">
+      <div
+          class="absolute h-full w-[50%] top-0 bg-selected"
+          :class="{...translateStyle, ...specialOptionBackgroundStyle(selectedPlatform!)}"
       />
-      <p class="text-lg">
-        {{platform}}
-      </p>
+      <div
+          v-for="(platform, index) in platforms"
+          class="flex-1 flex justify-center items-center gap-2 z-10 h-full"
+          :class="specialOptionTextStyle(platform)"
+          @click="() => onClickItem(index)"
+      >
+        <img
+            class="h-6"
+            :src="getPlatformIconPath(platform)"
+            :alt="getImageAlt(platform)"
+        />
+        <p class="text-lg">
+          {{platform}}
+        </p>
+      </div>
     </div>
   </div>
 </template>
