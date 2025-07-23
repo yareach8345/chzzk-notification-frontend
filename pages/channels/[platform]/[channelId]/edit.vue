@@ -108,7 +108,7 @@ const platformImgInfo = computed(() => channel.value
 
 <template>
   <section class="min-w-[70%]">
-    <box-gray class="p-3 relative flex flex-col gap-4 items-center">
+    <box class="p-3 relative flex flex-col gap-4 items-center">
       <h2 class="text-4xl text-center font-blackHan">
         채널 수정
       </h2>
@@ -160,7 +160,7 @@ const platformImgInfo = computed(() => channel.value
       >
         {{priorityInputHelpMessage}}
       </p>
-    </box-gray>
+    </box>
   </section>
 </template>
 

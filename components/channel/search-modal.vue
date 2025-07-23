@@ -71,7 +71,7 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
           </button-neon>
         </div>
       </form>
-      <box-gray class="max-h-96 overflow-y-scroll">
+      <box class="max-h-96 overflow-y-scroll">
         <div v-if="searchResults.length !== 0">
           <article
               class="p-2 grid grid-cols-[1fr_auto] gap-2"
@@ -104,7 +104,7 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
         <div v-else class="text-center">
           채널을 검색 해주세요.
         </div>
-      </box-gray>
+      </box>
       <div class="flex justify-center">
         <button-without-border
             class="hover:text-error flex flex-col items-center gap-2"

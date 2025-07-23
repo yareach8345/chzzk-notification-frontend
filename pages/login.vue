@@ -11,7 +11,7 @@ useHead({
 </script>
 
 <template>
-  <box-neon class="flex flex-col items-center">
+  <box-primary class="flex flex-col items-center">
     <h2 class="text-xl">
       Login이 필요합니다.
     </h2>
@@ -35,7 +35,7 @@ useHead({
       본 사이트는 개인적인 목적으로 만들어졌습니다.<br>
       개발자 개인이 지정한 이메일이 아니면 로그인 되지 않습니다.
     </div>
-  </box-neon>
+  </box-primary>
 </template>
 
 <style scoped>

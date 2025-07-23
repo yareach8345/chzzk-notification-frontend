@@ -82,7 +82,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.pl
 
 <template>
   <section>
-    <box-gray>
+    <box>
       <div class="text-3xl text-center font-blackHan">{{channel.detail.displayName}}</div>
       <section>
         <div class="flex justify-between items-center">
@@ -198,7 +198,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.pl
           </table>
         </div>
       </section>
-    </box-gray>
+    </box>
     <div class="w-full my-2 flex justify-start gap-2">
       <button-without-border
           class="hover:text-primary"

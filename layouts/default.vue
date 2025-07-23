@@ -52,7 +52,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative bg-default text-white min-h-svh flex flex-col p-2 sm:p-4">
+  <div class="relative bg-default text-default min-h-svh flex flex-col p-2 sm:p-4">
     <spinner ref="spinnerRef"/>
     <modal-alert ref="alertRef"/>
     <modal-confirm ref="confirmRef"/>

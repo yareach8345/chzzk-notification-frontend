@@ -146,7 +146,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
       :platform="selectedPlatform"
   />
   <section class="min-w-[70%]">
-    <box-gray class="p-3 relative flex flex-col gap-4 items-center">
+    <box class="p-3 relative flex flex-col gap-4 items-center">
       <h2 class="text-4xl text-center font-blackHan">
         채널 등록
       </h2>
@@ -210,9 +210,9 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
       </div>
       <form class="relative" @submit.prevent="onAddButtonClick">
         <div v-if="selectedChannel === null" class="bg-opacity-50 bg-default w-full h-full absolute left-0 top-0 flex items-center justify-center">
-          <box-gray class="text-lg bg-default border-primary">
+          <box class="text-lg bg-default border-primary">
             채널선택을 먼저 진행 해주세요.
-          </box-gray>
+          </box>
         </div>
         <div class="grid grid-cols-3 gap-3 items-center justify-center">
           <p class="text-right font-bold">채널 컬러</p>
@@ -248,7 +248,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
       >
         {{priorityInputHelpMessage}}
       </p>
-    </box-gray>
+    </box>
   </section>
 </template>
 

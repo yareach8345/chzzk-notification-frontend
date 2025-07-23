@@ -19,14 +19,14 @@ const logout = async () => {
 </script>
 
 <template>
-  <box-neon class="flex flex-col items-center">
+  <box-primary class="flex flex-col items-center">
     <h2 class="text-xl">
       허가되지 않은 이메일입니다.
     </h2>
-    <box-gray class="border-2 p-4 mt-4">
+    <box class="border-2 p-4 mt-4">
       본 사이트는 개인적인 목적으로 만들어졌습니다.<br>
       개발자 개인이 지정한 이메일이 아니면 로그인 되지 않습니다.
-    </box-gray>
+    </box>
     <button-neon
         class="mt-4 flex"
         @click="logout"
@@ -36,7 +36,7 @@ const logout = async () => {
         로그아웃 하기
       </div>
     </button-neon>
-  </box-neon>
+  </box-primary>
 </template>
 
 <style scoped>

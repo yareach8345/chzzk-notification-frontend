@@ -81,7 +81,7 @@ const navigateToRegisterPage = () => {
 
 <template>
   <section>
-    <box-gray class="p-3 relative flex flex-col gap-4">
+    <box class="p-3 relative flex flex-col gap-4">
       <h2 class="text-4xl text-center font-blackHan">
         채널 목록
       </h2>
@@ -118,7 +118,7 @@ const navigateToRegisterPage = () => {
           &gt;
         </button-without-border>
       </div>
-    </box-gray>
+    </box>
     <div>
       <button-without-border
           class="hover:text-primary"

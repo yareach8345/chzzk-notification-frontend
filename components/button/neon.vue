@@ -7,7 +7,7 @@ interface Props {
 const { disabled = false, submit = false } = defineProps<Props>()
 
 const classes = computed(() => ({
-  'hover:border-white': !disabled,
+  'hover:border-selected': !disabled,
   'hover:bg-selected': !disabled,
   'opacity-50': disabled
 }))

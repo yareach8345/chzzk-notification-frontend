@@ -2,22 +2,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        'primary': '#00FFA3',
-        'error': '#FF005C',
-        'success': '#3FFFE5',
-        'on': '#FF005C',
-        'yes': '#3FFFE5',
-        'stream-off': '#505050',
-        'stream-on': '#ff6467',
+        'default': 'var(--color-default)',
+        'primary': 'var(--color-primary)',
+        'error': 'var(--color-error)',
+        'success': 'var(--color-success)',
+        'on': 'var(--color-on)',
+        'yes': 'var(--color-yes)',
+        'stream-off': 'var(--color-stream-off)',
+        'stream-on': 'var(--color-stream-on)',
       },
       backgroundColor: {
-        'default': '#000000',
-        'selected': '#2c2d2f'
+        'default': 'var(--color-default-bg)',
+        'selected': 'var(--color-selected-bg)'
       },
       borderColor: {
-        'default': '#707070',
-        'stream-off': '#505050',
-        'stream-on': '#e0e0e0',
+        'default': 'var(--color-default-border)',
+        'stream-off': 'var(--color-stream-off-border)',
+        'stream-on': 'var(--color-stream-on-border)',
+        'selected': 'var(--color-selected-border)'
       },
       fontFamily: {
         blackHan: ['"Black Han Sans"', 'sans-serif'],
