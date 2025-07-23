@@ -104,6 +104,11 @@ const platformImgInfo = computed(() => channel.value
       ? getPlatformImageInfo(channel.value.channelId.platform)
       : undefined
 )
+
+const toBack = async () => {
+  const router = useRouter()
+  router.back()
+}
 </script>
 
 <template>
@@ -161,6 +166,13 @@ const platformImgInfo = computed(() => channel.value
         {{priorityInputHelpMessage}}
       </p>
     </box>
+    <button-without-border
+        class="hover:text-primary"
+        title="채널목록으로"
+        @click="toBack"
+    >
+      <svg-back/>
+    </button-without-border>
   </section>
 </template>
 

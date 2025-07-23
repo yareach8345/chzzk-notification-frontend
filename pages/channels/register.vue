@@ -137,6 +137,10 @@ const processRegistering = async () => {
 }
 
 const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.value))
+
+const navigateToChannelListPage = async () => {
+  navigateTo({ name: 'channels' })
+}
 </script>
 
 <template>
@@ -249,6 +253,13 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
         {{priorityInputHelpMessage}}
       </p>
     </box>
+    <button-without-border
+        class="hover:text-primary"
+        title="채널목록으로"
+        @click="navigateToChannelListPage"
+    >
+      <svg-back/>
+    </button-without-border>
   </section>
 </template>
 

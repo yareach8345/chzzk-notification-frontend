@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="h-full p-2 border-r border-default bg-default z-50">
+  <div class="flex flex-col h-full p-2 border-r border-default bg-default z-50">
     <sidebar-login-info-view/>
     <hr class="my-3"/>
     <sidebar-page-nav-item
@@ -42,6 +42,7 @@
       </template>
       Live Events
     </sidebar-page-nav-item>
+    <sidebar-theme-select/>
   </div>
 </template>
 

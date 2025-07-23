@@ -23,6 +23,7 @@
     }
 
     html[data-theme='chzzk'] {
+        --color-default: #FFFFFF;
         --color-primary: #00FFA3;
         --color-error: #FF005C;
         --color-success: #3FFFE5;
@@ -33,10 +34,10 @@
         --color-stream-off-text: #505050;
         --color-default-bg: #000000;
         --color-selected-bg: #2C2D2F;
-        --color-warning-bg: #FFFF88;
+        --color-warning-bg: #555500;
         --color-default-border: #707070;
         --color-stream-on-border: #e0e0e0;
-        --color-stream-off-border: #c0c0c0;
+        --color-stream-off-border: #a0a0a0;
         --color-selected-border: #FFFFFF;
     }
 }
