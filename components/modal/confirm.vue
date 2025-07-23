@@ -48,14 +48,14 @@ defineExpose<Modal<boolean>>({
   <modal-base ref="modalRef">
     <div class="flex gap-4 justify-center">
       <button
-          class="border-4 border-white hover:border-success hover:text-success rounded-lg transition-colors duration-500 ease-in-out p-2"
+          class="border-4 border-white hover:border-yes hover:text-yes rounded-lg transition-colors duration-500 ease-in-out p-2"
           title="확인"
           @click="processingConfirm"
       >
         확인
       </button>
       <button
-          class="border-4 border-white hover:border-error hover:text-error rounded-lg transition-colors duration-500 ease-in-out p-2"
+          class="border-4 border-white hover:border-no hover:text-no rounded-lg transition-colors duration-500 ease-in-out p-2"
           title="취소"
           @click="processingCancel"
       >

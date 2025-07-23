@@ -7,7 +7,7 @@ export default {
         'error': 'var(--color-error)',
         'success': 'var(--color-success)',
         'warning': 'var(--color-warning)',
-        'on': 'var(--color-on)',
+        'no': 'var(--color-no)',
         'yes': 'var(--color-yes)',
         'stream-off': 'var(--color-stream-off)',
         'stream-on': 'var(--color-stream-on)',

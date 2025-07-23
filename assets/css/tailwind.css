@@ -9,8 +9,8 @@
         --color-error: #FF0000;
         --color-success: #0000FF;
         --color-warning: #E29F47;
-        --color-on: #FF0000;
-        --color-yes: #0000FF;
+        --color-no: #FF5555;
+        --color-yes: #5555FF;
         --color-stream-on: #ff6467;
         --color-stream-off: #505050;
         --color-default-bg: #FFFFFF;
@@ -27,7 +27,7 @@
         --color-error: #FF005C;
         --color-success: #3FFFE5;
         --color-warning: #FFFF00;
-        --color-on: #FF005C;
+        --color-no: #FF005C;
         --color-yes: #3FFFE5;
         --color-stream-on-text: #ff6467;
         --color-stream-off-text: #505050;
