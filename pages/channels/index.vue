@@ -121,14 +121,14 @@ const navigateToRegisterPage = () => {
     </box-gray>
     <div>
       <button-without-border
-          class="hover:text-chzzk-neon-green"
+          class="hover:text-primary"
           title="홈 페이지로 돌아가기"
           @click="navigateToHome"
       >
         <svg-back/>
       </button-without-border>
       <button-without-border
-          class="hover:text-chzzk-neon-green"
+          class="hover:text-primary"
           title="채널 등록하기"
           @click="navigateToRegisterPage"
       >

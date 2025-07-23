@@ -9,7 +9,7 @@ interface Props {
 
 const { channel } = defineProps<Props>()
 
-const streamColor = computed(() => channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off')
+const streamColor = computed(() => channel.liveState.isOpen ? 'text-stream-on' : 'text-stream-off')
 
 const currentUserMessage = computed(() =>
     channel.liveState.isOpen

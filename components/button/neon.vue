@@ -19,7 +19,7 @@ const buttonType = computed(() => submit ? 'submit' : 'button')
   <button
       :type="buttonType"
       :class="classes"
-      class="border-4 border-chzzk-border rounded-lg transition-colors duration-500 ease-in-out p-2"
+      class="border-4 border-default rounded-lg transition-colors duration-500 ease-in-out p-2"
   >
     <slot/>
   </button>

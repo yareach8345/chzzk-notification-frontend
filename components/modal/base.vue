@@ -28,10 +28,10 @@ defineExpose<Modal<void>>({
 <template>
   <div
       v-if="isOpen"
-      class="absolute left-0 top-0 w-full h-full z-30 bg-chzzk-black bg-opacity-50 flex items-center justify-center"
+      class="absolute left-0 top-0 w-full h-full z-30 bg-default bg-opacity-50 flex items-center justify-center"
       @click.prevent="closeModal"
   >
-    <div class="border-4 rounded-lg p-4 bg-chzzk-black flex flex-col gap-2">
+    <div class="border-4 rounded-lg p-4 bg-default flex flex-col gap-2">
       <div v-if="modalMessage !== null" >
         <h3 class="text-xl">{{modalMessage.title}}</h3>
         <p v-for="content in modalMessage.content">{{content}}</p>

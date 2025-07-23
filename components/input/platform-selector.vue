@@ -26,9 +26,9 @@ const getImageAlt = (platformName: string) => `${platformName} 아이콘`
 </script>
 
 <template>
-  <div class="relative flex overflow-hidden border border-chzzk-border rounded-lg w-72 py-1">
+  <div class="relative flex overflow-hidden border border-default rounded-lg w-72 py-1">
     <div
-        class="absolute h-full w-[50%] top-0 bg-chzzk-stream-off"
+        class="absolute h-full w-[50%] top-0 bg-stream-off"
         :class="translateStyle"
     />
     <div

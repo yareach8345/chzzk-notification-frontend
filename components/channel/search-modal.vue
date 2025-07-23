@@ -22,7 +22,7 @@ const closeModal = async () => {
 const name = ref('')
 
 const hasSubmit = ref(false)
-const invalidClass = computed(() => hasSubmit.value ? ['invalid:border-neon-red'] : [])
+const invalidClass = computed(() => hasSubmit.value ? ['invalid:border-error'] : [])
 
 const onSearchButtonClick = async () => {
   hasSubmit.value = true
@@ -51,10 +51,10 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
 <template>
   <div
       v-if="isOpen"
-      class="absolute left-0 top-0 w-full h-full z-30 bg-chzzk-black bg-opacity-50 flex items-center justify-center"
+      class="absolute left-0 top-0 w-full h-full z-30 bg-default bg-opacity-50 flex items-center justify-center"
       @mousedown.left.prevent="closeModal"
   >
-    <div @mousedown.left.stop class="border-4 rounded-lg p-4 bg-chzzk-black flex flex-col gap-2 border-chzzk-neon-green max-w-[90%]">
+    <div @mousedown.left.stop class="border-4 rounded-lg p-4 bg-default flex flex-col gap-2 border-primary max-w-[90%]">
       <form @submit.prevent="processChannelSearch">
         <p class="text-md">
           채널명 :
@@ -87,12 +87,12 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
               <div class="flex flex-col justify-center">
                 <h4 class="text-xl">{{channel.detail.displayName}}</h4>
                 <p class="text-ellipsis">{{channel.detail.channelDescription}}</p>
-                <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{channel.channelId.id}}</p>
+                <p class="text-stream-off text-sm max-sm:hidden">{{channel.channelId.id}}</p>
               </div>
             </div>
             <div class="flex flex-col justify-center">
               <button-without-border
-                  class="hover:text-chzzk-neon-green"
+                  class="hover:text-primary"
                   title="채널선택"
                   @click="() => onSelectButtonClick(channel)"
               >
@@ -107,7 +107,7 @@ const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
       </box-gray>
       <div class="flex justify-center">
         <button-without-border
-            class="hover:text-neon-red flex flex-col items-center gap-2"
+            class="hover:text-error flex flex-col items-center gap-2"
             @click="closeModal"
         >
           <svg-cancel/>

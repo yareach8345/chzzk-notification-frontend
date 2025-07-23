@@ -32,7 +32,7 @@ const isChannelPriorityDefault = computed(() => channelPriority.value === undefi
 const priorityInputHelpMessage: Ref<string | null> = ref(null)
 
 const errorStyleClass = computed(() => ({
-  'text-neon-red': priorityInputHelpMessage.value !== null,
+  'text-error': priorityInputHelpMessage.value !== null,
 }))
 
 const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !== null ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4')
@@ -122,7 +122,7 @@ const platformImgInfo = computed(() => channel.value
               <img class="w-6" :src="platformImgInfo?.src" :alt="platformImgInfo?.alt" />
               <h4 class="text-xl">{{channel?.detail.displayName}}</h4>
             </div>
-            <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{channel?.channelId.id}}</p>
+            <p class="text-stream-off text-sm max-sm:hidden">{{channel?.channelId.id}}</p>
         </div>
       </div>
       <form class="relative" @submit.prevent="onEditButtonClick">
@@ -143,7 +143,7 @@ const platformImgInfo = computed(() => channel.value
                 class="w-24"
             ></input-number>
           </div>
-          <p v-if="isChannelPriorityDefault" class="text-chzzk-stream-off">(기본값)</p>
+          <p v-if="isChannelPriorityDefault" class="text-stream-off">(기본값)</p>
           <p v-else>{{channelPriority}}</p>
           <button-neon
               submit
@@ -155,7 +155,7 @@ const platformImgInfo = computed(() => channel.value
       </form>
       <p
           v-show="priorityInputHelpMessage !== undefined"
-          class="text-neon-red transition-all duration-300 ease-in-out overflow-hidden"
+          class="text-error transition-all duration-300 ease-in-out overflow-hidden"
           :class="errorMessageStyleClass"
       >
         {{priorityInputHelpMessage}}

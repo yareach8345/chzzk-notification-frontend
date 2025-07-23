@@ -29,7 +29,7 @@ const onClickOpenChannelLiveOpen = (channel: ChannelInfoDto) => {
   openChannelLivePage(channelId)
 }
 
-const streamColor = channel.liveState.isOpen ? 'text-red-400' : 'text-chzzk-stream-off'
+const streamColor = channel.liveState.isOpen ? 'text-stream-on' : 'text-stream-off'
 
 const backgroundColorStyle = getBackgroundColorStyle(channel)
 
@@ -201,21 +201,21 @@ const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.pl
     </box-gray>
     <div class="w-full my-2 flex justify-start gap-2">
       <button-without-border
-          class="hover:text-chzzk-neon-green"
+          class="hover:text-primary"
           title="채널목록으로"
           @click="navigateToChannelListPage"
       >
         <svg-back/>
       </button-without-border>
       <button-without-border
-          class="hover:text-chzzk-neon-green"
+          class="hover:text-primary"
           title="채널 정보 수정"
           @click="navigateToEditPage"
       >
         <svg-pencil/>
       </button-without-border>
       <button-without-border
-          class="hover:text-neon-red"
+          class="hover:text-error"
           title="채널 삭제"
           @click="processDeleting"
       >

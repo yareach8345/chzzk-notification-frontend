@@ -63,7 +63,7 @@ const onPlatformSelectChange = () => {
 const priorityInputHelpMessage: Ref<string | null> = ref(null)
 
 const errorStyleClass = computed(() => ({
-  'text-neon-red': priorityInputHelpMessage.value !== null,
+  'text-error': priorityInputHelpMessage.value !== null,
 }))
 
 const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !== null ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4')
@@ -162,7 +162,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
           <p>채널 ID</p>
           <div class="flex items-stretch gap-2">
             <input-text
-                class="border-chzzk-border text-chzzk-border truncate"
+                class="border-default text-chzzk-border truncate"
                 @click="onChannelSearchButtonClick"
                 placeholder="채널을 검색 해주세요."
                 v-model="searchName"
@@ -191,7 +191,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
               <h4 class="text-xl">{{selectedChannel.detail.displayName}}</h4>
             </div>
             <p class="text-ellipsis">{{selectedChannel.detail.channelDescription}}</p>
-            <p class="text-chzzk-stream-off text-sm max-sm:hidden">{{selectedChannel.channelId.id}}</p>
+            <p class="text-stream-off text-sm max-sm:hidden">{{selectedChannel.channelId.id}}</p>
           </template>
           <template v-else>
             <h4 class="text-xl">먼저 채널을 검색 해주세요.</h4>
@@ -199,7 +199,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
         </div>
         <div class="flex flex-col justify-center">
           <button-without-border
-              class="hover:text-neon-red"
+              class="hover:text-error"
               title="채널 선택 취소"
               @click="clearSelectedChannel"
               v-if="selectedChannel !== null"
@@ -209,8 +209,8 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
         </div>
       </div>
       <form class="relative" @submit.prevent="onAddButtonClick">
-        <div v-if="selectedChannel === null" class="bg-opacity-50 bg-chzzk-black w-full h-full absolute left-0 top-0 flex items-center justify-center">
-          <box-gray class="text-lg bg-chzzk-black border-chzzk-neon-green">
+        <div v-if="selectedChannel === null" class="bg-opacity-50 bg-default w-full h-full absolute left-0 top-0 flex items-center justify-center">
+          <box-gray class="text-lg bg-default border-primary">
             채널선택을 먼저 진행 해주세요.
           </box-gray>
         </div>
@@ -231,7 +231,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
                 class="w-24"
             ></input-number>
           </div>
-          <p v-if="isChannelPriorityDefault" class="text-chzzk-stream-off">(기본값)</p>
+          <p v-if="isChannelPriorityDefault" class="text-stream-off">(기본값)</p>
           <p v-else>{{channelPriority}}</p>
           <button-neon
               submit
@@ -243,7 +243,7 @@ const platformImgInfo = computed(() => getPlatformImageInfo(selectedPlatform.val
       </form>
       <p
           v-show="priorityInputHelpMessage !== undefined"
-          class="text-neon-red transition-all duration-300 ease-in-out overflow-hidden"
+          class="text-error transition-all duration-300 ease-in-out overflow-hidden"
           :class="errorMessageStyleClass"
       >
         {{priorityInputHelpMessage}}

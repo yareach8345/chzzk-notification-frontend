@@ -13,7 +13,7 @@ const value = defineModel({ required: true })
 <template>
   <input
       type="text"
-      class="border border-chzzk-border bg-chzzk-black text-lg p-1 rounded-md focus:border-white outline-none"
+      class="border border-default bg-default text-lg p-1 rounded-md focus:border-white outline-none"
       :disabled="disabled"
       v-model="value"
       :min="min"

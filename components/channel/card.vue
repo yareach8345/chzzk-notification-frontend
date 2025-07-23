@@ -21,8 +21,8 @@ interface Props {
 const { channel, channelImageUrl } = defineProps<Props>()
 
 const cardBorderClass = computed(() => ({
-  'border-chzzk-stream-on': channel.liveState.isOpen,
-  'border-chzzk-stream-off': !channel.liveState.isOpen,
+  'border-stream-on': channel.liveState.isOpen,
+  'border-stream-off': !channel.liveState.isOpen,
 }))
 
 const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.platform))

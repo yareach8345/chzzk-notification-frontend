@@ -52,7 +52,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative bg-chzzk-black text-white min-h-svh flex flex-col p-2 sm:p-4">
+  <div class="relative bg-default text-white min-h-svh flex flex-col p-2 sm:p-4">
     <spinner ref="spinnerRef"/>
     <modal-alert ref="alertRef"/>
     <modal-confirm ref="confirmRef"/>
@@ -68,7 +68,7 @@ onMounted(() => {
       </div>
       <div class="flex justify-center items-center max-sm:flex-1">
         <img src="/images/icons/platform/chzzk.png" alt="치지직 로고" class="h-14"/>
-        <h1 class="font-blackHan leading-none relative top-[2px] text-center text-4xl text-chzzk-neon-green">
+        <h1 class="font-blackHan leading-none relative top-[2px] text-center text-4xl text-primary">
           Chzzk Notification
         </h1>
       </div>
