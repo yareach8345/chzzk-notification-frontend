@@ -1,11 +1,7 @@
 <script setup lang="ts">
-const theme = ref<string>('default')
-const onThemeSelected = () => {
-  if(theme.value === 'default') {
-    document.documentElement.removeAttribute('data-theme')
-  }
-  document.documentElement.setAttribute('data-theme', theme.value)
-}
+import { getTheme } from '~/composables/theme'
+
+const theme = getTheme()
 </script>
 
 <template>
@@ -16,12 +12,10 @@ const onThemeSelected = () => {
       </div>
       <select
           class="bg-default border border-default rounded-md"
-          @change="onThemeSelected"
           v-model="theme"
       >
-        <option value="default">기본 태마</option>
-        <option value="chzzk">chzzk</option>
-        <option value="chzzk">youtube</option>
+        <option value="default">light</option>
+        <option value="black">black</option>
       </select>
     </div>
   </div>

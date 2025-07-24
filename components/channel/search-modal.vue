@@ -42,7 +42,6 @@ const processChannelSearch = async () => {
 }
 
 const onSelectButtonClick = async (channel: ChannelSearchResultDto) => {
-  console.log(channel)
   onChannelSelected(channel)
   await closeModal()
 }

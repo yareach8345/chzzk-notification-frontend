@@ -22,7 +22,7 @@
         --color-selected-border: #C4C4C4;
     }
 
-    html[data-theme='chzzk'] {
+    html[data-theme='black'] {
         --color-default: #FFFFFF;
         --color-primary: #00FFA3;
         --color-error: #FF005C;
