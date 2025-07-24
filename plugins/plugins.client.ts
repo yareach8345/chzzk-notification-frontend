@@ -1,4 +1,4 @@
-import { loadThemeFromLocalStorage } from '~/composables/useTheme'
+import { loadThemeFromLocalStorage } from '~/composables/theme'
 
 export default defineNuxtPlugin(() => {
   loadThemeFromLocalStorage()
