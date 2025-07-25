@@ -1,9 +1,9 @@
 import { getBackendUrl, getCookieHeader } from '@/util/ApiUtil'
 import type { ChannelInfoDto } from '~/dto/channel/ChannelInfoDto'
-import type { MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
+import type { MinimalChannelInfoDto, MinimalLiveStateDto } from '~/dto/channel/MinimalChannelInfoDto'
 import type { RegisterChannelDto } from '~/dto/channel/RegisterChannelDto'
 import type { EditChannelDto } from '~/dto/channel/UpdateChannelDto'
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 
 export const getChannel = (channelId: ChannelId) => {
   const cookieHeader = getCookieHeader()
@@ -21,6 +21,17 @@ export const getMinimalChannels = () => {
   const url = getBackendUrl('/channels/minimal')
 
   return $fetch<MinimalChannelInfoDto[]>(url, {
+    method: 'GET',
+    credentials: 'include',
+    headers: { ...cookieHeader }
+  })
+}
+
+export const getMinimalLiveState = (channelId: ChannelId) => {
+  const cookieHeader = getCookieHeader()
+  const url = getBackendUrl(`/channels/minimal/${channelId.platform}/${channelId.id}/state}`)
+
+  return $fetch<MinimalLiveStateDto>(url, {
     method: 'GET',
     credentials: 'include',
     headers: { ...cookieHeader }

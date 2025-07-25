@@ -4,7 +4,7 @@ import type {
   LiveOpenDto,
   MinimalChannelDetail,
 } from '~/dto/channel/MinimalChannelInfoDto'
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 import { getPlatformImageInfo } from '~/util/ApiUtil'
 
 type ChannelDto = {

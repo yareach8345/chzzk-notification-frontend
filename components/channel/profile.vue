@@ -2,7 +2,7 @@
 import { getChannelImageUrl } from '~/util/ApiUtil'
 import { getBorderColorStyle } from '~/util/ChannelUtil'
 import { defaultChannelImage, liveOffColor } from '~/constants/ChannelInfo'
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 import type { ChannelDetailDto, LiveStateDto } from '~/dto/channel/ChannelInfoDto'
 
 interface Props {

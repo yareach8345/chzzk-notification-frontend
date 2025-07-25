@@ -2,6 +2,7 @@
 import { closeSidebarKey } from '~/constants/sidebar'
 import type { Spinner } from '~/types/components/Spinner'
 import type { Modal } from '~/types/components/Modal'
+import { useChannelStore } from '~/store/ChannelStore'
 
 const isSidebarOpen = ref(false)
 
@@ -48,6 +49,11 @@ onMounted(() => {
   }
 
   confirmController.register(confirmRef.value)
+})
+
+const { addChannelStateChangeCallback } = useChannelStore()
+addChannelStateChangeCallback(state => {
+  console.log(state)
 })
 </script>
 

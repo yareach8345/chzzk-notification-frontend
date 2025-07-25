@@ -2,7 +2,7 @@
 import { useChannelStore } from '~/store/ChannelStore'
 import { calcStartAndEndIndexWithPage, getPagingInfoFromQuery } from '~/util/PagingUtil'
 import { navigateToHome } from '~/util/RoutingUtil'
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 import { channelIdToString } from '~/util/ChannelUtil'
 
 definePageMeta({
@@ -14,7 +14,7 @@ useHead({
 })
 
 const channelStore = useChannelStore()
-const { channels } = storeToRefs(channelStore)
+const { channels, lastUpdatedAt } = storeToRefs(channelStore)
 
 const pagingInfo = reactive(getPagingInfoFromQuery(10))
 
@@ -93,6 +93,9 @@ const navigateToRegisterPage = () => {
               v-model="showOnlyLivingChannels"
           />
         </label>
+      </div>
+      <div>
+        마지막 업데이트 시간 : {{lastUpdatedAt}}
       </div>
       <div class="grid md:grid-cols-2 auto-cols-fr gap-2">
         <channel-card

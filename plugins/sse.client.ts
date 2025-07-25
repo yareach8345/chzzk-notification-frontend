@@ -1,24 +1,25 @@
-import { createEventSource } from 'eventsource-client'
+import { SseController } from '~/sse/SseController'
 import { getBackendUrl } from '~/util/ApiUtil'
-import { useChannelStore } from '~/store/ChannelStore'
+import { useAuthInfoStore } from '~/store/AuthInfoStore'
 
-export default defineNuxtPlugin(nuxtApp => {
-  const store = useChannelStore()
-  setTimeout(() => {
-    console.log(store.channels)
-  }, 1000)
-  const es = createEventSource({
+export default defineNuxtPlugin(() => {
+  const sseController = SseController.init({
     url: getBackendUrl('/sse/connect'),
-    credentials: 'include',
-    onMessage: msg => {
-      console.log(JSON.parse(msg.data))
-    },
-    onDisconnect: () => {
-      console.log('[sse] sse connect disconnected')
-    },
-    onConnect: () => {
-      console.log('[sse] sse connected!')
-    }
+    credentials: 'include'
   })
-  es.connect()
+
+  const { isAuthenticated } = storeToRefs(useAuthInfoStore())
+
+  watch(
+    isAuthenticated,
+    (newValue, oldValue) => {
+      if(newValue === oldValue) { return }
+
+      if(newValue) {
+        sseController.connect()
+      } else {
+        sseController.disconnect()
+      }
+    }
+  )
 })

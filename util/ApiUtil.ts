@@ -1,6 +1,6 @@
 import type { AsyncData } from '#app'
 import { FetchError } from 'ofetch'
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 
 export const getBackendUrl = (path: string) => {
   const config = useRuntimeConfig()

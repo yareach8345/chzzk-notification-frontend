@@ -1,6 +1,6 @@
 import type { ChannelDetailDto, LiveCloseDto, LiveOpenDto, LiveStateDto } from '~/dto/channel/ChannelInfoDto'
 import { defaultChannelColor, liveOffColor } from '~/constants/ChannelInfo'
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 import type { RouteLocationNormalizedGeneric, } from '#vue-router'
 
 export const getBackgroundColorStyle = (channel: { detail: Pick<ChannelDetailDto, 'color'> }) => ({

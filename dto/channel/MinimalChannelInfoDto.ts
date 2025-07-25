@@ -1,4 +1,4 @@
-import type { ChannelId } from '~/types/ChannelId'
+import type { ChannelId } from '~/types/Channel'
 
 export interface LiveOpenDto {
   isOpen: true
