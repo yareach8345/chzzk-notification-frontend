@@ -70,7 +70,7 @@ const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !==
 
 const priorityInputValid = () => {
   if(channelPriority.value === undefined || channelPriority.value === '') {
-    return
+    return null
   }
 
   const priority = channelPriority.value ? parseInt(channelPriority.value) : undefined
@@ -78,13 +78,13 @@ const priorityInputValid = () => {
   if(priority === undefined || isNaN(priority)) {
     console.error(`우선순위 입력이 잘못 되었습니다. 우선순위는 숫자로만 입력되어야 합니다. ${channelPriority.value}`)
     priorityInputHelpMessage.value = '우선순위로는 숫자만 입력되어야 합니다.'
-    return
+    return null
   }
 
   if(priority < 0 || priority > 255) {
     console.error(`우선순위 입력이 잘못 되었습니다. 입력 가능한 범위는 0에서 255까지 입니다. ${channelPriority.value}`)
     priorityInputHelpMessage.value = '우선순위로 입력 가능한 범위는 0에서 255까지 입니다.'
-    return
+    return null
   }
 
   priorityInputHelpMessage.value = null
@@ -111,7 +111,7 @@ const processRegistering = async () => {
   }
 
   const priority = priorityInputValid()
-  if(priority !== undefined && isNaN(priority)) {
+  if(priority !== undefined && (priority === null || isNaN(priority))) {
     return false
   }
 
@@ -245,13 +245,13 @@ const navigateToChannelListPage = async () => {
           </button-neon>
         </div>
       </form>
-      <p
+      <transition-slide
           v-show="priorityInputHelpMessage !== undefined"
-          class="text-error transition-all duration-300 ease-in-out overflow-hidden"
+          class="text-error"
           :class="errorMessageStyleClass"
       >
         {{priorityInputHelpMessage}}
-      </p>
+      </transition-slide>
     </box>
     <button-without-border
         class="hover:text-primary"
