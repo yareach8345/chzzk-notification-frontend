@@ -5,21 +5,34 @@
 @layer base {
     :root {
         --color-default: #000000;
+        --color-default-border: #707070;
+        --color-default-bg: #FFFFFF;
+
         --color-primary: #000000;
+        --color-weak: #505050;
+
         --color-error: #FF0000;
         --color-success: #0000FF;
+
+        --color-warning-bg: #FFD177;
         --color-warning: #E29F47;
+
         --color-no: #FF5555;
         --color-yes: #5555FF;
-        --color-stream-on: #ff6467;
-        --color-stream-off: #505050;
-        --color-default-bg: #FFFFFF;
-        --color-selected-bg: #D0D0D0;
-        --color-warning-bg: #FFD177;
-        --color-default-border: #707070;
+
         --color-stream-on-border: #aaaaff;
+        --color-stream-on: #ff6467;
         --color-stream-off-border: #505050;
+        --color-stream-off: #505050;
+
+        --color-selected-bg: #D0D0D0;
         --color-selected-border: #C4C4C4;
+
+        --color-live-on-notification-border: var(--color-stream-on-border);
+        --color-live-on-notification-bg: var(--color-default-bg);
+
+        --color-live-off-notification-border: var(--color-stream-off-border);
+        --color-live-off-notification-bg: var(--color-default-bg);
     }
 
     html[data-theme='black'] {

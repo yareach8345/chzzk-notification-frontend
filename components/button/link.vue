@@ -8,7 +8,6 @@ const { disabled = false } = defineProps<Props>()
 
 <template>
   <button
-      class="p-2"
       :class="{
         'hover:underline': !disabled,
         'hover:text-blue-600': !disabled,
