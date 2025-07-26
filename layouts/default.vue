@@ -2,9 +2,9 @@
 import { closeSidebarKey } from '~/constants/sidebar'
 import type { Spinner } from '~/types/components/Spinner'
 import type { Modal } from '~/types/components/Modal'
-import type { Notification } from '~/types/components/Notification'
+import type { Notificator } from '~/types/components/Notificator'
 import { useChannelStore } from '~/store/ChannelStore'
-import { notificationController } from '~/composables/notificationController'
+import { notificatorController } from '~/composables/notificatorController'
 import type { NotificationInfo } from '~/types/Notification'
 
 const isSidebarOpen = ref(false)
@@ -34,7 +34,7 @@ const alertRef: Ref<Modal<void> | null> = ref(null)
 
 const confirmRef: Ref<Modal<boolean> | null> = ref(null)
 
-const notificationRef: Ref<Notification | null> = ref(null)
+const notificatorRef: Ref<Notificator | null> = ref(null)
 
 onMounted(() => {
   if(spinnerRef.value === null) {
@@ -55,17 +55,16 @@ onMounted(() => {
 
   confirmController.register(confirmRef.value)
 
-  if(notificationRef.value === null) {
+  if(notificatorRef.value === null) {
     throw createError({ message: 'NotificationRef의 값이 null 입니다. 알림을 등록 할 수 없습니다.'})
   }
 
-  notificationController.register(notificationRef.value)
+  notificatorController.register(notificatorRef.value)
 })
 
 //알림 설정
 const { addChannelStateChangeCallback, findChannelById } = useChannelStore()
 addChannelStateChangeCallback((channelId, newState) => {
-  console.log('콜백 호출 성공')
   if(newState === 'open' || newState === 'closed') {
     const channel = findChannelById(channelId).value
     if(channel === undefined) {
@@ -80,7 +79,7 @@ addChannelStateChangeCallback((channelId, newState) => {
         notificationType: 'stream-off',
         channel
       }
-      notificationController.showNotification(notificationInfo)
+      notificatorController.showNotification(notificationInfo)
     } else {
       if(channel.liveState.isOpen !== true) {
         throw createError('에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다.')
@@ -92,7 +91,7 @@ addChannelStateChangeCallback((channelId, newState) => {
           liveState: channel.liveState
         }
       }
-      notificationController.showNotification(notificationInfo)
+      notificatorController.showNotification(notificationInfo)
     }
   }
 })
@@ -100,7 +99,7 @@ addChannelStateChangeCallback((channelId, newState) => {
 
 <template>
   <div class="relative bg-default text-default min-h-svh flex flex-col p-2 sm:p-4">
-    <notification ref="notificationRef"/>
+    <notificator ref="notificatorRef"/>
     <spinner ref="spinnerRef"/>
     <modal-alert ref="alertRef"/>
     <modal-confirm ref="confirmRef"/>

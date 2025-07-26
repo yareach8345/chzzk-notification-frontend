@@ -22,7 +22,7 @@ const onLinkClick = () => {
 </script>
 
 <template>
-  <notification-base class="border-live-on-notification bg-live-on-notification">
+  <notificator-base class="border-live-on-notification bg-live-on-notification">
     <template #title>
       방송 ON!
     </template>
@@ -36,7 +36,7 @@ const onLinkClick = () => {
         라이브 보러가기
       </button-link>
     </template>
-  </notification-base>
+  </notificator-base>
 </template>
 
 <style scoped>

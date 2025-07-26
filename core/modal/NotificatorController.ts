@@ -1,10 +1,10 @@
-import type { Notification } from '@/types/components/Notification'
+import type { Notificator } from '~/types/components/Notificator'
 import type { NotificationInfo } from '~/types/Notification'
 
-export class NotificationController {
-  private notification: Notification | undefined = undefined
+export class NotificatorController {
+  private notification: Notificator | undefined = undefined
 
-  register = (notification: Notification): void => {
+  register = (notification: Notificator): void => {
     this.notification = notification
   }
 

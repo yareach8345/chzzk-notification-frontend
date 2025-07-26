@@ -1,5 +1,5 @@
 <template>
-  <div class=" p-2 border-4 rounded-lg w-full">
+  <div class="p-2 border-4 rounded-lg w-full">
     <div class="text-lg font-bold">
       <slot name="title"/>
     </div>
