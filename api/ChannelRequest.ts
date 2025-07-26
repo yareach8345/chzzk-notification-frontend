@@ -29,7 +29,7 @@ export const getMinimalChannels = () => {
 
 export const getMinimalLiveState = (channelId: ChannelId) => {
   const cookieHeader = getCookieHeader()
-  const url = getBackendUrl(`/channels/minimal/${channelId.platform}/${channelId.id}/state}`)
+  const url = getBackendUrl(`/channels/minimal/${channelId.platform}/${channelId.id}/state`)
 
   return $fetch<MinimalLiveStateDto>(url, {
     method: 'GET',

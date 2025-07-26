@@ -44,7 +44,6 @@ export class SseController {
             throw error
           }
 
-          console.log(`[sse] 메시지 수신 : ${JSON.stringify(data)}`)
           this.callbacks.forEach(f => f(data.topic, data.payload))
         },
         onDisconnect: () => {

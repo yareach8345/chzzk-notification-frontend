@@ -1,26 +1,28 @@
-import { getMinimalChannels, getMinimalLiveState, updateChannel } from '~/api/ChannelRequest'
+import { getMinimalChannels, getMinimalLiveState } from '~/api/ChannelRequest'
 import type { LiveCloseDto, MinimalChannelInfoDto } from '~/dto/channel/MinimalChannelInfoDto'
 import { channelIdToString, sortChannels } from '~/util/ChannelUtil'
 import type { ChannelId, ChannelStateChangeCallback } from '~/types/Channel'
 import { SseController } from '~/sse/SseController'
-import { channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/sse'
-import { recordPayload, statePayload } from '~/types/Sse'
+import { channelImageChangedRegex, channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/sse'
+import { recordPayload } from '~/types/Sse'
 import { isEqual } from 'lodash'
 
 
 export const useChannelStore = defineStore('channel-store', () => {
   const _channels = ref<MinimalChannelInfoDto[]>([])
 
+  const _sortedChannels = computed<MinimalChannelInfoDto[]>(() => sortChannels(_channels.value))
+
   const _lastUpdatedAt = ref<string>('')
 
-  const channelMap = computed(() => new Map(_channels.value.map(channel => ([channelIdToString(channel.channelId), channel]))))
+  const _channelMap: ComputedRef<Map<string, MinimalChannelInfoDto>> = computed(() => new Map(_channels.value.map(channel => ([channelIdToString(channel.channelId), channel]))))
 
   const _isChannelsLoaded = ref(false)
 
-  const channelStateChangeCallbacks: ChannelStateChangeCallback[] = []
+  const _channelStateChangeCallbacks: ChannelStateChangeCallback[] = []
 
   const addChannelStateChangeCallback = (newCallback: ChannelStateChangeCallback) => {
-    channelStateChangeCallbacks.push(newCallback)
+    _channelStateChangeCallbacks.push(newCallback)
   }
 
   const loadChannels = async () => {
@@ -28,7 +30,7 @@ export const useChannelStore = defineStore('channel-store', () => {
     _isChannelsLoaded.value = true
   }
 
-  const findChannelById = (channelId: ChannelId) => computed(() => channelMap.value.get(channelIdToString(channelId)))
+  const findChannelById = (channelId: ChannelId) => computed(() => _channelMap.value.get(channelIdToString(channelId)))
 
   const channelUpdate = (channelId: ChannelId, update: Record<string, string | number>) => {
     _channels.value = _channels.value.map(channel => {
@@ -140,13 +142,27 @@ export const useChannelStore = defineStore('channel-store', () => {
             return
         }
 
-        channelStateChangeCallbacks.forEach(f => f(payload))
+        _channelStateChangeCallbacks.forEach(f => f(channelId, payload))
+      }
+
+      const channelImageRegexMatched = topic.match(channelImageChangedRegex)
+      if(channelImageRegexMatched !== null && channelImageRegexMatched.groups !== undefined) {
+        const platform = channelImageRegexMatched.groups['platform']
+        const id = channelImageRegexMatched.groups['channelId']
+
+        const channelId = {platform, id}
+
+        if(payload !== 'changed') {
+          throw createError({message: `정의되지 않은 이벤트 발생. topic: ${topic}, payload: ${payload}`})
+        }
+
+        console.log(`${channelIdToString(channelId)} 채널 이미지 변경 감지`)
       }
     })
   }
 
   return {
-    channels: computed(() => sortChannels(_channels.value)),
+    channels: _sortedChannels,
     isChannelsLoaded: computed(() => _isChannelsLoaded.value),
     lastUpdatedAt: computed(() => _lastUpdatedAt.value),
     addChannelStateChangeCallback,

@@ -2,7 +2,10 @@
 import { closeSidebarKey } from '~/constants/sidebar'
 import type { Spinner } from '~/types/components/Spinner'
 import type { Modal } from '~/types/components/Modal'
+import type { Notification } from '~/types/components/Notification'
 import { useChannelStore } from '~/store/ChannelStore'
+import { notificationController } from '~/composables/notificationController'
+import type { NotificationInfo } from '~/types/Notification'
 
 const isSidebarOpen = ref(false)
 
@@ -31,6 +34,8 @@ const alertRef: Ref<Modal<void> | null> = ref(null)
 
 const confirmRef: Ref<Modal<boolean> | null> = ref(null)
 
+const notificationRef: Ref<Notification | null> = ref(null)
+
 onMounted(() => {
   if(spinnerRef.value === null) {
     throw createError({ message: 'spinnerRef의 값이 null 입니다. 스피너를 등록 할 수 없습니다.' })
@@ -49,17 +54,53 @@ onMounted(() => {
   }
 
   confirmController.register(confirmRef.value)
+
+  if(notificationRef.value === null) {
+    throw createError({ message: 'NotificationRef의 값이 null 입니다. 알림을 등록 할 수 없습니다.'})
+  }
+
+  notificationController.register(notificationRef.value)
 })
 
-const { addChannelStateChangeCallback } = useChannelStore()
-addChannelStateChangeCallback(state => {
-  console.log(state)
+//알림 설정
+const { addChannelStateChangeCallback, findChannelById } = useChannelStore()
+addChannelStateChangeCallback((channelId, newState) => {
+  console.log('콜백 호출 성공')
+  if(newState === 'open' || newState === 'closed') {
+    const channel = findChannelById(channelId).value
+    if(channel === undefined) {
+      throw createError({ message: '방송 상태가 변경된 채널의 검색결과가 undefined' })
+    }
+
+    if(newState === 'closed') {
+      if(channel.liveState.isOpen !== false) {
+        throw createError('에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다.')
+      }
+      const notificationInfo: NotificationInfo = {
+        notificationType: 'stream-off',
+        channel
+      }
+      notificationController.showNotification(notificationInfo)
+    } else {
+      if(channel.liveState.isOpen !== true) {
+        throw createError('에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다.')
+      }
+      const notificationInfo: NotificationInfo = {
+        notificationType: 'stream-on',
+        channel: {
+          ...channel,
+          liveState: channel.liveState
+        }
+      }
+      notificationController.showNotification(notificationInfo)
+    }
+  }
 })
 </script>
 
 <template>
   <div class="relative bg-default text-default min-h-svh flex flex-col p-2 sm:p-4">
-    <notification/>
+    <notification ref="notificationRef"/>
     <spinner ref="spinnerRef"/>
     <modal-alert ref="alertRef"/>
     <modal-confirm ref="confirmRef"/>
