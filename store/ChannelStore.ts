@@ -6,6 +6,7 @@ import { SseController } from '~/sse/SseController'
 import { channelImageChangedRegex, channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/sse'
 import { recordPayload } from '~/types/Sse'
 import { isEqual } from 'lodash'
+import { v4 } from 'uuid'
 
 
 export const useChannelStore = defineStore('channel-store', () => {
@@ -19,10 +20,16 @@ export const useChannelStore = defineStore('channel-store', () => {
 
   const _isChannelsLoaded = ref(false)
 
-  const _channelStateChangeCallbacks: ChannelStateChangeCallback[] = []
+  const _channelStateChangeCallbacks: Map<string, ChannelStateChangeCallback> = new Map()
 
   const addChannelStateChangeCallback = (newCallback: ChannelStateChangeCallback) => {
-    _channelStateChangeCallbacks.push(newCallback)
+    const callbackKey = v4()
+    _channelStateChangeCallbacks.set(callbackKey, newCallback)
+    return callbackKey
+  }
+
+  const deleteChannelStateChangeCallback = (callbackKey: string) => {
+    _channelStateChangeCallbacks.delete(callbackKey)
   }
 
   const loadChannels = async () => {
@@ -157,6 +164,7 @@ export const useChannelStore = defineStore('channel-store', () => {
         }
 
         console.log(`${channelIdToString(channelId)} 채널 이미지 변경 감지`)
+        window.location.reload()
       }
     })
   }
@@ -166,6 +174,7 @@ export const useChannelStore = defineStore('channel-store', () => {
     isChannelsLoaded: computed(() => _isChannelsLoaded.value),
     lastUpdatedAt: computed(() => _lastUpdatedAt.value),
     addChannelStateChangeCallback,
+    deleteChannelStateChangeCallback,
     findChannelById,
     loadChannels,
   }

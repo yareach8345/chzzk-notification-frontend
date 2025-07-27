@@ -64,8 +64,8 @@ onMounted(() => {
 })
 
 //알림 설정
-const { addChannelStateChangeCallback, findChannelById } = useChannelStore()
-addChannelStateChangeCallback((channelId, newState) => {
+const { addChannelStateChangeCallback, deleteChannelStateChangeCallback, findChannelById } = useChannelStore()
+const callbackKey = addChannelStateChangeCallback((channelId, newState) => {
   if(newState === 'open' || newState === 'closed') {
     const channel = findChannelById(channelId).value
     if(channel === undefined) {
@@ -95,6 +95,10 @@ addChannelStateChangeCallback((channelId, newState) => {
       notificatorController.showNotification(notificationInfo)
     }
   }
+})
+
+onUnmounted(() => {
+  deleteChannelStateChangeCallback(callbackKey)
 })
 </script>
 
