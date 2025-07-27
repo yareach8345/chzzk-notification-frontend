@@ -16,7 +16,7 @@ const showNotification = (notificationInfo: NotificationInfo) => {
 
     setTimeout(() => {
       notificationInfos.value.shift()
-    }, 2000)
+    }, 3000)
   }
 }
 
