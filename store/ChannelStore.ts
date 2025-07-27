@@ -3,7 +3,7 @@ import type { LiveCloseDto, MinimalChannelInfoDto } from '~/dto/channel/MinimalC
 import { channelIdToString, sortChannels } from '~/util/ChannelUtil'
 import type { ChannelId, ChannelStateChangeCallback } from '~/types/Channel'
 import { SseController } from '~/sse/SseController'
-import { channelImageChangedRegex, channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/sse'
+import { channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/sse'
 import { recordPayload } from '~/types/Sse'
 import { isEqual } from 'lodash'
 import { v4 } from 'uuid'
@@ -150,21 +150,6 @@ export const useChannelStore = defineStore('channel-store', () => {
         }
 
         _channelStateChangeCallbacks.forEach(f => f(channelId, payload))
-      }
-
-      const channelImageRegexMatched = topic.match(channelImageChangedRegex)
-      if(channelImageRegexMatched !== null && channelImageRegexMatched.groups !== undefined) {
-        const platform = channelImageRegexMatched.groups['platform']
-        const id = channelImageRegexMatched.groups['channelId']
-
-        const channelId = {platform, id}
-
-        if(payload !== 'changed') {
-          throw createError({message: `정의되지 않은 이벤트 발생. topic: ${topic}, payload: ${payload}`})
-        }
-
-        console.log(`${channelIdToString(channelId)} 채널 이미지 변경 감지`)
-        window.location.reload()
       }
     })
   }
