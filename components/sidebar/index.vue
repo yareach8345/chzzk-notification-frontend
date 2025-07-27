@@ -42,7 +42,12 @@
       </template>
       Live Events
     </sidebar-page-nav-item>
-    <sidebar-theme-select/>
+    <div class="flex-grow flex flex-col justify-end">
+      <div class="grid grid-cols-subgrid">
+        <sidebar-theme-select/>
+        <sidebar-notification-type-select/>
+      </div>
+    </div>
   </div>
 </template>
 

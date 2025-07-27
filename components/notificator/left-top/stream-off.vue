@@ -13,12 +13,12 @@ const { channel } = defineProps<Props>()
 </script>
 
 <template>
-  <notificator-base class="border-live-off-notification bg-live-off-notification">
+  <notificator-left-top-base class="border-live-off-notification bg-live-off-notification">
     <template #title>
       방송 OFF!
     </template>
     [{{channel.detail.displayName}}] 채널 스트리밍 OFF
-  </notificator-base>
+  </notificator-left-top-base>
 </template>
 
 <style scoped>

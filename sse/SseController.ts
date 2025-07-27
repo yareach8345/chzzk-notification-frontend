@@ -28,7 +28,21 @@ export class SseController {
 
   private readonly callbacks: EventSourceCallback[] = []
 
-  private constructor (private readonly options: Pick<EventSourceOptions, 'url' | 'credentials'>) {}
+  private constructor (private readonly options: Pick<EventSourceOptions, 'url' | 'credentials'>) {
+    // notification 테스트용 코드 - 알림 테스트 때만 주석 해제
+    // setInterval(() => {
+    //   this.callbacks.forEach(f => f('channel/chzzk/7377716c1d4389a852b5b3c0189e10c2/state', 'open'))
+    //   setTimeout(() => {
+    //     this.callbacks.forEach(f => f('channel/chzzk/e7712b74723f253ad64457ba11962a08/state', 'closed'))
+    //     setTimeout(() => {
+    //       this.callbacks.forEach(f => f('channel/chzzk/7377716c1d4389a852b5b3c0189e10c2/state', 'closed'))
+    //     }, 500)
+    //   }, 1000)
+    //   setTimeout(() => {
+    //     this.callbacks.forEach(f => f('channel/chzzk/7377716c1d4389a852b5b3c0189e10c2/state', 'open'))
+    //   }, 3000)
+    // }, 4000)
+  }
 
   connect = () => {
     console.log('[sse] try connect sse')

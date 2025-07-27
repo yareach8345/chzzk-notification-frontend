@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { getTheme } from '~/composables/theme'
-
-const theme = getTheme()
+const notificationType = getNotificationType()
 </script>
 
 <template>
   <div class="flex justify-center items-center gap-2">
     <div>
-      태마 :
+      알림위치 :
     </div>
     <select
         class="bg-default border border-default rounded-md"
-        v-model="theme"
+        v-model="notificationType"
     >
-      <option value="default">light</option>
-      <option value="black">black</option>
+      <option value="under">under</option>
+      <option value="right-top">right-top</option>
     </select>
   </div>
 </template>

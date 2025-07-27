@@ -6,6 +6,7 @@ import type { Notificator } from '~/types/components/Notificator'
 import { useChannelStore } from '~/store/ChannelStore'
 import { notificatorController } from '~/composables/notificatorController'
 import type { NotificationInfo } from '~/types/Notification'
+import { channelIdToString } from '~/util/ChannelUtil'
 
 const isSidebarOpen = ref(false)
 
@@ -68,12 +69,12 @@ addChannelStateChangeCallback((channelId, newState) => {
   if(newState === 'open' || newState === 'closed') {
     const channel = findChannelById(channelId).value
     if(channel === undefined) {
-      throw createError({ message: '방송 상태가 변경된 채널의 검색결과가 undefined' })
+      throw createError({ message: '방송 상태가 변경된 채널의 검색결과가 undefine. channelId : ${channelIdToString(channelId)}d' })
     }
 
     if(newState === 'closed') {
       if(channel.liveState.isOpen !== false) {
-        throw createError('에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다.')
+        throw createError(`에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다. channelId : ${channelIdToString(channelId)}`)
       }
       const notificationInfo: NotificationInfo = {
         notificationType: 'stream-off',
@@ -82,7 +83,7 @@ addChannelStateChangeCallback((channelId, newState) => {
       notificatorController.showNotification(notificationInfo)
     } else {
       if(channel.liveState.isOpen !== true) {
-        throw createError('에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다.')
+        throw createError('에러가 발생 했습니다. 알림과 방송의 상태가 일치하지 않습니다. channelId : ${channelIdToString(channelId)}.')
       }
       const notificationInfo: NotificationInfo = {
         notificationType: 'stream-on',
