@@ -7,6 +7,7 @@ import { channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/s
 import { recordPayload } from '~/types/Sse'
 import { isEqual } from 'lodash'
 import { v4 } from 'uuid'
+import { dateToString } from '~/util/dateUtil'
 
 
 export const useChannelStore = defineStore('channel-store', () => {
@@ -35,6 +36,7 @@ export const useChannelStore = defineStore('channel-store', () => {
   const loadChannels = async () => {
     _channels.value = await getMinimalChannels()
     _isChannelsLoaded.value = true
+    _lastUpdatedAt.value = dateToString(new Date())
   }
 
   const findChannelById = (channelId: ChannelId) => computed(() => _channelMap.value.get(channelIdToString(channelId)))
