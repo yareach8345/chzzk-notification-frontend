@@ -16,6 +16,36 @@ export const useEventStore = defineStore("eventStore", () => {
 
   const _lastUpdateTime = ref(new Date())
 
+  // 테스트용 데이터 삽입
+  // _channelEvents.value.push({
+  //   type: 'state-change',
+  //   channelId: {platform: 'test', id: 'test1'},
+  //   timeOfEvent: new Date(),
+  //   newState: 'open',
+  // })
+  //
+  // _channelEvents.value.push({
+  //   type: 'info-change',
+  //   channelId: {platform: 'test', id: 'test2'},
+  //   timeOfEvent: new Date(),
+  //   changedInfos: {
+  //     'prop1' : 'newValue1',
+  //     'prop2' : 123
+  //   }
+  // })
+  //
+  // _channelEvents.value.push({
+  //   type: 'image-change',
+  //   channelId: {platform: 'test', id: 'test3'},
+  //   timeOfEvent: new Date()
+  // })
+
+  const resetEvents = () => {
+    _channelEvents.value = []
+    _observationStartTime.value = new Date()
+    _lastUpdateTime.value = new Date()
+  }
+
   if(import.meta.client) {
     const sseController = SseController.getInstance()
     sseController.addCallback((topic, payload) => {
@@ -55,7 +85,7 @@ export const useEventStore = defineStore("eventStore", () => {
       if(regexMatched.groups.type === 'info-changed') {
         const { data: changedInfos, success, error } = recordPayload.safeParse(JSON.parse(payload))
 
-        if(success === false || error !== undefined || changedInfos === undefined) {
+        if(!success || error !== undefined || changedInfos === undefined) {
           throw error
         }
 
@@ -76,5 +106,6 @@ export const useEventStore = defineStore("eventStore", () => {
     channelEvents: computed(() => _channelEvents.value),
     observationStartTime: computed(() => _observationStartTime.value),
     lastUpdateTime: computed(() => _lastUpdateTime.value),
+    resetEvents
   }
 })

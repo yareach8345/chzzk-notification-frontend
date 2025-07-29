@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useEventStore } from '~/store/EventStore'
 import { dateToString } from '~/util/dateUtil'
-import { channelIdToString } from '~/util/ChannelUtil'
 
 definePageMeta({
   middleware: ['require-auth']
@@ -11,64 +10,74 @@ useHead({
   title: '실시간 이벤트'
 })
 
-const { channelEvents, observationStartTime, lastUpdateTime } = storeToRefs(useEventStore())
+const eventStore = useEventStore()
+const { channelEvents, observationStartTime, lastUpdateTime } = storeToRefs(eventStore)
 
-//테스트용. 컴포넌트로 추출할 것
-const testOpen = ref(false)
-const detailClicked = () => {
-  console.log('wow')
-  testOpen.value = !testOpen.value
+const showEventCount = ref(10)
+
+const startIndex = computed(() => Math.max(channelEvents.value.length - showEventCount.value, 0))
+
+const showEvents = computed(() => channelEvents.value.slice(startIndex.value))
+
+const changeShowEventCount = (delta: number) => {
+  const origin = showEventCount.value
+
+  if(origin + delta <= 0) {
+    return
+  }
+
+  showEventCount.value = origin + delta
 }
 </script>
 
 <template>
-  <box class="container flex flex-col items-center">
+  <box class="container relative flex flex-col items-center gap-2 sm:min-h-52">
     <h2 class="text-2xl">
       실시간 이벤트 뷰어
     </h2>
-    <client-only>
-      <div>
-        관측 시작 시간 : <span>{{dateToString(observationStartTime)}}</span>
-      </div>
-      <div>
-        마지막 업데이트 시간 : <span>{{dateToString(lastUpdateTime)}}</span>
-      </div>
-    </client-only>
-    <div
-        class="border border-default rounded-lg p-2 transition-all duration-300 ease-in-out"
-        v-for="event in channelEvents"
-    >
-      <div
-          class="flex items-center gap-3"
-          @mousedown.left="detailClicked"
-      >
+    <div class="flex flex-col">
+      <client-only>
         <div>
-          <svg-filled-play
-              class="transition-all duration-300 ease-in-out"
-              :class="{'rotate-90' : testOpen}"
-          />
+          관측 시작 시간 : <span>{{dateToString(observationStartTime)}}</span>
         </div>
-        <div class="flex-grow">
-          <h4 class="text-lg">{{event.type}}</h4>
-          <p class="text-sm text-stream-off">{{channelIdToString(event.channelId)}}</p>
+        <div>
+          마지막 업데이트 시간 : <span>{{dateToString(lastUpdateTime)}}</span>
         </div>
-        <client-only>
-          <div class="text-sm">
-            {{dateToString(event.timeOfEvent)}}
-          </div>
-        </client-only>
-      </div>
-      <div
-          v-show="testOpen"
-      >
-        <div
-            v-if="event.type === 'info-change'"
-            v-for="entry in Object.entries(event.changedInfos)"
+      </client-only>
+    </div>
+    <div class="sm:absolute sm:right-3 sm:top-3 flex sm:flex-col sm:items-end gap-10 sm:gap-2">
+      <!-- 컨트롤러 -->
+      <div class="flex sm:flex-col-reverse items-center gap-1">
+        <button-without-border
+            @click="changeShowEventCount(-1)"
         >
-          <p>{{entry[0]}}</p>
-          <p>{{entry[1]}}</p>
-        </div>
+          <svg-filled-play class="rotate-180 sm:rotate-90"/>
+        </button-without-border>
+        <input-number
+            class="w-8"
+            :min="1"
+            v-model="showEventCount"
+        />
+        <button-without-border
+            @click="changeShowEventCount(1)"
+        >
+          <svg-filled-play class="sm:-rotate-90"/>
+        </button-without-border>
       </div>
+      <div>
+        <button-without-border
+            @click="eventStore.resetEvents"
+            title="이벤트 초기화"
+        >
+          <svg-back/>
+        </button-without-border>
+      </div>
+    </div>
+    <div class="grid grid-cols-[auto_auto] gap-x-4 gap-y-2 items-center">
+      <template v-for="(event, index) in showEvents">
+        <p class="text-lg">{{index + startIndex + 1}}</p>
+        <event-view :event="event"/>
+      </template>
     </div>
   </box>
 </template>

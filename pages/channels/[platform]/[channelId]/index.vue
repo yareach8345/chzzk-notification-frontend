@@ -35,8 +35,9 @@ const backgroundColorStyle = getBackgroundColorStyle(channel)
 
 const chzzkButtonTitle = `${channel.detail.displayName} 채널로 이동`
 
-const navigateToChannelListPage = async () => {
-  navigateTo({ name: 'channels' })
+const navigateBack = async () => {
+  const router = useRouter()
+  router.back()
 }
 
 const navigateToEditPage = async () => {
@@ -74,7 +75,7 @@ const processDeleting = async () => {
   spinnerController.close()
   await alertPromise
 
-  await navigateToChannelListPage()
+  await navigateBack()
 }
 
 const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.platform))
@@ -202,8 +203,8 @@ const platformImgInfo = computed(() => getPlatformImageInfo(channel.channelId.pl
     <div class="w-full my-2 flex justify-start gap-2">
       <button-without-border
           class="hover:text-primary"
-          title="채널목록으로"
-          @click="navigateToChannelListPage"
+          title="돌아가기"
+          @click="navigateBack"
       >
         <svg-back/>
       </button-without-border>
