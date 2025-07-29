@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChannelStateChangeEvent } from '~/types/ChannelEvent'
+import type { ChannelStateChangeEvent } from '~/types/Events'
 
 interface Props {
   event: Pick<ChannelStateChangeEvent, 'newState'>

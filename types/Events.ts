@@ -1,7 +1,10 @@
 import type { ChannelId } from '~/types/Channel'
 
-export interface ChannelEventBase {
+export interface EventBase {
   type: string
+}
+
+export interface ChannelEventBase extends EventBase {
   timeOfEvent: Date
   channelId: ChannelId
 }
@@ -20,4 +23,12 @@ export interface ChannelImageChangeEvent extends ChannelEventBase {
   type: 'image-change'
 }
 
-export type ChannelEvent = ChannelStateChangeEvent | ChannelInfoChangeEvent | ChannelImageChangeEvent
+export interface TestEvent extends EventBase {
+  type: 'test'
+  testId?: string
+  content: string
+}
+
+export type ChannelEvents = ChannelStateChangeEvent | ChannelInfoChangeEvent | ChannelImageChangeEvent
+
+export type Events = ChannelEvents | TestEvent

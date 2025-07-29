@@ -1,16 +1,16 @@
 import type {
-  ChannelEvent,
+  ChannelEvents,
   ChannelImageChangeEvent,
   ChannelInfoChangeEvent,
   ChannelStateChangeEvent,
-} from '~/types/ChannelEvent'
+} from '~/types/Events'
 import { SseController } from '~/sse/SseController'
 import { channelEventRegex } from '~/constants/sse'
 import type { ChannelId } from '~/types/Channel'
 import { recordPayload } from '~/types/Sse'
 
 export const useEventStore = defineStore("eventStore", () => {
-  const _channelEvents = ref<ChannelEvent[]>([])
+  const _channelEvents = ref<ChannelEvents[]>([])
 
   const _observationStartTime = ref(new Date())
 
