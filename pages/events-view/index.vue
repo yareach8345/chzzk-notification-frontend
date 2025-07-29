@@ -2,7 +2,6 @@
 import { useEventStore } from '~/store/EventStore'
 import { dateToString } from '~/util/dateUtil'
 import { channelIdToString } from '~/util/ChannelUtil'
-import Slide from '~/components/transition/slide.vue'
 
 definePageMeta({
   middleware: ['require-auth']
@@ -12,7 +11,7 @@ useHead({
   title: '실시간 이벤트'
 })
 
-const { channelEvents } = storeToRefs(useEventStore())
+const { channelEvents, observationStartTime, lastUpdateTime } = storeToRefs(useEventStore())
 
 //테스트용. 컴포넌트로 추출할 것
 const testOpen = ref(false)
@@ -27,6 +26,14 @@ const detailClicked = () => {
     <h2 class="text-2xl">
       실시간 이벤트 뷰어
     </h2>
+    <client-only>
+      <div>
+        관측 시작 시간 : <span>{{dateToString(observationStartTime)}}</span>
+      </div>
+      <div>
+        마지막 업데이트 시간 : <span>{{dateToString(lastUpdateTime)}}</span>
+      </div>
+    </client-only>
     <div
         class="border border-default rounded-lg p-2 transition-all duration-300 ease-in-out"
         v-for="event in channelEvents"
