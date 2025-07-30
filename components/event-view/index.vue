@@ -1,15 +1,23 @@
 <script setup lang="ts">
-import type { ChannelEvents } from '~/types/Events'
+import type { Events } from '~/types/Events'
 
 interface Props {
-  event: ChannelEvents
+  event: Events
 }
 
 const { event } = defineProps<Props>()
+
 </script>
 
 <template>
-  <event-view-channel :event="event"/>
+  <event-view-channel
+      v-if="event.type !== 'test'"
+      :event="event"
+  />
+  <event-view-test
+      v-else
+      :event="event"
+  />
 </template>
 
 <style scoped>

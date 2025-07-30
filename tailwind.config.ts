@@ -11,6 +11,7 @@ export default {
         'yes': 'var(--color-yes)',
         'stream-off': 'var(--color-stream-off)',
         'stream-on': 'var(--color-stream-on)',
+        'test': 'var(--color-test)',
       },
       backgroundColor: {
         'default': 'var(--color-default-bg)',
@@ -26,6 +27,7 @@ export default {
         'selected': 'var(--color-selected-border)',
         'live-on-notification': 'var(--color-live-on-notification-border)',
         'live-off-notification': 'var(--color-live-off-notification-border)',
+        'test': 'var(--color-test-border)',
       },
       fontFamily: {
         blackHan: ['"Black Han Sans"', 'sans-serif'],

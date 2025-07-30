@@ -17,6 +17,9 @@
         --color-warning-bg: #FFD177;
         --color-warning: #E29F47;
 
+        --color-test: #645911;
+        --color-test-border: #b3a567;
+
         --color-no: #FF5555;
         --color-yes: #5555FF;
 
@@ -52,5 +55,7 @@
         --color-stream-on-border: #e0e0e0;
         --color-stream-off-border: #a0a0a0;
         --color-selected-border: #FFFFFF;
+        --color-test: #FEF3AD;
+        --color-test-border: #A49952;
     }
 }

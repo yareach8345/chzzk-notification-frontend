@@ -2,10 +2,10 @@ import type { ChannelId } from '~/types/Channel'
 
 export interface EventBase {
   type: string
+  timeOfEvent: Date
 }
 
 export interface ChannelEventBase extends EventBase {
-  timeOfEvent: Date
   channelId: ChannelId
 }
 

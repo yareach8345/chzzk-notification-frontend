@@ -1,16 +1,17 @@
 import type {
-  ChannelEvents,
+  Events,
   ChannelImageChangeEvent,
   ChannelInfoChangeEvent,
   ChannelStateChangeEvent,
+  TestEvent,
 } from '~/types/Events'
 import { SseController } from '~/sse/SseController'
-import { channelEventRegex } from '~/constants/sse'
+import { channelEventRegex, testEventRegex } from '~/constants/sse'
 import type { ChannelId } from '~/types/Channel'
 import { recordPayload } from '~/types/Sse'
 
 export const useEventStore = defineStore("eventStore", () => {
-  const _channelEvents = ref<ChannelEvents[]>([])
+  const _channelEvents = ref<Events[]>([])
 
   const _observationStartTime = ref(new Date())
 
@@ -48,56 +49,75 @@ export const useEventStore = defineStore("eventStore", () => {
 
   if(import.meta.client) {
     const sseController = SseController.getInstance()
-    sseController.addCallback((topic, payload) => {
-      const regexMatched = topic.match(channelEventRegex)
 
-      if(regexMatched === null || regexMatched.groups === undefined) {
+    sseController.addCallback((topic, payload) => {
+      const channelEventRegexMatched = topic.match(channelEventRegex)
+
+      const testEventRegexMatched = topic.match(testEventRegex)
+
+      if(channelEventRegexMatched === null && testEventRegexMatched === null) {
         return
       }
 
       const timeOfEvent = new Date()
 
-      const platform = regexMatched.groups['platform']
-      const id = regexMatched.groups['channelId']
-      const channelId: ChannelId =  { platform, id }
+      if(channelEventRegexMatched !== null && channelEventRegexMatched.groups !== undefined) {
+        const platform = channelEventRegexMatched.groups['platform']
+        const id = channelEventRegexMatched.groups['channelId']
+        const channelId: ChannelId =  { platform, id }
 
-      if(regexMatched.groups.type === 'state') {
-        const newEvent: ChannelStateChangeEvent = {
-          type: 'state-change',
-          channelId,
-          newState: payload,
-          timeOfEvent
-        }
-
-        _channelEvents.value.push(newEvent)
-      }
-
-      if(regexMatched.groups.type === 'image') {
-        const newEvent: ChannelImageChangeEvent = {
-          type: 'image-change',
-          channelId,
-          timeOfEvent
-        }
-
-        _channelEvents.value.push(newEvent)
-      }
-
-      if(regexMatched.groups.type === 'info-changed') {
-        const { data: changedInfos, success, error } = recordPayload.safeParse(JSON.parse(payload))
-
-        if(!success || error !== undefined || changedInfos === undefined) {
-          throw error
-        }
-
-        const newEvent: ChannelInfoChangeEvent = {
-          type: 'info-change',
+        const channelEventBase = {
           channelId,
           timeOfEvent,
-          changedInfos
         }
 
-        _channelEvents.value.push(newEvent)
+        if(channelEventRegexMatched.groups.type === 'state') {
+          const newEvent: ChannelStateChangeEvent = {
+            type: 'state-change',
+            newState: payload,
+            ...channelEventBase,
+          }
+
+          _channelEvents.value.push(newEvent)
+        }
+
+        if(channelEventRegexMatched.groups.type === 'image') {
+          const newEvent: ChannelImageChangeEvent = {
+            type: 'image-change',
+            ...channelEventBase,
+          }
+
+          _channelEvents.value.push(newEvent)
+        }
+
+        if(channelEventRegexMatched.groups.type === 'info-changed') {
+          const { data: changedInfos, success, error } = recordPayload.safeParse(JSON.parse(payload))
+
+          if(!success || error !== undefined || changedInfos === undefined) {
+            throw error
+          }
+
+          const newEvent: ChannelInfoChangeEvent = {
+            type: 'info-change',
+            changedInfos,
+            ...channelEventBase
+          }
+
+          _channelEvents.value.push(newEvent)
+        }
       }
+
+      if(testEventRegexMatched !== null && testEventRegexMatched.groups !== undefined) {
+        const testMessage: TestEvent = {
+          type: 'test',
+          content: payload,
+          testId: testEventRegexMatched.groups['testId'],
+          timeOfEvent
+        }
+
+        _channelEvents.value.push(testMessage)
+      }
+
       _lastUpdateTime.value = timeOfEvent
     })
   }
