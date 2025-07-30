@@ -5,6 +5,8 @@ export const useDeviceStore = defineStore("deviceStore", () => {
 
   let _refresh: (() => Promise<void>) | undefined
 
+  const isInitialized = () => _devices !== undefined && _refresh !== undefined
+
   const setRefresh = (refresh: () => Promise<void>) => {
     _refresh = refresh
   }
@@ -30,6 +32,7 @@ export const useDeviceStore = defineStore("deviceStore", () => {
 
   return {
     devices: computed(() => _devices?.value),
+    isInitialized,
     setDevices,
     getDeviceById,
     setRefresh,
