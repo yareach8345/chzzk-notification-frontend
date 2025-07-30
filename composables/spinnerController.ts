@@ -3,10 +3,11 @@ import type { Spinner } from '~/types/components/Spinner'
 const spinnerRef: Ref<Spinner | null> = ref(null);
 
 export const spinnerController = {
-  withSpinner: async (message: string | undefined, run: () => (Promise<void> | void)) => {
+  withSpinner: async <T>(message: string | undefined, run: () => (Promise<T> | T)) => {
     spinnerController.open(message)
-    await run()
+    const result = await run()
     spinnerController.close()
+    return result
   },
   open: (message?: string) => {
     if(spinnerRef.value === null) {
