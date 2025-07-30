@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { toBack } from '~/composables/routing'
 import { fetchDevices } from '~/api/DeviceRequests'
+import { useDeviceStore } from '~/store/DeviceStore'
 
 definePageMeta({
   middleware: ['require-auth']
@@ -10,7 +11,27 @@ useHead({
   title: '디바이스'
 })
 
-const { data: devices, refresh } = await fetchDevices()
+const deviceStore = useDeviceStore()
+
+const { data: devices, refresh, error } = await fetchDevices()
+
+if(error.value !== null || devices.value === null) {
+  throw error
+}
+
+deviceStore.setDevices(devices.value)
+
+const refreshDevices = async () => {
+  await spinnerController.withSpinner('디바이스 정보를 다시 불러옵니다.', async () => {
+    await refresh()
+
+    if(error.value !== null || devices.value === null) {
+      throw error
+    }
+
+    deviceStore.setDevices(devices.value)
+  })
+}
 
 const navigateToRegisterPage = async () => {
   await navigateTo({name: 'devices-register'})
@@ -37,6 +58,13 @@ const navigateToRegisterPage = async () => {
           @click="toBack"
       >
         <svg-back/>
+      </button-without-border>
+      <button-without-border
+          class="hover:text-primary"
+          title="디바이스 다시 불러오기"
+          @click="refreshDevices"
+      >
+        <svg-refresh/>
       </button-without-border>
       <button-without-border
           class="hover:text-primary"
