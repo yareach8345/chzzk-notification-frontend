@@ -2,7 +2,7 @@
 import { defaultChannelColor } from '~/constants/ChannelInfo'
 
 definePageMeta({
-  middleware: ['require-auth']
+  middleware: ['require-auth', 'require-channel-info']
 })
 
 import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'

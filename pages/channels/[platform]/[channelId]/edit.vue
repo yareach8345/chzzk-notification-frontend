@@ -2,7 +2,7 @@
 import { getChannelIdFromRoute } from '~/util/ChannelUtil'
 
 definePageMeta({
-  middleware: ['require-auth']
+  middleware: ['require-auth', 'require-channel-info']
 })
 
 import { updateChannel } from '~/api/ChannelRequest'
