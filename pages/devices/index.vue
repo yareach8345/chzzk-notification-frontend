@@ -19,19 +19,13 @@ if(error.value !== null || devices.value === null) {
   throw error
 }
 
-deviceStore.setDevices(devices.value)
-deviceStore.setRefresh(async () => {
-  await refresh()
-
-  if(error.value !== null || devices.value === null) {
-    throw error
-  }
-
-  return devices.value
-})
+deviceStore.setDevices(devices)
+deviceStore.setRefresh(refresh)
 
 const refreshDevices = async () => {
-  await spinnerController.withSpinner('디바이스 정보를 다시 불러옵니다.', deviceStore.refreshDevice)
+  await spinnerController.withSpinner('디바이스 정보를 다시 불러옵니다.', async () => {
+    await deviceStore.refreshDevice()
+  })
 }
 
 const navigateToRegisterPage = async () => {
