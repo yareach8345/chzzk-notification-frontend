@@ -70,7 +70,7 @@ const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !==
 
 const priorityInputValid = () => {
   if(channelPriority.value === undefined || channelPriority.value === '') {
-    return null
+    return undefined
   }
 
   const priority = channelPriority.value ? parseInt(channelPriority.value) : undefined
