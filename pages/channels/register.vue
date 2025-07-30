@@ -93,12 +93,10 @@ const priorityInputValid = () => {
 }
 
 const onAddButtonClick = async () => {
-  spinnerController.open('채널 등록중')
-  const isSucceed = await processRegistering()
-  spinnerController.close()
+  const isSucceed = await spinnerController.withSpinner('채널 등록중입니다.', processRegistering)
 
-  if(isSucceed) {
-    navigateTo({ name: 'channels' })
+  if (isSucceed) {
+    navigateTo({name: 'channels'})
   }
 }
 

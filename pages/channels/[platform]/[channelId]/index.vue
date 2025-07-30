@@ -61,19 +61,20 @@ const processDeleting = async () => {
     return
   }
 
-  spinnerController.open('채널 삭제 작업중입니다')
-  await deleteChannel(channelId)
-  await channelStore.loadChannels()
+  let alertPromise: Promise<void | undefined> | (void | undefined) = undefined
 
-  const alertPromise = alertController.open({
+  await spinnerController.withSpinner('채널 삭제 작업중입니다.', async () => {
+    await deleteChannel(channelId)
+    await channelStore.loadChannels()
+  })
+
+  await alertController.open({
     title: '채널을 삭제 완료',
     content: [
-        '삭제가 완료되었습니다.',
-        '채널 목록으로 이동합니다.'
+      '삭제가 완료되었습니다.',
+      '채널 목록으로 이동합니다.'
     ]
   })
-  spinnerController.close()
-  await alertPromise
 
   await navigateBack()
 }
