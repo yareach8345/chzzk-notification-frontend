@@ -4,6 +4,19 @@ import { some } from 'lodash'
 export const useDeviceStore = defineStore("deviceStore", () => {
   const _devices: Ref<DeviceDto[] | undefined> = ref()
 
+  const _refresh: Ref<(() => Promise<DeviceDto[]>) | undefined> = ref()
+
+  const refreshDevice = async () => {
+    if(_refresh.value === undefined) {
+      throw createError('device store에 refresh가 설정되지 않았습니다.')
+    }
+    _devices.value = await _refresh.value()
+  }
+
+  const setRefresh = (refresh: () => Promise<DeviceDto[]>) => {
+    _refresh.value = refresh
+  }
+
   const setDevices = (devices: DeviceDto[]) => {
     _devices.value = devices
   }
@@ -35,5 +48,7 @@ export const useDeviceStore = defineStore("deviceStore", () => {
     setDevices,
     setDevice,
     getDeviceById,
+    setRefresh,
+    refreshDevice,
   }
 })
