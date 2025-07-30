@@ -32,7 +32,7 @@ const changeShowEventCount = (delta: number) => {
 
 <template>
   <box class="container relative flex flex-col items-center gap-2 sm:min-h-52">
-    <h2 class="text-2xl">
+    <h2 class="text-2xl font-blackHan">
       실시간 이벤트 뷰어
     </h2>
     <div class="flex flex-col">
@@ -69,7 +69,7 @@ const changeShowEventCount = (delta: number) => {
             @click="eventStore.resetEvents"
             title="이벤트 초기화"
         >
-          <svg-back/>
+          <svg-refresh/>
         </button-without-border>
       </div>
     </div>
