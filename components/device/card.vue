@@ -6,14 +6,6 @@ interface Props {
 }
 
 const { device } = defineProps<Props>()
-
-const isSecretKeyBlur = ref(true)
-
-const blurClass = computed(() => ({ 'blur-sm': isSecretKeyBlur.value }))
-
-const deactivateBlur = () => {
-  isSecretKeyBlur.value = false
-}
 </script>
 
 <template>
@@ -22,14 +14,8 @@ const deactivateBlur = () => {
       <svg-device/>
     </div>
     <div>
-      <p class="font-bold">{{device.deviceId}}</p>
-      <p
-          class="text-sm"
-          :class="blurClass"
-          @click.stop="deactivateBlur"
-      >
-        {{device.secretKey}}
-      </p>
+      <p class="font-bold">{{device.deviceName}}</p>
+      <p class="text-stream-off">{{device.deviceId}}</p>
     </div>
   </box-primary>
 </template>

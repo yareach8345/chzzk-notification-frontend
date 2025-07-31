@@ -3,6 +3,7 @@ import { toBack } from '~/composables/routing'
 import type { RegisterDeviceDto } from '~/dto/device/RegisterDeviceDto'
 import { registerDevice } from '~/api/DeviceRequests'
 import { useDeviceStore } from '~/store/DeviceStore'
+import { FetchError } from 'ofetch'
 
 definePageMeta({
   middleware: ['require-auth', 'require-device-store-init']
@@ -14,7 +15,11 @@ useHead({
 
 const deviceStore = useDeviceStore()
 
+const deviceName = ref('')
+
 const deviceId = ref('')
+
+const description = ref('')
 
 const priorityInputHelpMessage: Ref<string | undefined> = ref()
 
@@ -51,12 +56,33 @@ const submitDevice = async () => {
 
   const registerDto: RegisterDeviceDto = {
     deviceId: deviceId.value,
+    deviceName: deviceName.value,
+    description: description.value.length === 0 ? null : description.value,
   }
 
-  await spinnerController.withSpinner('디바이스 등록중입니다.', async () => {
-    await registerDevice(registerDto)
-    await deviceStore.refreshDevice()
+  const result = await spinnerController.withSpinner('디바이스 등록중입니다.', async () => {
+    try {
+      await registerDevice(registerDto)
+      await deviceStore.refreshDevice()
+      return {
+        success: true
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error
+      }
+    }
   })
+
+  if(result.success === false) {
+    if(result.error instanceof FetchError) {
+      priorityInputHelpMessage.value = result.error.data.message
+    } else {
+      throw result.error
+    }
+    return
+  }
 
   await alertController.open({
     title: '디바이스 등록 완료!',
@@ -71,7 +97,7 @@ const submitDevice = async () => {
 </script>
 
 <template>
-  <section>
+  <section class="max-sm:container">
     <box class="sp-3 relative flex flex-col gap-4">
       <h2 class="text-4xl text-center font-blackHan">
         디바이스 등록
@@ -80,16 +106,34 @@ const submitDevice = async () => {
           class="flex flex-col items-center gap-2"
           @submit.prevent="submitDevice"
       >
-        <fieldset class="border border-default rounded-md p-2 flex">
+        <fieldset class="max-sm:w-full border border-default rounded-md p-2 flex flex-col gap-2">
           <legend>디바이스 정보</legend>
           <label>
-            device Id
+            <required-field-name>device name</required-field-name>
             <br>
             <input-text
+                class="w-full"
+                v-model="deviceName"
+                required
+            />
+          </label>
+          <label>
+            <required-field-name>device id</required-field-name>
+            <br>
+            <input-text
+                class="w-full"
                 :class="errorStyleClass"
                 v-model="deviceId"
                 required
             />
+          </label>
+          <label>
+            description
+            <br>
+            <textarea
+                class="w-full sm:w-96 bg-default border border-default rounded-lg p-1"
+                v-model="description"
+            ></textarea>
           </label>
         </fieldset>
         <button-neon type="submit">

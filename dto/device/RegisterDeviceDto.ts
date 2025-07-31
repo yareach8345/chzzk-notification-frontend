@@ -1,3 +1,1 @@
-export interface RegisterDeviceDto {
-  deviceId: string
-}
+export type RegisterDeviceDto = Omit<DeviceDto, 'secretKey'>
