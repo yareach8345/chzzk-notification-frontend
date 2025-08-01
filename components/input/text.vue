@@ -25,7 +25,7 @@ defineExpose<Input>({
   <input
       ref="inputRef"
       type="text"
-      class="border border-default invalid:border-error bg-default text-lg p-1 rounded-md focus:border-selected outline-none"
+      class="border border-default bg-default text-lg p-1 rounded-md focus:border-selected outline-none invalid:text-error"
       :disabled="disabled"
       v-model="value"
   />

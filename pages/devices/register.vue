@@ -4,8 +4,8 @@ import type { RegisterDeviceDto } from '~/dto/device/RegisterDeviceDto'
 import { registerDevice } from '~/api/DeviceRequests'
 import { useDeviceStore } from '~/store/DeviceStore'
 import { FetchError } from 'ofetch'
-import { deviceIdRegex } from '~/constants/device'
 import { isValidDeviceId } from '~/util/DeviceUtil'
+import type { Input } from '~/types/components/Input'
 
 definePageMeta({
   middleware: ['require-auth', 'require-device-store-init']
@@ -23,23 +23,13 @@ const deviceId = ref('')
 
 const description = ref('')
 
-const priorityInputHelpMessage: Ref<string | undefined> = ref()
-
-const checkValidDeviceId = (deviceId: string) => {
-  const validResult = isValidDeviceId(deviceId)
-  if(typeof validResult === 'string') {
-    priorityInputHelpMessage.value = validResult
-    return false
-  }
-  return true
-}
-
-const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !== undefined ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4')
-
-const errorStyleClass = computed(() => ({ 'text-error': priorityInputHelpMessage.value !== undefined }))
+const deviceIdInputRef = ref<Input | undefined>()
 
 const submitDevice = async () => {
-  if(!checkValidDeviceId(deviceId.value)) {
+  const validResult = isValidDeviceId(deviceId.value)
+
+  if(validResult !== true) {
+    deviceIdInputRef.value?.showError(validResult)
     return
   }
 
@@ -53,23 +43,23 @@ const submitDevice = async () => {
     try {
       await registerDevice(registerDto)
       await deviceStore.refreshDevice()
-      return {
-        success: true
-      }
+
+      return true
     } catch (error) {
-      return {
-        success: false,
-        error: error
+      if(!(error instanceof FetchError)) {
+        throw error
       }
+
+      return error
     }
   })
 
-  if(result.success === false) {
-    if(result.error instanceof FetchError) {
-      priorityInputHelpMessage.value = result.error.data.message
-    } else {
-      throw result.error
-    }
+  if(result !== true) {
+    await alertController.open({
+      title: '디바이스 등록 실패',
+      content: [ result.data.message ?? result.message ]
+    })
+
     return
   }
 
@@ -110,8 +100,8 @@ const submitDevice = async () => {
             <required-field-name>device id</required-field-name>
             <br>
             <input-text
+                ref="deviceIdInputRef"
                 class="w-full"
-                :class="errorStyleClass"
                 v-model="deviceId"
                 required
             />
@@ -130,13 +120,6 @@ const submitDevice = async () => {
           등록
         </button-neon>
       </form>
-      <transition-slide
-          v-show="priorityInputHelpMessage !== undefined"
-          class="text-error"
-          :class="errorMessageStyleClass"
-      >
-        {{priorityInputHelpMessage}}
-      </transition-slide>
     </box>
     <div>
       <button-without-border

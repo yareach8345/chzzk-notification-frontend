@@ -8,11 +8,8 @@ const { disabled = false } = defineProps<Props>()
 
 <template>
   <button
-      :class="{
-        'hover:underline': !disabled,
-        'hover:text-blue-600': !disabled,
-        'opacity-50': disabled
-      }"
+      class="enabled:hover:underline enabled:hover:text-blue-500 disabled:opacity-50"
+      :disabled="disabled"
   >
     <slot/>
   </button>
