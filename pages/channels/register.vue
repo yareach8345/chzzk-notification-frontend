@@ -9,8 +9,9 @@ import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDt
 import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
 import { platforms } from '~/constants/platforms'
-import { isEqualChannelId } from '~/util/ChannelUtil'
+import { isEqualChannelId, isValidPriorityInput, parsePriority } from '~/util/ChannelUtil'
 import { getPlatformImageInfo } from '~/util/ApiUtil'
+import type { Input } from '@/types/components/Input'
 
 const channelStore = useChannelStore()
 
@@ -55,41 +56,11 @@ const onChannelSearchButtonClick = async () => {
 // input 태그 컨트롤
 const selectedPlatform = ref(platforms[0])
 
+const priorityInputRef = ref<Input | undefined>()
+
 const onPlatformSelectChange = () => {
   console.log(selectedPlatform.value)
   selectedChannel.value = null
-}
-
-const priorityInputHelpMessage: Ref<string | null> = ref(null)
-
-const errorStyleClass = computed(() => ({
-  'text-error': priorityInputHelpMessage.value !== null,
-}))
-
-const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !== null ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4')
-
-const priorityInputValid = () => {
-  if(channelPriority.value === undefined || channelPriority.value === '') {
-    return undefined
-  }
-
-  const priority = channelPriority.value ? parseInt(channelPriority.value) : undefined
-
-  if(priority === undefined || isNaN(priority)) {
-    console.error(`우선순위 입력이 잘못 되었습니다. 우선순위는 숫자로만 입력되어야 합니다. ${channelPriority.value}`)
-    priorityInputHelpMessage.value = '우선순위로는 숫자만 입력되어야 합니다.'
-    return null
-  }
-
-  if(priority < 0 || priority > 255) {
-    console.error(`우선순위 입력이 잘못 되었습니다. 입력 가능한 범위는 0에서 255까지 입니다. ${channelPriority.value}`)
-    priorityInputHelpMessage.value = '우선순위로 입력 가능한 범위는 0에서 255까지 입니다.'
-    return null
-  }
-
-  priorityInputHelpMessage.value = null
-
-  return priority
 }
 
 const onAddButtonClick = async () => {
@@ -108,10 +79,14 @@ const processRegistering = async () => {
     })
   }
 
-  const priority = priorityInputValid()
-  if(priority !== undefined && (priority === null || isNaN(priority))) {
-    return false
+  const validResult = isValidPriorityInput(channelPriority.value)
+
+  if(typeof validResult === 'string') {
+    priorityInputRef.value?.showError(validResult)
+    return
   }
+
+  const priority = parsePriority(channelPriority.value)
 
   await registerChannel({
     channelId: {
@@ -224,9 +199,10 @@ const navigateToChannelListPage = async () => {
               class="w-24"
           >
           <p>{{channelColor}}</p>
-          <p class="text-right font-bold" :class="errorStyleClass">우선순위</p>
+          <p class="text-right font-bold">우선순위</p>
           <div>
             <input-number
+                ref="priorityInputRef"
                 v-model="channelPriority"
                 :min="0"
                 :max="255"
@@ -243,13 +219,6 @@ const navigateToChannelListPage = async () => {
           </button-neon>
         </div>
       </form>
-      <transition-slide
-          v-show="priorityInputHelpMessage !== undefined"
-          class="text-error"
-          :class="errorMessageStyleClass"
-      >
-        {{priorityInputHelpMessage}}
-      </transition-slide>
     </box>
     <button-without-border
         class="hover:text-primary"

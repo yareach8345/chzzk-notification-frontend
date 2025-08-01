@@ -94,9 +94,11 @@ const navigateToRegisterPage = () => {
           />
         </label>
       </div>
-      <div>
-        마지막 업데이트 시간 : {{lastUpdatedAt}}
-      </div>
+      <client-only>
+        <div>
+          마지막 업데이트 시간 : {{lastUpdatedAt}}
+        </div>
+      </client-only>
       <div class="grid md:grid-cols-2 auto-cols-fr gap-2">
         <channel-card
             class="flex-none"

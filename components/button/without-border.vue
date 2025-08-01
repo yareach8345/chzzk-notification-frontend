@@ -7,13 +7,7 @@ const { disabled = false } = defineProps<Props>()
 </script>
 
 <template>
-  <button
-      class="rounded-lg transition-colors duration-500 ease-in-out p-2"
-      :class="{
-        'hover:bg-selected': !disabled,
-        'opacity-50': disabled
-      }"
-  >
+  <button class="rounded-lg transition-colors duration-500 ease-in-out p-2 disabled:opacity-50 enabled:hover:bg-selected">
     <slot/>
   </button>
 </template>

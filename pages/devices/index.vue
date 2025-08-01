@@ -1,35 +1,20 @@
 <script setup lang="ts">
 import { toBack } from '~/composables/routing'
-import { fetchDevices } from '~/api/DeviceRequests'
 import { useDeviceStore } from '~/store/DeviceStore'
 
 definePageMeta({
-  middleware: ['require-auth']
+  middleware: ['require-auth', 'require-device-store-init']
 })
 
 useHead({
-  title: '디바이스'
+  title: '디바이스 목록'
 })
 
 const deviceStore = useDeviceStore()
 
-const { data: devices, refresh, error } = await fetchDevices()
-
-if(error.value !== null || devices.value === null) {
-  throw error
-}
-
-deviceStore.setDevices(devices.value)
-
 const refreshDevices = async () => {
   await spinnerController.withSpinner('디바이스 정보를 다시 불러옵니다.', async () => {
-    await refresh()
-
-    if(error.value !== null || devices.value === null) {
-      throw error
-    }
-
-    deviceStore.setDevices(devices.value)
+    await deviceStore.refreshDevice()
   })
 }
 
@@ -42,11 +27,11 @@ const navigateToRegisterPage = async () => {
   <section>
     <box class="p-3 relative flex flex-col gap-4">
       <h2 class="text-4xl text-center font-blackHan">
-        디바이스 정보 페이지
+        디바이스 목록
       </h2>
       <div class="grid md:grid-cols-2 gap-2">
         <device-card
-            v-for="device in devices"
+            v-for="device in deviceStore.devices"
             :device="device"
         />
       </div>

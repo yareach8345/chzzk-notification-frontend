@@ -1,39 +1,41 @@
 import type { DeviceDto } from '~/dto/device/DeviceDto'
-import { some } from 'lodash'
 
 export const useDeviceStore = defineStore("deviceStore", () => {
-  const _devices: Ref<DeviceDto[] | undefined> = ref()
+  let _devices: Ref<DeviceDto[] | null> | undefined
 
-  const setDevices = (devices: DeviceDto[]) => {
-    _devices.value = devices
+  let _refresh: (() => Promise<void>) | undefined
+
+  const isInitialized = () => _devices !== undefined && _refresh !== undefined
+
+  const setRefresh = (refresh: () => Promise<void>) => {
+    _refresh = refresh
   }
 
-  const setDevice = (device: DeviceDto) => {
-    if(_devices.value === undefined) {
-      throw createError('device store가 초기화 되기 전 접근하고 있습니다.')
+  const refreshDevice = async () => {
+    if(_refresh === undefined) {
+      throw createError('device store에 refresh가 설정되지 않았습니다.')
     }
+    await _refresh()
+  }
 
-    const exists = some(_devices.value, { 'deviceId' : device.deviceId })
-
-    if(!exists) {
-      throw createError(`'${device.deviceId}' id의 device가 존재하지 않습니다.`)
-    }
-
-    _devices.value = _devices.value.map(d => d.deviceId === device.deviceId ? device : d)
+  const setDevices = (devices: Ref<DeviceDto[] | null>) => {
+    _devices = devices
   }
 
   const getDeviceById = (deviceId: string) => {
-    if(_devices.value === undefined) {
+    if(_devices === undefined) {
       throw createError('device store가 초기화 되기 전 접근하고 있습니다.')
     }
 
-    return computed(() => _devices.value?.find(d => d.deviceId === deviceId))
+    return computed(() => _devices?.value?.find(d => d.deviceId === deviceId))
   }
 
   return {
-    devices: computed(() => _devices.value),
+    devices: computed(() => _devices?.value),
+    isInitialized,
     setDevices,
-    setDevice,
     getDeviceById,
+    setRefresh,
+    refreshDevice,
   }
 })

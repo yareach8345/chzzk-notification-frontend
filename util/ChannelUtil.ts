@@ -62,3 +62,25 @@ export function sortChannels<T extends MinimalChannelInfo>(
     return c2.detail.followerCount - c1.detail.followerCount
   })
 }
+
+export const parsePriority = (priorityString: string | undefined) => {
+  return priorityString ? parseInt(priorityString) : undefined
+}
+
+export const isValidPriorityInput = (priorityString: string | undefined) => {
+  if(priorityString === undefined || priorityString === '') {
+    return true
+  }
+
+  const parsedPriority = parsePriority(priorityString)
+
+  if(parsedPriority === undefined || isNaN(parsedPriority)) {
+    return '우선순위로는 숫자만 입력되어야 합니다.'
+  }
+
+  if(parsedPriority < 0 || parsedPriority > 255) {
+    return '우선순위로 입력 가능한 범위는 0에서 255까지 입니다.'
+  }
+
+  return true
+}

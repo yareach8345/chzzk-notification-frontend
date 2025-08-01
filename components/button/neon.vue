@@ -6,20 +6,14 @@ interface Props {
 
 const { disabled = false, submit = false } = defineProps<Props>()
 
-const classes = computed(() => ({
-  'hover:border-selected': !disabled,
-  'hover:bg-selected': !disabled,
-  'opacity-50': disabled
-}))
-
 const buttonType = computed(() => submit ? 'submit' : 'button')
 </script>
 
 <template>
   <button
+      class="border-4 border-default rounded-lg transition-colors duration-500 ease-in-out p-2 disabled:opacity-50 enabled:hover:bg-selected enabled:hover:border-selected"
       :type="buttonType"
-      :class="classes"
-      class="border-4 border-default rounded-lg transition-colors duration-500 ease-in-out p-2"
+      :disabled="disabled"
   >
     <slot/>
   </button>

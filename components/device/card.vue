@@ -7,31 +7,30 @@ interface Props {
 
 const { device } = defineProps<Props>()
 
-const isSecretKeyBlur = ref(true)
-
-const blurClass = computed(() => ({ 'blur-sm': isSecretKeyBlur.value }))
-
-const deactivateBlur = () => {
-  isSecretKeyBlur.value = false
+const toDetailPage = async () => {
+  await navigateTo({
+    name: 'devices-deviceId',
+    params: { 'deviceId': device.deviceId }
+  })
 }
+
+const borderColorClass = computed(() => device.isUsable ? 'border-primary' : 'border-stream-off')
 </script>
 
 <template>
-  <box-primary class="flex justify-start items-center auto-cols-fr text-lg gap-3">
+  <article
+      class="border-2 rounded-md p-2 flex justify-start items-center auto-cols-fr text-lg gap-3"
+      :class="borderColorClass"
+      @click="toDetailPage"
+  >
     <div>
       <svg-device/>
     </div>
     <div>
-      <p class="font-bold">{{device.deviceId}}</p>
-      <p
-          class="text-sm"
-          :class="blurClass"
-          @click.stop="deactivateBlur"
-      >
-        {{device.secretKey}}
-      </p>
+      <p class="font-bold">{{device.deviceName}}</p>
+      <p class="text-stream-off">{{device.deviceId}}</p>
     </div>
-  </box-primary>
+  </article>
 </template>
 
 <style scoped>
