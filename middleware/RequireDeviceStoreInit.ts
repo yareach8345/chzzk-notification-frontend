@@ -13,5 +13,7 @@ export default defineNuxtRouteMiddleware(async () => {
 
     deviceStore.setDevices(data)
     deviceStore.setRefresh(refresh)
+  } else {
+    await deviceStore.refreshDevice()
   }
 })

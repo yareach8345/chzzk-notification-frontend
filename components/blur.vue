@@ -10,7 +10,7 @@ const deactivateBlur = () => {
 
 <template>
   <p
-      class="text-sm"
+      class="transition-all duration-200"
       :class="blurClass"
       @click.stop="deactivateBlur"
   >
