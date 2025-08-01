@@ -4,6 +4,8 @@ import type { RegisterDeviceDto } from '~/dto/device/RegisterDeviceDto'
 import { registerDevice } from '~/api/DeviceRequests'
 import { useDeviceStore } from '~/store/DeviceStore'
 import { FetchError } from 'ofetch'
+import { deviceIdRegex } from '~/constants/device'
+import { isValidDeviceId } from '~/util/DeviceUtil'
 
 definePageMeta({
   middleware: ['require-auth', 'require-device-store-init']
@@ -23,25 +25,12 @@ const description = ref('')
 
 const priorityInputHelpMessage: Ref<string | undefined> = ref()
 
-const deviceIdRegex = new RegExp('^[a-zA-Z0-9_\-]+$')
-
-const isValidDeviceId = (deviceId: string) => {
-  if(deviceId.length <= 0) {
-    priorityInputHelpMessage.value = 'deviceId는 필수 항목입니다.'
+const checkValidDeviceId = (deviceId: string) => {
+  const validResult = isValidDeviceId(deviceId)
+  if(typeof validResult === 'string') {
+    priorityInputHelpMessage.value = validResult
     return false
   }
-
-  if(deviceId.includes(' ')) {
-    priorityInputHelpMessage.value = 'deviceId에는 공백이 포함될 수 없습니다.'
-    return false
-  }
-
-  const result = deviceId.match(deviceIdRegex)
-  if(result === null) {
-    priorityInputHelpMessage.value = 'deviceId는 소문자와 대문자의 로마자, -와 _로만 이루어져 있어야 합니다.'
-    return false
-  }
-
   return true
 }
 
@@ -50,7 +39,7 @@ const errorMessageStyleClass = computed(() => priorityInputHelpMessage.value !==
 const errorStyleClass = computed(() => ({ 'text-error': priorityInputHelpMessage.value !== undefined }))
 
 const submitDevice = async () => {
-  if(!isValidDeviceId(deviceId.value)) {
+  if(!checkValidDeviceId(deviceId.value)) {
     return
   }
 
@@ -132,6 +121,7 @@ const submitDevice = async () => {
             <br>
             <textarea
                 class="w-full sm:w-96 bg-default border border-default rounded-lg p-1"
+                placeholder="디바이스의 설명을 입력하세요."
                 v-model="description"
             ></textarea>
           </label>

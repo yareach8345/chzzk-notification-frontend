@@ -2,6 +2,7 @@ import { getBackendUrl, getCookieHeader } from '~/util/ApiUtil'
 import type { DeviceDto } from '~/dto/device/DeviceDto'
 import type { RegisterDeviceDto } from '~/dto/device/RegisterDeviceDto'
 import type { SetUsableDto } from '~/dto/device/SetUsableDto'
+import type { UpdateDeviceDto } from '~/dto/device/UpdateDeviceDto'
 
 export const fetchDevices = () => {
   const cookieHeader = getCookieHeader()
@@ -59,6 +60,18 @@ export const deleteDevice = (deviceId: string) => {
 
   return $fetch<DeviceDto[]>(url, {
     method: 'DELETE',
+    credentials: 'include',
+    headers: {...cookieHeader}
+  })
+}
+
+export const updateDevice = (deviceId: string, updateDeviceDto: UpdateDeviceDto) => {
+  const cookieHeader = getCookieHeader()
+  const url = getBackendUrl(`/devices/${deviceId}`)
+
+  return $fetch<DeviceDto[]>(url, {
+    method: 'PATCH',
+    body: updateDeviceDto,
     credentials: 'include',
     headers: {...cookieHeader}
   })
