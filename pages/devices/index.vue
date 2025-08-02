@@ -29,7 +29,17 @@ const navigateToRegisterPage = async () => {
       <h2 class="text-4xl text-center font-blackHan">
         디바이스 목록
       </h2>
-      <div class="grid md:grid-cols-2 gap-2">
+      <div
+          v-if="!deviceStore.devices || deviceStore.devices.length === 0"
+          class="text-md text-center"
+      >
+        디바이스가 존재하지 않습니다.<br>
+        디바이스를 추가 해주세요.
+      </div>
+      <div
+          v-else
+          class="grid md:grid-cols-2 gap-2"
+      >
         <device-card
             v-for="device in deviceStore.devices"
             :device="device"
