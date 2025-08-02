@@ -94,6 +94,8 @@ const processDeleting = async () => {
     throw createError('삭제하고자 하는 device가 undefined 상태입니다.')
   }
 
+  const deviceId = device.value.deviceId
+
   const confirmResult = await confirmController.open({
     title: `디바이스를 삭제 하시겠습니까?`,
     content: [
@@ -107,18 +109,32 @@ const processDeleting = async () => {
     return
   }
 
-  try{
-    await deleteDevice(device.value.deviceId)
-    await deviceStore.refreshDevice()
-  } catch (error) {
-    if(!(error instanceof FetchError)) {
-      throw error
-    }
+  const deleteResult = await spinnerController.withSpinner('삭제작업중', async () => {
+    try{
+      await deleteDevice(deviceId)
+      await deviceStore.refreshDevice()
 
+      return true
+    } catch (error) {
+      if(!(error instanceof FetchError)) {
+        throw error
+      }
+
+      await alertController.open({
+        title: '디바이스 삭제 중 문제가 발생 했습니다.',
+        content: error.data.message ?? error.message,
+      })
+
+      return false
+    }
+  })
+
+  if(deleteResult) {
     await alertController.open({
-      title: '디바이스 삭제 중 문제가 발생 했습니다.',
-      content: error.data.message ?? error.message,
+      title: '디바이스 삭제 성공',
+      content: ['디바이스 삭제 완료', '디바이스 목록으로 이동합니다.']
     })
+    navigateTo({ name: 'devices' })
   }
 }
 
