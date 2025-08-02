@@ -5,6 +5,10 @@ definePageMeta({
   middleware: ['require-auth', 'require-channel-info']
 })
 
+useHead({
+  title: '채널 등록',
+})
+
 import type { ChannelSearchResultDto } from '~/dto/channel/ChannelSearchResultDto'
 import { registerChannel } from '~/api/ChannelRequest'
 import { useChannelStore } from '~/store/ChannelStore'
