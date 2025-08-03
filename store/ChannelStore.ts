@@ -3,7 +3,7 @@ import type { LiveCloseDto, MinimalChannelInfoDto } from '~/dto/channel/MinimalC
 import { channelIdToString, sortChannels } from '~/util/ChannelUtil'
 import type { ChannelId, ChannelStateChangeCallback } from '~/types/Channel'
 import { SseController } from '~/sse/SseController'
-import { channelInfoUpdatedRegex, channelStateChangedRegex } from '~/constants/sse'
+import { channelInfoUpdatedRegex, channelRefreshEvent, channelStateChangedRegex } from '~/constants/sse'
 import { recordPayload } from '~/types/Sse'
 import { isEqual } from 'lodash'
 import { v4 } from 'uuid'
@@ -111,7 +111,7 @@ export const useChannelStore = defineStore('channel-store', () => {
     sseController.addCallback(async (topic, payload) => {
       const infoRegexMatched = topic.match(channelInfoUpdatedRegex)
 
-      if(topic === 'updated-at') {
+      if(topic === channelRefreshEvent) {
         _lastUpdatedAt.value = payload
       }
 
